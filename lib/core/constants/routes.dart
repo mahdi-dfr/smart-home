@@ -8,8 +8,15 @@ class PagesRoutes {
 
   static List<GetPage<dynamic>> pages = [
     GetPage(
-      name: '/',
-      page: () => const RegisterScreen(),
+      name: '/register',
+      page: () => RegisterScreen(),
     ),
+
+    GetPage(
+      name: '/',
+      page: () => LoginScreen(),
+    ),
+
+
   ];
 }

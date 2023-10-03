@@ -23,7 +23,7 @@ class LoginButton extends StatelessWidget {
             onClick();
           },
           style: ElevatedButton.styleFrom(
-              backgroundColor: ConstantsData().foregroundColor,
+              backgroundColor: ConstantsData.foregroundColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100))),
           child: Text(

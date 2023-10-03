@@ -34,7 +34,7 @@ class _LoginEditTextState extends State<LoginEditText> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(13),
           border:
-          Border.all(width: 0.5, color: ConstantsData().foregroundColor)),
+          Border.all(width: 0.5, color: ConstantsData.foregroundColor)),
       child: TextField(
         controller: widget.fieldController,
         keyboardType: widget.type,
