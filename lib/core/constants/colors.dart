@@ -2,10 +2,12 @@
 
 import 'dart:ui';
 
-class ConstantsData{
+class CustomColors{
 
   static Color backgroundColor = Color(0xffEBF2F8);
   static Color foregroundColor = Color(0xffd90000);
+
+
 
 
 }

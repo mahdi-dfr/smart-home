@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:turkeysh_smart_home/core/constants/constant.dart';
+import 'package:turkeysh_smart_home/core/constants/colors.dart';
 
 class LoginButton extends StatelessWidget {
 
@@ -23,7 +23,7 @@ class LoginButton extends StatelessWidget {
             onClick();
           },
           style: ElevatedButton.styleFrom(
-              backgroundColor: ConstantsData.foregroundColor,
+              backgroundColor: CustomColors.foregroundColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100))),
           child: Text(

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:lottie/lottie.dart';
+import 'package:turkeysh_smart_home/core/constants/routes.dart';
+import 'package:turkeysh_smart_home/core/resource/data_state.dart';
 import 'package:turkeysh_smart_home/features/auth/presentation/widget/wave_widget.dart';
-import '../../../../core/constants/constant.dart';
+import '../../../../core/constants/colors.dart';
 import '../controller/register_controller.dart';
 import '../widget/confirm_button.dart';
 import '../widget/input_field.dart';
-import 'login.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({Key? key}) : super(key: key);
@@ -20,7 +22,7 @@ class RegisterScreen extends StatelessWidget {
     var height = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
-      backgroundColor: ConstantsData.backgroundColor,
+      backgroundColor: CustomColors.backgroundColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -33,7 +35,7 @@ class RegisterScreen extends StatelessWidget {
                     child: ClipPath(
                       clipper: WaveClipper(),
                       child: Container(
-                        color: ConstantsData.foregroundColor,
+                        color: CustomColors.foregroundColor,
                         height: height * 0.58,
                       ),
                     ),
@@ -42,7 +44,7 @@ class RegisterScreen extends StatelessWidget {
                       clipper: WaveClipper(),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: ConstantsData.foregroundColor,
+                          color: CustomColors.foregroundColor,
                         ),
                         height: height * 0.55,
                         alignment: Alignment.center,
@@ -143,10 +145,35 @@ class RegisterScreen extends StatelessWidget {
             ),
             _controller.isLoading.value
                 ? LoadingAnimationWidget.beat(
-                    color: ConstantsData.foregroundColor, size: 35)
-                : LoginButton(onClick: () {
-                    _controller.signUpUser();
+                    color: CustomColors.foregroundColor, size: 35)
+                : LoginButton(buttonTitle: 'ثبت نام' ,onClick: () {
+                    _controller.signUpUser().then((value) {
+                      if(value is DataSuccess){
+                        showTopSnackBar(
+                          Overlay.of(context),
+                          const CustomSnackBar.success(
+                            message:
+                            "اطلاعات ذخیره شد",
+                          ),
+                        );
+                      }else{
+                        showTopSnackBar(
+                          Overlay.of(context),
+                          CustomSnackBar.error(
+                            message:
+                            value.error.toString(),
+                          ),
+                        );
+                      }
+                    });
                   }),
+            const SizedBox(
+              height: 20,
+            ),
+            TextButton(onPressed: (){
+              Get.toNamed(PagesRoutes.login);
+            }, child: const Text('قبلا ثبت نام کرده اید؟ | ورود')),
+
             const SizedBox(
               height: 20,
             ),

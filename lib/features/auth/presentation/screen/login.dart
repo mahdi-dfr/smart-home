@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:lottie/lottie.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:turkeysh_smart_home/core/resource/data_state.dart';
 import 'package:turkeysh_smart_home/features/auth/presentation/widget/wave_widget.dart';
-import '../../../../core/constants/constant.dart';
+import '../../../../core/constants/colors.dart';
+import '../../../../core/constants/routes.dart';
 import '../controller/register_controller.dart';
 import '../widget/confirm_button.dart';
 import '../widget/input_field.dart';
-import 'login.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -20,7 +22,7 @@ class LoginScreen extends StatelessWidget {
     var height = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
-      backgroundColor: ConstantsData.backgroundColor,
+      backgroundColor: CustomColors.backgroundColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -33,7 +35,7 @@ class LoginScreen extends StatelessWidget {
                     child: ClipPath(
                       clipper: WaveClipper(),
                       child: Container(
-                        color: ConstantsData.foregroundColor,
+                        color: CustomColors.foregroundColor,
                         height: height * 0.58,
                       ),
                     ),
@@ -42,7 +44,7 @@ class LoginScreen extends StatelessWidget {
                       clipper: WaveClipper(),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: ConstantsData.foregroundColor,
+                          color: CustomColors.foregroundColor,
                         ),
                         height: height * 0.55,
                         alignment: Alignment.center,
@@ -74,7 +76,7 @@ class LoginScreen extends StatelessWidget {
             ),
             LoginEditText(
               hint: 'نام کاربری',
-              fieldController: _controller.username,
+              fieldController: _controller.loginUsername,
               icon: const Icon(Icons.person),
               type: TextInputType.text,
               isPass: false,
@@ -85,7 +87,7 @@ class LoginScreen extends StatelessWidget {
             ),
             LoginEditText(
               hint: 'رمز عبور',
-              fieldController: _controller.password,
+              fieldController: _controller.loginPassword,
               icon: const Icon(Icons.lock),
               type: TextInputType.visiblePassword,
               isPass: true,
@@ -102,10 +104,36 @@ class LoginScreen extends StatelessWidget {
             ),
             _controller.isLoading.value
                 ? LoadingAnimationWidget.beat(
-                color: ConstantsData.foregroundColor, size: 35)
+                color: CustomColors.foregroundColor, size: 35)
                 : LoginButton(onClick: () {
-              _controller.signUpUser();
+              _controller.loginUser().then((value) {
+                if(value is DataSuccess){
+                  showTopSnackBar(
+                    Overlay.of(context),
+                    const CustomSnackBar.success(
+                      message:
+                      "خوش آمدید!",
+                    ),
+                  );
+                }else{
+                  showTopSnackBar(
+                    Overlay.of(context),
+                    CustomSnackBar.error(
+                      message:
+                      value.error.toString(),
+                    ),
+                  );
+                }
+              });
             }),
+            const SizedBox(
+              height: 20,
+            ),
+
+            TextButton(onPressed: (){
+              Get.toNamed(PagesRoutes.register);
+            }, child: const Text('حساب کاربری ندارید؟ | ثبت نام')),
+
             const SizedBox(
               height: 20,
             ),

@@ -5,6 +5,7 @@ class ConnectionController extends GetxController {
 
   @override
   onInit() async {
+    startCheckInternet();
     backgroundCheckInternet();
     super.onInit();
 
