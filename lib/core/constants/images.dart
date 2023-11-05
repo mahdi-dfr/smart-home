@@ -9,4 +9,5 @@ class Images {
   static const String homeAnim = 'assets/animation/home_anim.json';
   static const String lottieHome2 = 'assets/animation/home2.json';
   static const String roomAnim = 'assets/animation/room.json';
+  static const String empty = 'assets/animation/empty.json';
 }

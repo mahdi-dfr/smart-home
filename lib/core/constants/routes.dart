@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:turkeysh_smart_home/core/resource/app_bindings.dart';
 import 'package:turkeysh_smart_home/features/base_page.dart';
+import 'package:turkeysh_smart_home/features/home/presentation/screen/view_room.dart';
 import 'package:turkeysh_smart_home/features/project/presentation/screen/project_screen.dart';
 import '../../features/auth/presentation/screen/login.dart';
 import '../../features/auth/presentation/screen/register.dart';
@@ -17,6 +18,7 @@ class PagesRoutes {
   static const String _project = '/project';
   static const String _home = '/home';
   static const String _createRoom = '/create_room';
+  static const String _viewRoom = '/view_room';
 
   static String get login => _login;
 
@@ -27,6 +29,8 @@ class PagesRoutes {
   static String get register => _register;
 
   static String get home => _home;
+
+  static String get viewRoom => _viewRoom;
 
   static String get createRoom => _createRoom;
 
@@ -57,6 +61,11 @@ class PagesRoutes {
       page: () => const CreateRoomScreen(),
       binding: HomeBindings()
     ),
+
+    // GetPage(
+    //     name: viewRoom,
+    //     page: () => ViewRoomScreen(),
+    // ),
 
   ];
 

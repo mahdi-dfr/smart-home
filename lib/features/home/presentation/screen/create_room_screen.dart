@@ -35,28 +35,53 @@ class CreateRoomScreen extends StatelessWidget {
                     .find<RoomController>()
                     .isLoading
                     .value, onClick: () {
-                  Get.find<RoomController>().createNewRoom(Get
-                      .find<ProjectController>()
-                      .projectId ?? 0).then((value) {
-                    if (value is DataSuccess) {
-                      Get.back();
-                      showTopSnackBar(
-                        Overlay.of(context),
-                        CustomSnackBar.success(
-                          message: value.data ??
-                              'اطلاعات با موفقیت ذخیره شد',
-                        ),
-                      );
-                    } else {
-                      showTopSnackBar(
-                        Overlay.of(context),
-                        CustomSnackBar.error(
-                          message: value.error ??
-                              'خطا در ارسال اطلاعات',
-                        ),
-                      );
-                    }
-                  });
+                  if(Get.find<RoomController>().isRoomUpdateMode){
+                    Get.find<RoomController>().updateRoom(Get.find<RoomController>().roomId! ,Get
+                        .find<ProjectController>()
+                        .projectId ?? 0).then((value) {
+                      if (value is DataSuccess) {
+                        Get.back();
+                        showTopSnackBar(
+                          Overlay.of(context),
+                          CustomSnackBar.success(
+                            message: value.data ??
+                                'اطلاعات با موفقیت ویرایش شد',
+                          ),
+                        );
+                      } else {
+                        showTopSnackBar(
+                          Overlay.of(context),
+                          CustomSnackBar.error(
+                            message: value.error ??
+                                'خطا در ارسال اطلاعات',
+                          ),
+                        );
+                      }
+                    });
+                  }else{
+                    Get.find<RoomController>().createNewRoom(Get
+                        .find<ProjectController>()
+                        .projectId ?? 0).then((value) {
+                      if (value is DataSuccess) {
+                        Get.back();
+                        showTopSnackBar(
+                          Overlay.of(context),
+                          CustomSnackBar.success(
+                            message: value.data ??
+                                'اطلاعات با موفقیت ذخیره شد',
+                          ),
+                        );
+                      } else {
+                        showTopSnackBar(
+                          Overlay.of(context),
+                          CustomSnackBar.error(
+                            message: value.error ??
+                                'خطا در ارسال اطلاعات',
+                          ),
+                        );
+                      }
+                    });
+                  }
                 },);
               })
             ],

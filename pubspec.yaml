@@ -81,6 +81,7 @@ flutter:
     - assets/animation/home_anim.json
     - assets/animation/home2.json
     - assets/animation/room.json
+    - assets/animation/empty.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

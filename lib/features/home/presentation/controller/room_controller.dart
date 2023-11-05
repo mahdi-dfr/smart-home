@@ -18,6 +18,8 @@ class RoomController extends GetxController{
 
   var isLoading = false.obs;
   var isDeleteLoading = false.obs;
+  bool isRoomUpdateMode = false;
+  int? roomId;
   late Map<String, dynamic> request;
 
   @override
