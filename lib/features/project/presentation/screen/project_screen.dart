@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:turkeysh_smart_home/core/constants/colors.dart';
+import 'package:turkeysh_smart_home/core/constants/utils.dart';
 import 'package:turkeysh_smart_home/core/widget/custom_app_bar.dart';
 import 'package:turkeysh_smart_home/features/home/presentation/controller/room_controller.dart';
 import '../../../../core/constants/dimens.dart';
@@ -81,6 +83,7 @@ class ProjectScreen extends StatelessWidget {
                     title: _controller.projectList.value[index].name ?? '',
                     onClick: () async {
                       _controller.projectId = _controller.projectList.value[index].id ?? 0;
+                      GetStorage().write(AppUtils.projectIdConst, _controller.projectId);
                       await Get.find<RoomController>().getAllRooms(_controller.projectList.value[index].id ?? 0);
                       Get.toNamed(PagesRoutes.home);
                     },

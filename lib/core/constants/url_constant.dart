@@ -11,6 +11,8 @@ class UrlConstant {
 
   /// project urls:
   static const String project = 'project/project/';
+  static const String projectBoard = 'project/project_board/';
+  static const String controlBoards = 'project/control_boards/';
 
   /// home:
   static const String room = 'project/room/';

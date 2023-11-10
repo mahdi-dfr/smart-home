@@ -1,13 +1,12 @@
 import 'package:get/get.dart';
 import 'package:turkeysh_smart_home/core/resource/app_bindings.dart';
 import 'package:turkeysh_smart_home/features/base_page.dart';
-import 'package:turkeysh_smart_home/features/home/presentation/screen/view_room.dart';
 import 'package:turkeysh_smart_home/features/project/presentation/screen/project_screen.dart';
 import '../../features/auth/presentation/screen/login.dart';
 import '../../features/auth/presentation/screen/register.dart';
+import '../../features/settings/presentation/screen/board_settings.dart';
 import '../../features/home/presentation/screen/create_room_screen.dart';
-
-
+import '../../features/settings/presentation/screen/create_board.dart';
 
 class PagesRoutes {
   PagesRoutes._();
@@ -19,6 +18,10 @@ class PagesRoutes {
   static const String _home = '/home';
   static const String _createRoom = '/create_room';
   static const String _viewRoom = '/view_room';
+  static const String _boardSetting = '/board_Setting';
+  static const String _createBoard = '/create_board';
+
+  static String get boardSetting => _boardSetting;
 
   static String get login => _login;
 
@@ -34,40 +37,37 @@ class PagesRoutes {
 
   static String get createRoom => _createRoom;
 
+  static String get createBoard => _createBoard;
 
   static List<GetPage<dynamic>> pages = [
     GetPage(
-      name: register,
+      name: _register,
       page: () => RegisterScreen(),
     ),
-
     GetPage(
-      name: login,
+      name: _login,
       page: () => LoginScreen(),
     ),
-
     GetPage(
-      name: project,
+      name: _project,
       page: () => ProjectScreen(),
       binding: ProjectBindings(),
     ),
-
     GetPage(
-      name: home,
+      name: _home,
       page: () => const BasePage(),
     ),
     GetPage(
-      name: createRoom,
+      name: _createRoom,
       page: () => const CreateRoomScreen(),
-      binding: HomeBindings()
     ),
-
-    // GetPage(
-    //     name: viewRoom,
-    //     page: () => ViewRoomScreen(),
-    // ),
-
+    GetPage(
+        name: _boardSetting,
+        page: () => BoardSettingScreen(),
+        binding: SettingsBindings()),
+    GetPage(
+      name: _createBoard,
+      page: () => CreateBoardScreen(),
+    ),
   ];
-
-
 }

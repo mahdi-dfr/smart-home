@@ -9,6 +9,10 @@ import 'package:turkeysh_smart_home/features/project/data/repository/project_rep
 import 'package:turkeysh_smart_home/features/project/domain/repository/project_repository.dart';
 import 'package:turkeysh_smart_home/features/project/domain/usecase/project_usecase.dart';
 import 'package:turkeysh_smart_home/features/project/presentation/controller/project_controller.dart';
+import 'package:turkeysh_smart_home/features/settings/data/data_source/api_provider.dart';
+import 'package:turkeysh_smart_home/features/settings/domain/repository/project_board_repository.dart';
+import 'package:turkeysh_smart_home/features/settings/domain/usecase/project_board_usecase.dart';
+import 'package:turkeysh_smart_home/features/settings/presentation/controller/project_board_controller.dart';
 
 import '../../features/auth/data/data_source/api_provider.dart';
 import '../../features/auth/domain/repository/auth_repository.dart';
@@ -16,6 +20,7 @@ import '../../features/auth/domain/usecase/auth_usecase.dart';
 import '../../features/home/data/repository/home_repository_impl.dart';
 import '../../features/home/domain/usecase/room_usecase.dart';
 import '../../features/project/data/data_source/api_provider.dart';
+import '../../features/settings/data/repository/project_board_repository_impl.dart';
 
 class AppBindings extends Bindings{
   @override
@@ -53,18 +58,18 @@ class ProjectBindings extends Bindings{
   }
 }
 
-class HomeBindings extends Bindings{
+class SettingsBindings extends Bindings{
 
   @override
   void dependencies() {
-
     /// api providers:
-
+    Get.put<ProjectBoardApiProvider>(ProjectBoardApiProvider());
     /// repositories:
-
+    Get.put<ProjectBoardRepository>(ProjectBoardRepositoryImpl(Get.find<ProjectBoardApiProvider>()));
     ///useCase:
-
+    Get.put<ProjectBoardUseCase>(ProjectBoardUseCase(Get.find<ProjectBoardRepository>()));
     /// controllers:
+    Get.put(ProjectBoardController(Get.find<ProjectBoardUseCase>()));
 
   }
 }

@@ -7,9 +7,10 @@ import 'package:turkeysh_smart_home/features/auth/presentation/screen/register.d
 import 'core/constants/routes.dart';
 import 'core/constants/utils.dart';
 
-void main() {
+ main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AppBindings().dependencies();
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
@@ -18,7 +19,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String? userToken = GetStorage().read(AppUtils.userTokenAccess);
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:turkeysh_smart_home/core/widget/drawer.dart';
+import 'package:turkeysh_smart_home/features/scenario/presentation/screen/scenario_screen.dart';
+import 'package:turkeysh_smart_home/features/special_condition/presentation/screen/special_screen.dart';
 
 import '../../features/home/presentation/screen/home_page.dart';
 import '../../test.dart';
@@ -6,6 +9,8 @@ import '../../test.dart';
 class AppUtils{
   static const String userTokenAccess = 'UserTokenAccess';
   static const String userTokenRefresh = 'UserTokenRefresh';
+
+  static const String projectIdConst = 'projectIdConst';
 
   static List<IconData> iconList = <IconData>[
     Icons.home,
@@ -16,9 +21,9 @@ class AppUtils{
 
   static List<Widget> pages = [
     HomePage(),
-    Test2(),
-    Test3(),
-    Test4(),
+    ScenarioScreen(),
+    SpecialScreen(),
+    MyDrawerWidget(),
   ];
 
   static List<String> navTitle = [

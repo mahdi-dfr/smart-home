@@ -1,11 +1,15 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:turkeysh_smart_home/core/constants/colors.dart';
 
 import '../core/constants/utils.dart';
+import '../core/widget/drawer.dart';
 
 class BasePage extends StatefulWidget {
   const BasePage({Key? key}) : super(key: key);
+
+
 
   @override
   State<BasePage> createState() => _BasePageState();
@@ -13,6 +17,7 @@ class BasePage extends StatefulWidget {
 
 class _BasePageState extends State<BasePage> {
   int currentIndex = 0;
+  final _advancedDrawerController = AdvancedDrawerController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +27,8 @@ class _BasePageState extends State<BasePage> {
         backgroundColor: Colors.white,
         child: const Icon(Icons.monitor),
       ),
+      drawer: MyDrawerWidget(),
+      //key: _scaffoldKey,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar.builder(
         activeIndex: currentIndex,
@@ -47,8 +54,8 @@ class _BasePageState extends State<BasePage> {
               ),
               const SizedBox(height: 4,),
               Text(AppUtils.navTitle[index], style: TextStyle(
-                fontSize: 10,
-                color: isActive ? CustomColors.foregroundColor : Colors.black
+                  fontSize: 10,
+                  color: isActive ? CustomColors.foregroundColor : Colors.black
               ),)
             ],
           );
@@ -56,5 +63,11 @@ class _BasePageState extends State<BasePage> {
       ),
       body: AppUtils.pages[currentIndex],
     );
+  }
+
+  void _handleMenuButtonPressed() {
+    // NOTICE: Manage Advanced Drawer state through the Controller.
+    // _advancedDrawerController.value = AdvancedDrawerValue.visible();
+    _advancedDrawerController.showDrawer();
   }
 }

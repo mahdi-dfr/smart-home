@@ -1,164 +1,123 @@
-
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:turkeysh_smart_home/core/constants/colors.dart';
 
+class CustomDropDown extends StatefulWidget {
+  CustomDropDown({required this.items, required this.title, this.height, this.width, this.color ,required this.onPressed, super.key});
 
-class DropBox extends StatefulWidget {
-  List<String> dropList;
+  Function(String)? onPressed;
   String title;
-  bool star;
-  String hint;
-  double? fontSize;
-  bool disable;
-  double? width;
-  Function(Object) onPressed;
-  bool loading;
+  double? width = 200;
+  double? height = 50;
+  List<String> items;
+  Color? color = const Color(0x8cababab);
 
-  DropBox({
-    Key? key,
-    this.fontSize = 12,
-    required this.dropList,
-    required this.title,
-    this.loading = false,
-    this.width,
-    this.hint = 'انتخاب کنید ...',
-    this.star = false,
-    this.disable = false,
-    required this.onPressed,
-  }) : super(key: key);
 
   @override
-  State<DropBox> createState() => _DropBoxState();
+  State<CustomDropDown> createState() => _CustomDropDownState();
 }
 
-class _DropBoxState extends State<DropBox> {
-  var dropValue;
+class _CustomDropDownState extends State<CustomDropDown> {
+
+  String? selectedValue;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-
       children: [
-
-        Row(
-          children: [
-            Text(
-              widget.title,
-              style: TextStyle(fontSize: widget.fontSize, color: widget.disable ? Colors.white : Colors.black),
+        Align(alignment:Alignment.centerRight ,child: Text(widget.title, style: const TextStyle(fontSize: 14),)),
+        const SizedBox(height: 8,),
+        DropdownButtonHideUnderline(
+          child: DropdownButton2<String>(
+            isExpanded: true,
+            hint: Row(
+              children: [
+                const Icon(
+                  Icons.list,
+                  size: 16,
+                  color: Colors.black,
+                ),
+                const SizedBox(
+                  width: 4,
+                ),
+                Expanded(
+                  child: Text(
+                    widget.title,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(
-              width: 5,
-            ),
-            Text(
-              widget.star ? '*' : '',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 12,),
-
-        Container(
-          width: widget.width ?? MediaQuery.sizeOf(context).width,
-          height: MediaQuery.sizeOf(context).height / 14,
-          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-          //margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-          decoration: BoxDecoration(
-            border: Border.all(color: CustomColors.foregroundColor, width: 1),
-            borderRadius: BorderRadius.circular(13),
-            color: CustomColors.backgroundColor,
-          ),
-          child: CustomDropDoawn(
-            onTap: () {},
-            loading: widget.loading,
-            hint: widget.hint,
-            dropList: widget.dropList,
-            title: widget.title,
-            onPressed: (String value) {
-              widget.onPressed(value);
+            items: widget.items
+                .map((String item) => DropdownMenuItem<String>(
+              value: item,
+              child: Text(
+                item,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ))
+                .toList(),
+            value: selectedValue,
+            onChanged: (value) {
+              setState(() {
+                selectedValue = value;
+                if(selectedValue != null){
+                  widget.onPressed!(selectedValue!);
+                }
+              });
             },
-            disable: widget.disable,
+            buttonStyleData: ButtonStyleData(
+              height: widget.height,
+              width: widget.width,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(
+                  color: Colors.black26,
+                ),
+                color: widget.color,
+              ),
+              elevation: 0,
+            ),
+            iconStyleData: const IconStyleData(
+              icon: Icon(
+                Icons.arrow_forward_ios_outlined,
+              ),
+              iconSize: 14,
+              iconEnabledColor: Colors.black,
+              iconDisabledColor: Colors.black,
+            ),
+            dropdownStyleData: DropdownStyleData(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              maxHeight: 400,
+              width: widget.width! * 0.8,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(14),
+                color: widget.color,
+              ),
+              offset: const Offset(0, 0),
+              scrollbarTheme: ScrollbarThemeData(
+                radius: const Radius.circular(40),
+                thickness: MaterialStateProperty.all(6),
+                thumbVisibility: MaterialStateProperty.all(true),
+              ),
+            ),
+            menuItemStyleData: const MenuItemStyleData(
+              height: 40,
+              padding: EdgeInsets.only(left: 14, right: 14),
+            ),
           ),
-        ),
-        const SizedBox(
-          height: 16,
         ),
       ],
     );
-  }
-}
 
-
-
-class CustomDropDoawn extends StatefulWidget {
-  CustomDropDoawn(
-      {Key? key,
-        required this.dropList,
-        required this.title,
-        this.hint = ' انتخاب کنید ...',
-        this.star = true,
-        required this.onTap,
-        this.loading = false,
-        required this.disable,
-        this.onPressed})
-      : super(key: key);
-
-  Function() onTap;
-  List<String> dropList;
-  String title;
-  bool star;
-  bool loading;
-  String hint;
-  bool disable;
-  Function(String)? onPressed;
-
-  @override
-  State<CustomDropDoawn> createState() => _CustomDropDoawnState();
-}
-
-class _CustomDropDoawnState extends State<CustomDropDoawn> {
-  var dropValue;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child:
-      // widget.loading
-      //     ? Center(child: LoadingAnimationWidget.discreteCircle(color: Colors.green, size: 30))
-      //     :
-      DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: widget.dropList.contains(dropValue) ? dropValue : null,
-          isExpanded: true,
-          onTap: () {
-            widget.onTap();
-          },
-          hint: Text(
-            widget.hint,
-            style: const TextStyle(fontSize: 14),
-          ),
-          items: widget.disable
-              ? null
-              : widget.dropList.map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(
-                value,
-                style: const TextStyle(fontSize: 14),
-              ),
-            );
-          }).toList(),
-          onChanged: (String? value) {
-            widget.disable
-                ? null
-                : setState(() {
-              dropValue = value!;
-              widget.onPressed!(dropValue!);
-            });
-          },
-        ),
-      ),
-    );
   }
 }
