@@ -1,4 +1,5 @@
 import '../../domain/entity/project_board_entity.dart';
+import '../../domain/entity/project_board_resault.dart';
 
 class ProjectBoard extends ProjectBoardEntity {
   int? count;
@@ -25,23 +26,12 @@ class ProjectBoard extends ProjectBoardEntity {
       });
     }
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['count'] = count;
-    data['next'] = next;
-    data['previous'] = previous;
-    if (results != null) {
-      data['results'] = results!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
 }
 
-class ProjectBoardResults {
+class ProjectBoardResults extends ProjectBoardResultsEntity {
   int? id;
   String? name;
-  String? boardType;
+  int? boardType;
   int? uniqueId;
   String? createdAt;
   String? deleteAt;
@@ -58,7 +48,18 @@ class ProjectBoardResults {
       this.deleteAt,
       this.updateAt,
       this.project,
-      this.parentBoard});
+      this.parentBoard})
+      : super(
+          id: id,
+          name: name,
+          boardType: boardType,
+          uniqueId: uniqueId,
+          createdAt: createdAt,
+          deleteAt: deleteAt,
+          updateAt: updateAt,
+          project: project,
+          parentBoard: parentBoard,
+        );
 
   ProjectBoardResults.fromJson(Map<String, dynamic> json) {
     id = json['id'];

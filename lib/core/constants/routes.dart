@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:turkeysh_smart_home/core/resource/app_bindings.dart';
 import 'package:turkeysh_smart_home/features/base_page.dart';
+import 'package:turkeysh_smart_home/features/home/presentation/screen/create_device.dart';
 import 'package:turkeysh_smart_home/features/project/presentation/screen/project_screen.dart';
 import '../../features/auth/presentation/screen/login.dart';
 import '../../features/auth/presentation/screen/register.dart';
@@ -20,6 +21,7 @@ class PagesRoutes {
   static const String _viewRoom = '/view_room';
   static const String _boardSetting = '/board_Setting';
   static const String _createBoard = '/create_board';
+  static const String _createDevice = '/create_device';
 
   static String get boardSetting => _boardSetting;
 
@@ -38,6 +40,8 @@ class PagesRoutes {
   static String get createRoom => _createRoom;
 
   static String get createBoard => _createBoard;
+
+  static String get createDevice => _createDevice;
 
   static List<GetPage<dynamic>> pages = [
     GetPage(
@@ -68,6 +72,11 @@ class PagesRoutes {
     GetPage(
       name: _createBoard,
       page: () => CreateBoardScreen(),
+    ),
+
+    GetPage(
+      name: _createDevice,
+      page: () => CreateDeviceScreen(),
     ),
   ];
 }

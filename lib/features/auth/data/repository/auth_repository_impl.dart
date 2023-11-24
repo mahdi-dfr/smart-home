@@ -28,6 +28,7 @@ class AuthRepositoryImpl extends AuthRepository {
         return DataFailed(response);
       }
     } else {
+      print(response.response);
       return DataFailed(response.response.toString());
     }
   }

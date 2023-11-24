@@ -59,7 +59,9 @@ class BoardSettingScreen extends StatelessWidget {
                   itemBuilder: (context, item, index) {
                     return CustomListWidget(
                       title: item.name ?? '',
-                      content: item.parentBoard.toString() ?? '',
+                      content: item.parentBoard.toString() == 'null'
+                          ? ''
+                          : item.parentBoard.toString(),
                       onDeleteClicked: () {
                         questionDialog(
                             title: 'حذف برد',
@@ -93,8 +95,9 @@ class BoardSettingScreen extends StatelessWidget {
                       },
                       onEditClicked: () {
                         _controller.isInEditMode = true;
-                        _controller.getControlBoard(
-                            GetStorage().read(AppUtils.projectIdConst).toString());
+                        _controller.getControlBoard(GetStorage()
+                            .read(AppUtils.projectIdConst)
+                            .toString());
                         Get.toNamed(PagesRoutes.createBoard);
                       },
                       onNodeClicked: () {},

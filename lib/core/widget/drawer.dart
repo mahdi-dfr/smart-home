@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:turkeysh_smart_home/core/constants/routes.dart';
+import 'package:turkeysh_smart_home/core/constants/utils.dart';
 import 'package:turkeysh_smart_home/core/widget/oval_right_border_clipper.dart';
+import 'package:turkeysh_smart_home/core/widget/question_dialog.dart';
 import 'dart:math' as math;
 
 import '../constants/images.dart';
@@ -38,7 +41,12 @@ class MyDrawerWidget extends StatelessWidget {
                       color: Get.theme.primaryColor,
                     ),
                     onPressed: () {
-                      // scaffoldKey.currentState!.openEndDrawer();
+                      questionDialog(title: 'خروج از حساب کاربری', question: 'آیا میخواهید از حساب کاربری خود خارج شوید؟', onYesClicked: () {
+                        GetStorage().remove(AppUtils.userTokenAccess);
+                        GetStorage().remove(AppUtils.userTokenRefresh);
+                        GetStorage().remove(AppUtils.username);
+                        Get.offAllNamed(PagesRoutes.login);
+                      });
                     },
                   ),
                 ),

@@ -18,8 +18,12 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.sizeOf(context).width;
-    var height = MediaQuery.sizeOf(context).height;
+    var width = MediaQuery
+        .sizeOf(context)
+        .width;
+    var height = MediaQuery
+        .sizeOf(context)
+        .height;
 
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
@@ -143,34 +147,38 @@ class RegisterScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            _controller.isLoading.value
-                ? LoadingAnimationWidget.beat(
+            Obx(() {
+              return SizedBox(
+                child: _controller.isRegisterLoading.value
+                    ? LoadingAnimationWidget.beat(
                     color: CustomColors.foregroundColor, size: 35)
-                : LoginButton(buttonTitle: 'ثبت نام' ,onClick: () {
-                    _controller.signUpUser().then((value) {
-                      if(value is DataSuccess){
-                        showTopSnackBar(
-                          Overlay.of(context),
-                          const CustomSnackBar.success(
-                            message:
-                            "اطلاعات ذخیره شد",
-                          ),
-                        );
-                      }else{
-                        showTopSnackBar(
-                          Overlay.of(context),
-                          CustomSnackBar.error(
-                            message:
-                            value.error.toString(),
-                          ),
-                        );
-                      }
-                    });
-                  }),
+                    : LoginButton(buttonTitle: 'ثبت نام', onClick: () {
+                  _controller.signUpUser().then((value) {
+                    if (value is DataSuccess) {
+                      showTopSnackBar(
+                        Overlay.of(context),
+                        const CustomSnackBar.success(
+                          message:
+                          "اطلاعات ذخیره شد",
+                        ),
+                      );
+                    } else {
+                      showTopSnackBar(
+                        Overlay.of(context),
+                        CustomSnackBar.error(
+                          message:
+                          value.error.toString(),
+                        ),
+                      );
+                    }
+                  });
+                }),
+              );
+            }),
             const SizedBox(
               height: 20,
             ),
-            TextButton(onPressed: (){
+            TextButton(onPressed: () {
               Get.toNamed(PagesRoutes.login);
             }, child: const Text('قبلا ثبت نام کرده اید؟ | ورود')),
 

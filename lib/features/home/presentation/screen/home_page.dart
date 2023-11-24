@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:lottie/lottie.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:turkeysh_smart_home/core/constants/colors.dart';
+import 'package:turkeysh_smart_home/features/home/presentation/controller/device_controller.dart';
 import 'package:turkeysh_smart_home/features/home/presentation/controller/room_controller.dart';
 import 'package:turkeysh_smart_home/features/home/presentation/screen/spetial_device.dart';
 import 'package:turkeysh_smart_home/features/home/presentation/screen/view_room.dart';
@@ -98,6 +100,10 @@ class HomePage extends StatelessWidget {
                   } else {
                     return InkWell(
                       onTap: () {
+
+                        Get.find<DeviceController>().roomId =
+                            _controller.roomsList[index].id;
+                        Get.find<DeviceController>().getAllDevises();
                         Get.to(() =>
                             ViewRoomScreen(room: _controller.roomsList[index]));
                       },
@@ -219,8 +225,13 @@ class HomePage extends StatelessWidget {
                                                 IconButton(
                                                     onPressed: () {
                                                       Get.back();
-                                                      _controller.roomId = _controller.roomsList[index].id;
-                                                      _controller.isRoomUpdateMode = true;
+                                                      _controller.roomId =
+                                                          _controller
+                                                              .roomsList[index]
+                                                              .id;
+                                                      _controller
+                                                              .isRoomUpdateMode =
+                                                          true;
                                                       Get.toNamed(PagesRoutes
                                                           .createRoom);
                                                     },
@@ -250,25 +261,36 @@ class HomePage extends StatelessWidget {
                 }),
               );
             })),
-
         const Padding(
           padding: EdgeInsets.fromLTRB(16, 32, 16, 0),
-          child: Align(alignment:Alignment.centerRight, child: Text('وسیله ها', style: AppStyles.style2,)),
+          child: Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                'وسیله ها',
+                style: AppStyles.style2,
+              )),
         ),
-
         ListView.separated(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-        itemBuilder: (context, index){
-              return InkWell(
-                onTap: (){
-                  Get.to(SpecialDeviceScreen(name: AppUtils.deviceInfo.keys.toList()[index]));
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return InkWell(
+                onTap: () {
+                  Get.to(SpecialDeviceScreen(
+                      name: AppUtils.deviceInfo.keys.toList()[index]));
                 },
-              child: DeviceInfo(index: index, width: width,));
-            }, separatorBuilder: (BuildContext context, int index) {
-              return const SizedBox(height: 2,);
-            }, itemCount: AppUtils.deviceInfo.length,)
-
+                child: DeviceInfo(
+                  index: index,
+                  width: width,
+                ));
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return const SizedBox(
+              height: 2,
+            );
+          },
+          itemCount: AppUtils.deviceInfo.length,
+        )
       ]))
     ]));
   }

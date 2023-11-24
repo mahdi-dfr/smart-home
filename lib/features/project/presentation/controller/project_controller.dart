@@ -20,6 +20,7 @@ class ProjectController extends GetxController{
   RxList<ProjectResults> projectList = RxList();
 
   var isLoading = false.obs;
+  var isGetProjectsLoading = false.obs;
   var isDeleteLoading = false.obs;
   bool projectEditMode = false;
   int? projectId;
@@ -63,7 +64,7 @@ class ProjectController extends GetxController{
   }
 
   Future<DataState<ProjectEntity>> getAllProjects() async {
-    isLoading.value = true;
+    isGetProjectsLoading.value = true;
     // if (Get
     //     .find<ConnectionController>()
     //     .isConnected
@@ -73,7 +74,7 @@ class ProjectController extends GetxController{
         if (dataState.data != null) {
           projectList.value = dataState.data?.results ?? [];
         }
-        isLoading.value = false;
+        isGetProjectsLoading.value = false;
         print(projectList);
         return DataSuccess(dataState.data);
       } else {

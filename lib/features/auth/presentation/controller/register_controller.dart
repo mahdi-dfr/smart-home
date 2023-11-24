@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:turkeysh_smart_home/core/constants/routes.dart';
+import 'package:turkeysh_smart_home/core/resource/error_handler.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/utils.dart';
 import '../../../../core/resource/connection_controller.dart';
@@ -14,6 +15,7 @@ import '../../domain/usecase/auth_usecase.dart';
 
 class RegisterController extends GetxController {
   var isLoading = false.obs;
+  var isRegisterLoading = false.obs;
   late TextEditingController username;
   late TextEditingController password;
   late TextEditingController confirmPassword;
@@ -41,7 +43,7 @@ class RegisterController extends GetxController {
   }
 
   Future<DataState<String>> signUpUser() async {
-    isLoading.value = true;
+    isRegisterLoading.value = true;
     if (Get.find<ConnectionController>().isConnected.value) {
       if (username.text.isNotEmpty &&
           password.text.isNotEmpty &&
@@ -59,7 +61,7 @@ class RegisterController extends GetxController {
                 username.text, password.text, mobileNumber.text, email.text, birthDate.text);
             if (response is DataSuccess) {
               Get.offAllNamed(PagesRoutes.login);
-              isLoading.value = false;
+              isRegisterLoading.value = false;
               username.text = '';
               password.text = '';
               confirmPassword.text = '';
@@ -68,19 +70,19 @@ class RegisterController extends GetxController {
               birthDate.text = '';
               return const DataSuccess('اطلاعات با موفقیت ذخیره شد');
             } else {
-              isLoading.value = false;
-              return const DataFailed('خطا در ارسال اطلاعات');
+              isRegisterLoading.value = false;
+              return DataFailed(errorConvertor(response.error ?? 'خطا در ارسال اطلاعات'));
             }
           } else {
-            isLoading.value = false;
+            isRegisterLoading.value = false;
             return const DataFailed('لطفا شماره موبایل را با فرمت مناسب وارد کنید');
           }
         } else {
-          isLoading.value = false;
+          isRegisterLoading.value = false;
           return const DataFailed('رمز عبور با تکرار آن مطابقت ندارد!');
         }
       } else {
-        isLoading.value = false;
+        isRegisterLoading.value = false;
         return const DataFailed('لطفا تمام اطلاعات را وارد نمایید');
       }
     } else {
@@ -103,6 +105,7 @@ class RegisterController extends GetxController {
             Get.offAllNamed(PagesRoutes.project);
             GetStorage().write(AppUtils.userTokenAccess, dataState.data!.access);
             GetStorage().write(AppUtils.userTokenRefresh, dataState.data!.refresh);
+            GetStorage().write(AppUtils.username, loginUsername.text);
 
             isLoading.value = false;
             return DataSuccess(dataState.data);
@@ -110,7 +113,7 @@ class RegisterController extends GetxController {
           return const DataFailed('خطا در دریافت اطلاعات');
         } else {
           isLoading.value = false;
-          return const DataFailed('خطا در ارسال اطلاعات');
+          return DataFailed(errorConvertor(dataState.error!));
         }
       }else{
         isLoading.value = false;

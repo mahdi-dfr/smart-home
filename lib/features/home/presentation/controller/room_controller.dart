@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:turkeysh_smart_home/core/constants/utils.dart';
 import 'package:turkeysh_smart_home/features/home/data/model/room_request.dart';
 import 'package:turkeysh_smart_home/features/home/data/model/room_response.dart';
 import 'package:turkeysh_smart_home/features/home/domain/entity/room_response_entity.dart';
@@ -36,7 +38,8 @@ class RoomController extends GetxController{
         DataState dataState = await _useCase.addRoom(request);
         if(dataState is DataSuccess){
           if(dataState.data != null){
-            roomsList.add(dataState.data);
+            getAllRooms(GetStorage().read(AppUtils.projectIdConst));
+            //roomsList.add(dataState.data);
             roomName.text = '';
             isLoading.value = false;
             return const DataSuccess('اطلاعات با موفقیت ذخیره شد');
@@ -81,18 +84,41 @@ class RoomController extends GetxController{
     // }
   }
 
+  Future<DataState<RoomResponseEntity>> getOneRooms(int projectId) async {
+    isLoading.value = true;
+    // if (Get
+    //     .find<ConnectionController>()
+    //     .isConnected
+    //     .value) {
+    DataState<RoomResponseEntity> dataState = await _useCase.getAllRooms(projectId);
+    if (dataState is DataSuccess) {
+      if (dataState.data != null) {
+        roomsList.value = dataState.data?.results ?? [];
+      }
+      isLoading.value = false;
+      return DataSuccess(dataState.data);
+    } else {
+      return const DataFailed('err');
+    }
+
+    // } else {
+    //   return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید!');
+    //
+    // }
+  }
+
   Future<DataState<String>> updateRoom(int id, int projectId) async {
     isLoading.value = true;
     request = RoomRequestModel(name: roomName.text, project: projectId).toJson();
     if (Get.find<ConnectionController>().isConnected.value) {
       if(roomName.text.isNotEmpty){
-        DataState dataState = await _useCase.updateRoom(request, id);
+        DataState dataState = await _useCase.updateRoom(request, id, projectId);
         if(dataState is DataSuccess){
           if(dataState.data != null){
             getAllRooms(projectId);
             roomName.text = '';
             isLoading.value = false;
-            return const DataSuccess('اطلاعات با موفقیت ذخیره شد');
+            return const DataSuccess('اطلاعات با موفقیت ویرایش شد');
           }else{
             isLoading.value = false;
             return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
@@ -117,7 +143,7 @@ class RoomController extends GetxController{
       DataState dataState = await _useCase.deleteRoomById(id ,projectId);
       if(dataState is DataSuccess){
         getAllRooms(projectId);
-        return const DataSuccess('پروژه با موفقیت حذف شد');
+        return const DataSuccess('اتاق با موفقیت حذف شد');
       }else{
         isDeleteLoading.value = false;
         return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');

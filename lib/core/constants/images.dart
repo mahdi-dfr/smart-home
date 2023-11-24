@@ -4,6 +4,8 @@ class Images {
   static const String logoDark = 'assets/images/logo_raw_dark.png';
   static const String logoWide = 'assets/images/logo_wide.png';
   static const String home = 'assets/images/home.svg';
+  static const String left = 'assets/images/left.svg';
+  static const String right = 'assets/images/right.svg';
 
   /// animations:
   static const String homeAnim = 'assets/animation/home_anim.json';

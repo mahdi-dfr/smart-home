@@ -61,7 +61,7 @@ class CreateBoardScreen extends StatelessWidget {
                       isBaseBoard: true,
                       isChecked: _controller.isSMSChecked.value,
                       onCheckTap: (bool? value) {
-                        _controller.changeBoardCheckValue('0', value!);
+                        _controller.changeBoardCheckValue('1', value!);
                         _controller.isSMSChecked.value = value;
                         _controller.isSensorChecked.value = false;
                         _controller.isDimmerChecked.value = false;
@@ -76,7 +76,7 @@ class CreateBoardScreen extends StatelessWidget {
                       isBaseBoard: true,
                       isChecked: _controller.isWifiChecked.value,
                       onCheckTap: (bool? value) {
-                        _controller.changeBoardCheckValue('1', value!);
+                        _controller.changeBoardCheckValue('2', value!);
                         _controller.isWifiChecked.value = value;
                         _controller.isSensorChecked.value = false;
                         _controller.isDimmerChecked.value = false;
@@ -91,7 +91,7 @@ class CreateBoardScreen extends StatelessWidget {
                       isBaseBoard: false,
                       isChecked: _controller.isSensorChecked.value,
                       onCheckTap: (bool? value) {
-                        _controller.changeBoardCheckValue('2', value!);
+                        _controller.changeBoardCheckValue('3', value!);
                         _controller.isSensorChecked.value = value;
                         _controller.isSMSChecked.value = false;
                         _controller.isDimmerChecked.value = false;
@@ -106,7 +106,7 @@ class CreateBoardScreen extends StatelessWidget {
                       isBaseBoard: false,
                       isChecked: _controller.isDimmerChecked.value,
                       onCheckTap: (bool? value) {
-                        _controller.changeBoardCheckValue('4', value!);
+                        _controller.changeBoardCheckValue('5', value!);
                         _controller.isDimmerChecked.value = value;
                         _controller.isSensorChecked.value = false;
                         _controller.isSMSChecked.value = false;
@@ -121,7 +121,7 @@ class CreateBoardScreen extends StatelessWidget {
                       isBaseBoard: false,
                       isChecked: _controller.isRelayChecked.value,
                       onCheckTap: (bool? value) {
-                        _controller.changeBoardCheckValue('3', value!);
+                        _controller.changeBoardCheckValue('4', value!);
                         _controller.isRelayChecked.value = value;
                         _controller.isSensorChecked.value = false;
                         _controller.isDimmerChecked.value = false;
@@ -143,18 +143,17 @@ class CreateBoardScreen extends StatelessWidget {
                 return CustomButton(
                   onClick: () {
                    if(!_controller.isInEditMode){
-                     if (_controller.selectedBoardType != '0' &&
-                         _controller.selectedBoardType != '1') {
+                     if (_controller.selectedBoardType != '1' &&
+                         _controller.selectedBoardType != '2') {
                        if (_controller.selectedWifiControlBoard != null ||
                            _controller.selectedSmsControlBoard != null) {
-                         _controller.createNewProject().then((value) {
+                         _controller.createNewBoardProject().then((value) {
                            if (value is DataSuccess) {
                              Get.back();
                              showTopSnackBar(
                                Overlay.of(context),
-                               CustomSnackBar.success(
-                                 message:
-                                 value.data ?? 'اطلاعات با موفقیت ذخیره شد',
+                               const CustomSnackBar.success(
+                                 message: 'اطلاعات با موفقیت ذخیره شد',
                                ),
                              );
                            } else {
@@ -175,14 +174,13 @@ class CreateBoardScreen extends StatelessWidget {
                          );
                        }
                      } else {
-                       _controller.createNewProject().then((value) {
+                       _controller.createNewBoardProject().then((value) {
                          if (value is DataSuccess) {
                            Get.back();
                            showTopSnackBar(
                              Overlay.of(context),
-                             CustomSnackBar.success(
-                               message: value.data ??
-                                   'اطلاعات با موفقیت ذخیره شد',
+                             const CustomSnackBar.success(
+                               message: 'اطلاعات با موفقیت ذخیره شد',
                              ),
                            );
                          } else {

@@ -5,6 +5,7 @@ import 'package:turkeysh_smart_home/features/settings/data/model/project_board.d
 import 'package:turkeysh_smart_home/features/settings/domain/entity/control_board_entity.dart';
 import 'package:turkeysh_smart_home/features/settings/domain/entity/project_board_entity.dart';
 
+import '../../domain/entity/project_board_resault.dart';
 import '../../domain/repository/project_board_repository.dart';
 import '../model/control_board.dart';
 
@@ -14,12 +15,13 @@ class ProjectBoardRepositoryImpl extends ProjectBoardRepository {
   ProjectBoardRepositoryImpl(this._apiProvider);
 
   @override
-  Future<DataState<String>> createProjectBoard(
+  Future<DataState<ProjectBoardResultsEntity>> createProjectBoard(
       Map<String, dynamic> data) async {
     var response = await _apiProvider.createProjectBoard(data);
     if (response is! DioException) {
       if (response.statusCode == 201) {
-        return const DataSuccess('success');
+        ProjectBoardResultsEntity entity = ProjectBoardResults.fromJson(response.data);
+        return DataSuccess(entity);
       } else {
         return DataFailed(response.message);
       }
@@ -85,6 +87,20 @@ class ProjectBoardRepositoryImpl extends ProjectBoardRepository {
       }
     } else {
       return DataFailed(response.response.toString());
+    }
+  }
+
+  @override
+  Future<DataState<String>> createProjectNode(Map<String, dynamic> data) async {
+     var response = await _apiProvider.createProjectNode(data);
+    if (response is! DioException) {
+    if (response.statusCode == 201) {
+    return const DataSuccess('success');
+    } else {
+    return DataFailed(response.message);
+    }
+    } else {
+    return DataFailed(response.response.toString());
     }
   }
 }

@@ -3,6 +3,7 @@ import 'package:turkeysh_smart_home/features/settings/domain/entity/project_boar
 
 import '../../../../core/resource/data_state.dart';
 import '../../../project/domain/entity/prooject_result_entity.dart';
+import '../entity/project_board_resault.dart';
 import '../repository/project_board_repository.dart';
 
 class ProjectBoardUseCase{
@@ -10,8 +11,12 @@ class ProjectBoardUseCase{
 
   ProjectBoardUseCase(this._repository);
 
-  Future<DataState<String>> addProjectBoard(Map<String, dynamic> data){
+  Future<DataState<ProjectBoardResultsEntity>> addProjectBoard(Map<String, dynamic> data){
     return _repository.createProjectBoard(data);
+  }
+
+  Future<DataState<String>> addProjectNode(Map<String, dynamic> data){
+    return _repository.createProjectNode(data);
   }
 
   Future<DataState<ProjectBoardEntity>> getAllProjectsBoard(String page, String projectId){

@@ -9,6 +9,7 @@ import '../../test.dart';
 class AppUtils{
   static const String userTokenAccess = 'UserTokenAccess';
   static const String userTokenRefresh = 'UserTokenRefresh';
+  static const String username = 'username';
 
   static const String projectIdConst = 'projectIdConst';
 
@@ -17,6 +18,17 @@ class AppUtils{
     Icons.access_time_rounded,
     Icons.control_point_duplicate_sharp,
     Icons.menu,
+  ];
+
+  static List<String> deviceTypeList =[
+   'کلید سه تایمر',
+   'کلید تک تایمر',
+   'سنسور دما',
+   'سنسور رطوبت',
+   'سنسور گاز',
+   'سنسور خاک',
+   'چشمی ها و سنسور های تشخیص حرکت',
+   'دیمر',
   ];
 
   static List<Widget> pages = [

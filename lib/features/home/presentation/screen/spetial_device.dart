@@ -5,7 +5,6 @@ import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/images.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/widget/custom_app_bar.dart';
-import '../../data/model/room_response.dart';
 
 class SpecialDeviceScreen extends StatelessWidget {
   SpecialDeviceScreen({required this.name, Key? key}) : super(key: key);
@@ -17,7 +16,9 @@ class SpecialDeviceScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: (){
+
+        },
         backgroundColor: CustomColors.foregroundColor,
         child: const Icon(
           Icons.add,

@@ -18,8 +18,12 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.sizeOf(context).width;
-    var height = MediaQuery.sizeOf(context).height;
+    var width = MediaQuery
+        .sizeOf(context)
+        .width;
+    var height = MediaQuery
+        .sizeOf(context)
+        .height;
 
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
@@ -102,35 +106,39 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            _controller.isLoading.value
-                ? LoadingAnimationWidget.beat(
-                color: CustomColors.foregroundColor, size: 35)
-                : LoginButton(onClick: () {
-              _controller.loginUser().then((value) {
-                if(value is DataSuccess){
-                  showTopSnackBar(
-                    Overlay.of(context),
-                    const CustomSnackBar.success(
-                      message:
-                      "خوش آمدید!",
-                    ),
-                  );
-                }else{
-                  showTopSnackBar(
-                    Overlay.of(context),
-                    CustomSnackBar.error(
-                      message:
-                      value.error.toString(),
-                    ),
-                  );
-                }
-              });
+            Obx(() {
+              return SizedBox(
+                child: _controller.isLoading.value
+                    ? LoadingAnimationWidget.beat(
+                    color: CustomColors.foregroundColor, size: 35)
+                    : LoginButton(onClick: () {
+                  _controller.loginUser().then((value) {
+                    if (value is DataSuccess) {
+                      showTopSnackBar(
+                        Overlay.of(context),
+                        const CustomSnackBar.success(
+                          message:
+                          "خوش آمدید!",
+                        ),
+                      );
+                    } else {
+                      showTopSnackBar(
+                        Overlay.of(context),
+                        CustomSnackBar.error(
+                          message:
+                          value.error.toString(),
+                        ),
+                      );
+                    }
+                  });
+                }),
+              );
             }),
             const SizedBox(
               height: 20,
             ),
 
-            TextButton(onPressed: (){
+            TextButton(onPressed: () {
               Get.toNamed(PagesRoutes.register);
             }, child: const Text('حساب کاربری ندارید؟ | ثبت نام')),
 

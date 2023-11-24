@@ -9,6 +9,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../../core/resource/connection_controller.dart';
 import '../../../../core/resource/data_state.dart';
+import '../../domain/entity/project_board_resault.dart';
 import '../../domain/usecase/project_board_usecase.dart';
 
 class ProjectBoardController extends GetxController {
@@ -51,7 +52,7 @@ class ProjectBoardController extends GetxController {
     super.onInit();
   }
 
-  Future<DataState<String>> createNewProject() async {
+  Future<DataState<ProjectBoardResultsEntity>> createNewBoardProject() async {
     isLoading.value = true;
 
    if(boardName.text.isNotEmpty) {
@@ -71,8 +72,9 @@ class ProjectBoardController extends GetxController {
          if (dataState.data != null) {
            makeCreatePageFieldsClean();
            pagingController.refresh();
+           createNewBoardNode(dataState.data.id);
            isLoading.value = false;
-           return const DataSuccess('اطلاعات با موفقیت ذخیره شد');
+           return DataSuccess(dataState.data);
          } else {
            isLoading.value = false;
            return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
@@ -190,7 +192,6 @@ class ProjectBoardController extends GetxController {
             wifiBoardList[element.name ?? ''] = element.id;
           });
         }
-        print(wifiBoardList.value);
         return DataSuccess(dataState.data);
       } else {
         return const DataFailed('err');
@@ -198,6 +199,25 @@ class ProjectBoardController extends GetxController {
     } else {
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید!');
     }
+  }
+
+  Future<DataState<String>> createNewBoardNode(int projectBoard) async {
+      Map<String, dynamic> data = {
+        "board_project": projectBoard,
+        "project": projectId,
+      };
+        DataState dataState = await _useCase.addProjectNode(data);
+        if (dataState is DataSuccess) {
+          if (dataState.data != null) {
+            return const DataSuccess('success');
+          } else {
+            isLoading.value = false;
+            return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
+          }
+        } else {
+          isLoading.value = false;
+          return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
+        }
   }
 
   changeBoardCheckValue(String value, bool check){

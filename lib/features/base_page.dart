@@ -27,7 +27,7 @@ class _BasePageState extends State<BasePage> {
         backgroundColor: Colors.white,
         child: const Icon(Icons.monitor),
       ),
-      drawer: MyDrawerWidget(),
+      drawer: const MyDrawerWidget(),
       //key: _scaffoldKey,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar.builder(
