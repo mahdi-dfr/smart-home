@@ -3,8 +3,10 @@ import 'package:turkeysh_smart_home/core/resource/data_state.dart';
 import 'package:turkeysh_smart_home/features/home/data/data_source/api_provider.dart';
 import 'package:turkeysh_smart_home/features/home/data/model/device.dart';
 import 'package:turkeysh_smart_home/features/home/data/model/device_node.dart';
+import 'package:turkeysh_smart_home/features/home/data/model/device_response.dart';
 import 'package:turkeysh_smart_home/features/home/data/model/room_response.dart';
 import 'package:turkeysh_smart_home/features/home/domain/entity/device_entity.dart';
+import 'package:turkeysh_smart_home/features/home/domain/entity/device_entity_response.dart';
 import 'package:turkeysh_smart_home/features/home/domain/entity/device_node_entity.dart';
 import 'package:turkeysh_smart_home/features/home/domain/entity/room_entity.dart';
 import 'package:turkeysh_smart_home/features/home/domain/entity/room_response_entity.dart';
@@ -76,11 +78,11 @@ class HomeRepositoryImpl extends HomeRepository {
   }
 
   @override
-  Future<DataState<DeviceEntity>> createDevice(Map<String, dynamic> data) async {
+  Future<DataState<DeviceResponseEntity>> createDevice(Map<String, dynamic> data) async {
     var response = await _apiProvider.createDevice(data);
     if (response is! DioException) {
       if (response.statusCode == 201) {
-        DeviceEntity entity = DeviceModel.fromJson(response.data);
+        DeviceResponseEntity entity = DeviceResponseModel.fromJson(response.data);
         return DataSuccess(entity);
       } else {
         return DataFailed(response.message);

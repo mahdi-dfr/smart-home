@@ -2,6 +2,7 @@ import 'package:turkeysh_smart_home/features/home/domain/repository/home_reposit
 
 import '../../../../core/resource/data_state.dart';
 import '../entity/device_entity.dart';
+import '../entity/device_entity_response.dart';
 import '../entity/device_node_entity.dart';
 
 class DeviceUseCae {
@@ -9,7 +10,7 @@ class DeviceUseCae {
 
   DeviceUseCae(this._repository);
 
-  Future<DataState<DeviceEntity>> createDevice(
+  Future<DataState<DeviceResponseEntity>> createDevice(
     Map<String, dynamic> data,
   ) {
     return _repository.createDevice(data);

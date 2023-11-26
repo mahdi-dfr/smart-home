@@ -2,6 +2,7 @@ import 'package:turkeysh_smart_home/features/home/domain/entity/device_entity.da
 import 'package:turkeysh_smart_home/features/home/domain/entity/device_node_entity.dart';
 
 import '../../../../core/resource/data_state.dart';
+import '../entity/device_entity_response.dart';
 import '../entity/room_entity.dart';
 import '../entity/room_response_entity.dart';
 
@@ -21,7 +22,7 @@ abstract class HomeRepository{
 
   Future<DataState<String>> deleteDevice(int id, int projectId, int room);
 
-  Future<DataState<DeviceEntity>> createDevice(Map<String, dynamic> data);
+  Future<DataState<DeviceResponseEntity>> createDevice(Map<String, dynamic> data);
 
   Future<DataState<List<DeviceEntity>>> getDevice(int projectId, int room);
 

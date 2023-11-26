@@ -38,33 +38,49 @@ class ViewRoomScreen extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: CustomAppBar(
         height: 150,
-        titleWidget: Text(room.name ?? '', style: AppStyles.appbarTitleStyle,),
+        titleWidget: Text(
+          room.name ?? '',
+          style: AppStyles.appbarTitleStyle,
+        ),
       ),
       body: SafeArea(
         child: Obx(() {
-          return _controller.isDeviceLoading.value ? Center(
-            child: LoadingAnimationWidget.beat(color: CustomColors.foregroundColor, size: 35
-            ),
-          ):  Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: Center(
-              child: _controller.deviceList.isEmpty ? Lottie.asset(
-                  Images.empty, width: MediaQuery
-                  .sizeOf(context)
-                  .width / 2) : ListView.separated(itemBuilder: (context, index){
-                    if(_controller.deviceList[index].deviceType == '0') {
-                      return RelayOneTimeWidget(title: _controller.deviceList.value[index].name,);
-                    }else{
-                      return RelayThreeTimeWidget(title: _controller.deviceList.value[index].name);
-                    }
-              }
-                  , separatorBuilder: (context, index){
-                    return const SizedBox(height: 24,);
-                  }
-                  , itemCount: _controller.deviceList.length)
-
-            ),
-          );
+          return _controller.isDeviceLoading.value
+              ? Center(
+                  child: LoadingAnimationWidget.beat(
+                      color: CustomColors.foregroundColor, size: 35),
+                )
+              : Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Center(
+                      child: _controller.deviceList.isEmpty
+                          ? Lottie.asset(Images.empty,
+                              width: MediaQuery.sizeOf(context).width / 2)
+                          : ListView.separated(
+                              itemBuilder: (context, index) {
+                                if (_controller.deviceList[index].deviceType ==
+                                    '0') {
+                                  return RelayOneTimeWidget(
+                                    title: _controller
+                                        .deviceList.value[index].name,
+                                  );
+                                } else {
+                                  return SensorWidget(
+                                    title: _controller.deviceList[index].name,
+                                    type: _controller
+                                        .deviceList[index].deviceType
+                                        .toString(),
+                                  );
+                                }
+                              },
+                              separatorBuilder: (context, index) {
+                                return const SizedBox(
+                                  height: 24,
+                                );
+                              },
+                              itemCount: _controller.deviceList.length)),
+                );
         }),
       ),
     );

@@ -35,6 +35,7 @@ class _RelayOneTimeWidgetState extends State<RelayOneTimeWidget> {
       children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SvgPicture.asset(
               Images.right,
@@ -131,7 +132,7 @@ class _RelayOneTimeWidgetState extends State<RelayOneTimeWidget> {
                                   color: CustomColors.foregroundColor,
                                 ),
                               ),
-                              TakeTimeWidget(),
+                              const TakeTimeWidget(),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 8),
@@ -154,13 +155,57 @@ class _RelayOneTimeWidgetState extends State<RelayOneTimeWidget> {
                   const SizedBox(),
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 52, vertical: 12),
+                        horizontal: 12, vertical: 12),
                     child: Icon(
                       Icons.send,
                       color: CustomColors.foregroundColor,
                     ),
                   ),
                 ],
+              ),
+
+              Column(
+                children: [
+                  const SizedBox(height: 32,),
+                  InkWell(
+                      onTap: () {
+                        setOnclickListener();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('تنظیم بدون زمان'),
+                            Icon(
+                              Icons.expand_more,
+                              color: CustomColors.foregroundColor,
+                            ),
+                          ],
+                        ),
+                      )),
+                ],
+              ),
+              Divider(height: 0.5, color: CustomColors.foregroundColor,),
+              const SizedBox(height: 24,),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    const Text('خاموش', style: AppStyles.style7,),
+                    Switch(
+                        value: _controller.isSwitchClicked.value,
+                        activeColor: CustomColors.backgroundColor,
+                        activeTrackColor: CustomColors.foregroundColor,
+                        inactiveThumbColor: Colors.grey,
+                        onChanged: (value) {
+                          _controller.isSwitchClicked.value =
+                          !_controller.isSwitchClicked.value;
+                        }),
+
+                  ],
+                ),
               )
             ],
           ),

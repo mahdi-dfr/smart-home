@@ -104,7 +104,6 @@ class DeviceController extends GetxController {
       if (dataState is DataSuccess) {
         if (dataState.data != null) {
           deviceList.value = dataState.data ?? [];
-          print(deviceList.value);
           isDeviceLoading.value = false;
         }
         return DataSuccess(dataState.data);

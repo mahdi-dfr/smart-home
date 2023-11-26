@@ -24,7 +24,7 @@ class MqttReceiver extends GetxController {
       if(dataState.data!.isNotEmpty){
         dataState.data?.forEach((element) {
           if(element.deviceType == '0'){
-            _mqttController.subscribeMessage('relay11');
+            _mqttController.subscribeMessage('relay11ALi');
           }
         });
       }
