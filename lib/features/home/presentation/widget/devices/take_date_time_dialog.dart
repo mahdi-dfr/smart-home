@@ -9,10 +9,15 @@ import '../../../../../core/constants/colors.dart';
 import '../../../../../core/constants/dimens.dart';
 import '../../../../../core/constants/styles.dart';
 import '../../../../../core/widget/custom_button.dart';
+import '../../controller/device_helper_controller.dart';
 
-takeDateTimeDialog(BuildContext context, Function(String hour, String minute) onTimeClicked){
+takeDateTimeDialog(
+    BuildContext context,
+    bool isOn,){
+
   var hour = ''.obs;
   var minute = ''.obs;
+  List<int> daysList = [];
   return Get.defaultDialog(
       title: 'انتخاب زمان روشن',
       titleStyle: AppStyles.style9,
@@ -48,10 +53,6 @@ takeDateTimeDialog(BuildContext context, Function(String hour, String minute) on
                             minute: 30,
                             second: 20),
                         onChange: (Time newTime) {
-                          onTimeClicked(
-                              newTime.hour.toString(),
-                              newTime.minute
-                                  .toString());
                           hour.value = newTime.hour.toString();
                           minute.value = newTime.minute.toString();
                         },
@@ -90,7 +91,15 @@ takeDateTimeDialog(BuildContext context, Function(String hour, String minute) on
                           style: AppStyles.style8,
                         ),
                         RoundCheckBox(
-                          onTap: (value) {},
+                          onTap: (value) {
+                            if(value!){
+                              daysList.add(1);
+                            }else{
+                              if(daysList.contains(1)){
+                                daysList.remove(1);
+                              }
+                            }
+                          },
                           size: 30,
                           checkedColor: CustomColors
                               .foregroundColor,
@@ -108,7 +117,15 @@ takeDateTimeDialog(BuildContext context, Function(String hour, String minute) on
                           style: AppStyles.style8,
                         ),
                         RoundCheckBox(
-                          onTap: (value) {},
+                          onTap: (value) {
+                            if(value!){
+                              daysList.add(2);
+                            }else{
+                              if(daysList.contains(2)){
+                                daysList.remove(2);
+                              }
+                            }
+                          },
                           size: 30,
                           checkedColor: CustomColors
                               .foregroundColor,
@@ -128,7 +145,15 @@ takeDateTimeDialog(BuildContext context, Function(String hour, String minute) on
                           style: AppStyles.style8,
                         ),
                         RoundCheckBox(
-                          onTap: (value) {},
+                          onTap: (value) {
+                            if(value!){
+                              daysList.add(3);
+                            }else{
+                              if(daysList.contains(3)){
+                                daysList.remove(3);
+                              }
+                            }
+                          },
                           size: 30,
                           checkedColor: CustomColors
                               .foregroundColor,
@@ -148,7 +173,15 @@ takeDateTimeDialog(BuildContext context, Function(String hour, String minute) on
                           style: AppStyles.style8,
                         ),
                         RoundCheckBox(
-                          onTap: (value) {},
+                          onTap: (value) {
+                            if(value!){
+                              daysList.add(4);
+                            }else{
+                              if(daysList.contains(4)){
+                                daysList.remove(4);
+                              }
+                            }
+                          },
                           size: 30,
                           checkedColor: CustomColors
                               .foregroundColor,
@@ -168,7 +201,15 @@ takeDateTimeDialog(BuildContext context, Function(String hour, String minute) on
                           style: AppStyles.style8,
                         ),
                         RoundCheckBox(
-                          onTap: (value) {},
+                          onTap: (value) {
+                            if(value!){
+                              daysList.add(5);
+                            }else{
+                              if(daysList.contains(5)){
+                                daysList.remove(5);
+                              }
+                            }
+                          },
                           size: 30,
                           checkedColor: CustomColors
                               .foregroundColor,
@@ -188,7 +229,15 @@ takeDateTimeDialog(BuildContext context, Function(String hour, String minute) on
                           style: AppStyles.style8,
                         ),
                         RoundCheckBox(
-                          onTap: (value) {},
+                          onTap: (value) {
+                            if(value!){
+                              daysList.add(6);
+                            }else{
+                              if(daysList.contains(6)){
+                                daysList.remove(6);
+                              }
+                            }
+                          },
                           size: 30,
                           checkedColor: CustomColors
                               .foregroundColor,
@@ -208,7 +257,15 @@ takeDateTimeDialog(BuildContext context, Function(String hour, String minute) on
                           style: AppStyles.style8,
                         ),
                         RoundCheckBox(
-                          onTap: (value) {},
+                          onTap: (value) {
+                            if(value!){
+                              daysList.add(7);
+                            }else{
+                              if(daysList.contains(7)){
+                                daysList.remove(7);
+                              }
+                            }
+                          },
                           size: 30,
                           checkedColor: CustomColors
                               .foregroundColor,
@@ -222,7 +279,19 @@ takeDateTimeDialog(BuildContext context, Function(String hour, String minute) on
                 ),
               ),
             ),
-            CustomButton(onClick: () {}),
+            CustomButton(onClick: () {
+              if(isOn){
+                Get.find<DeviceHelperController>().hourOn = hour;
+                Get.find<DeviceHelperController>().minuteOn = minute;
+                Get.find<DeviceHelperController>().daysOnList.value = daysList;
+                Get.back();
+              }else{
+                Get.find<DeviceHelperController>().hourOff = hour;
+                Get.find<DeviceHelperController>().minuteOff = minute;
+                Get.find<DeviceHelperController>().daysOffList.value = daysList;
+                Get.back();
+              }
+            }),
           ],
         ),
       ));

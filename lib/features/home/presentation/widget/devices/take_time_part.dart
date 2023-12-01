@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:turkeysh_smart_home/features/home/presentation/controller/device_helper_controller.dart';
 
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/constants/styles.dart';
@@ -23,13 +25,13 @@ class TakeTimeWidget extends StatelessWidget {
           children: [
             IconButton(
                 onPressed: () {
-                  createBottomSheet((hour, minute) {
-
-                  }, (hour, minute) => null);
+                  createBottomSheet();
                 },
                 icon: Icon(Icons.timer, color: CustomColors.foregroundColor,)),
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.find<DeviceHelperController>().removeAllTimes();
+                },
                 icon: Icon(
                   Icons.delete,
                   color: CustomColors.foregroundColor,

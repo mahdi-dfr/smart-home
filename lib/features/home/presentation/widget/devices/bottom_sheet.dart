@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:turkeysh_smart_home/features/home/presentation/controller/device_helper_controller.dart';
 import 'package:turkeysh_smart_home/features/home/presentation/widget/devices/take_date_time_dialog.dart';
 
 import '../../../../../core/constants/colors.dart';
@@ -7,10 +8,8 @@ import '../../../../../core/constants/dimens.dart';
 import '../../../../../core/constants/styles.dart';
 import '../../../../../core/widget/custom_button.dart';
 
-createBottomSheet(
-    Function(String hour, String minute) onTimeOffClicked,
-    Function(String hour, String minute) onTimeOnClicked
-    ) {
+createBottomSheet() {
+  final _controller = Get.find<DeviceHelperController>();
   return Get.bottomSheet(
     BottomSheet(
         onClosing: () {},
@@ -47,7 +46,7 @@ createBottomSheet(
                         const Text('زمان روشن'),
                         ElevatedButton(
                           onPressed: () {
-                            takeDateTimeDialog(context, onTimeOnClicked);
+                            takeDateTimeDialog(context, true);
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: CustomColors.foregroundColor,
@@ -61,7 +60,7 @@ createBottomSheet(
                       ],
                     ),
                     const SizedBox(
-                      height: 24,
+                      height: 52,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,7 +68,7 @@ createBottomSheet(
                         const Text('زمان خاموش'),
                         ElevatedButton(
                           onPressed: () {
-                            takeDateTimeDialog(context, onTimeOffClicked);
+                            takeDateTimeDialog(context, false);
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: CustomColors.foregroundColor,
@@ -90,7 +89,12 @@ createBottomSheet(
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: CustomButton(
-                    onClick: () {},
+                    onClick: () {
+                      print(Get.find<DeviceHelperController>().hourOff);
+                      print(Get.find<DeviceHelperController>().hourOn);
+                      print(Get.find<DeviceHelperController>().daysOnList);
+                      print(Get.find<DeviceHelperController>().daysOffList);
+                    },
                     buttonTitle: 'ثبت',
                   ),
                 )
