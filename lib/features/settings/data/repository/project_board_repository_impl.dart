@@ -97,7 +97,7 @@ class ProjectBoardRepositoryImpl extends ProjectBoardRepository {
     if (response.statusCode == 201) {
     return const DataSuccess('success');
     } else {
-    return DataFailed(response.message);
+    return const DataFailed('error');
     }
     } else {
     return DataFailed(response.response.toString());

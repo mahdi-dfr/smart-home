@@ -1,34 +1,66 @@
-import 'package:get/get.dart';
-import 'package:turkeysh_smart_home/core/resource/data_state.dart';
-import 'package:turkeysh_smart_home/features/home/presentation/controller/device_controller.dart';
 
-import '../../features/home/domain/entity/device_entity.dart';
-import '../../test.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:turkeysh_smart_home/core/constants/utils.dart';
+
+import '../../features/settings/domain/entity/project_board_entity.dart';
+import '../../features/settings/domain/entity/project_board_resault.dart';
+import '../../features/settings/domain/usecase/project_board_usecase.dart';
+import '../../mqtt_service.dart';
+import 'connection_controller.dart';
+import 'data_state.dart';
 
 class MqttReceiver extends GetxController {
 
-  final _deviceController = Get.find<DeviceController>();
-  final _mqttController = Get.find<MqttService>();
+  ProjectBoardUseCase _useCase;
+  MqttReceiver(this._useCase);
 
+  final _mqttController = Get.find<MqttService>();
+  RxList<ProjectBoardResultsEntity>? boardList = RxList();
+  String projectName = GetStorage().read(AppUtils.projectNameConst);
+  String projectId = GetStorage().read(AppUtils.projectIdConst).toString();
+  String username = GetStorage().read(AppUtils.username);
   var relayOneTime1 = ''.obs;
+  List<ProjectBoardResultsEntity> relayList = [];
+  int? relayCount;
+
 
   @override
-  void onInit() {
+  onInit() async {
     super.onInit();
+    String relayTopic = '$projectName/$username/relay_refresh';
+    getAllProjectsBoardsForMessage('1', projectId).then((value){
+      boardList?.value.forEach((element) {
+        if(element.boardType == 4){
+          relayList.add(element);
+        }
+      });
+      relayCount = relayList.length;
+      if(relayCount! > 0){
+        _mqttController.publishMessage({'relay_nums': relayCount}, relayTopic);
+      }
+    });
+
   }
 
-  sortMqttTopics() async {
-    DataState<List<DeviceEntity>> dataState = await _deviceController
-        .getAllDevises();
-    if(dataState.data != null){
-      if(dataState.data!.isNotEmpty){
-        dataState.data?.forEach((element) {
-          if(element.deviceType == '0'){
-            _mqttController.subscribeMessage('relay11ALi');
-          }
-        });
+
+  Future<DataState<ProjectBoardEntity>> getAllProjectsBoardsForMessage(
+      String page, String projectId) async {
+    if (Get.find<ConnectionController>().isConnected.value) {
+      DataState<ProjectBoardEntity> dataState =
+      await _useCase.getAllProjectsBoard(page, projectId);
+      if (dataState is DataSuccess) {
+        if (dataState.data != null) {
+          boardList?.value.addAll(dataState.data!.results ?? []);
+        }
+        return DataSuccess(dataState.data);
+      } else {
+        return const DataFailed('err');
       }
+    } else {
+      return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید!');
     }
   }
+
 
 }

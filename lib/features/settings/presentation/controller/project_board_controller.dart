@@ -17,14 +17,15 @@ class ProjectBoardController extends GetxController {
 
   ProjectBoardController(this._useCase);
 
-  final PagingController<int, ProjectBoardResults> pagingController =
+  final PagingController<int, ProjectBoardResultsEntity> pagingController =
       PagingController(firstPageKey: 1);
 
   var isLoading = false.obs;
   var isDeleteLoading = false.obs;
   bool isInEditMode = false;
   bool projectEditMode = false;
-  int projectId = int.parse(GetStorage().read(AppUtils.projectIdConst).toString());
+  int projectId =
+      int.parse(GetStorage().read(AppUtils.projectIdConst).toString());
   late TextEditingController boardName;
   RxList<ControlBoardEntity> boardControllerList = RxList();
   RxMap<String, dynamic> smsBoardList = RxMap();
@@ -38,63 +39,58 @@ class ProjectBoardController extends GetxController {
   String? selectedSmsControlBoard;
   String? selectedWifiControlBoard;
 
+
   String? selectedBoardType;
   String? boardType;
 
   @override
   void onInit() {
     boardName = TextEditingController();
+
     pagingController.addPageRequestListener((pageKey) async {
       await getAllProjectsBoards((pageKey).toString(),
           GetStorage().read(AppUtils.projectIdConst).toString());
     });
-
     super.onInit();
   }
 
   Future<DataState<ProjectBoardResultsEntity>> createNewBoardProject() async {
     isLoading.value = true;
 
-   if(boardName.text.isNotEmpty) {
-     Map<String, dynamic> data = {
-       "name": boardName.text,
-       "project": projectId,
-       "board_type": selectedBoardType,
-       "parent_sms_board": selectedSmsControlBoard,
-       "parent_wifi_board": selectedWifiControlBoard
-     };
-     if (Get
-         .find<ConnectionController>()
-         .isConnected
-         .value) {
-       DataState dataState = await _useCase.addProjectBoard(data);
-       if (dataState is DataSuccess) {
-         if (dataState.data != null) {
-           makeCreatePageFieldsClean();
-           pagingController.refresh();
-           createNewBoardNode(dataState.data.id);
-           isLoading.value = false;
-           return DataSuccess(dataState.data);
-         } else {
-           isLoading.value = false;
-           return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
-         }
-       } else {
-         isLoading.value = false;
-         return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
-       }
-     } else {
-       isLoading.value = false;
-       return const DataFailed(
-           'لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
-     }
-   }else{
-     isLoading.value = false;
-     return const DataFailed('لطفا اطلاعات لازم را وارد نمایید');
-   }
-
-
-
+    if (boardName.text.isNotEmpty) {
+      Map<String, dynamic> data = {
+        "name": boardName.text,
+        "project": projectId,
+        "board_type": selectedBoardType,
+        "parent_sms_board": selectedSmsControlBoard,
+        "parent_wifi_board": selectedWifiControlBoard
+      };
+      if (Get.find<ConnectionController>().isConnected.value) {
+        DataState dataState = await _useCase.addProjectBoard(data);
+        if (dataState is DataSuccess) {
+          if (dataState.data != null) {
+            makeCreatePageFieldsClean();
+            pagingController.refresh();
+            createNewBoardNode(dataState.data.id);
+            isLoading.value = false;
+            return DataSuccess(dataState.data);
+          } else {
+            isLoading.value = false;
+            return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
+          }
+        } else {
+          isLoading.value = false;
+          return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
+        }
+      } else {
+        isLoading.value = false;
+        return const DataFailed(
+            'لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
+      }
+    } else {
+      isLoading.value = false;
+      return const DataFailed('لطفا اطلاعات لازم را وارد نمایید');
+    }
   }
 
   Future<DataState<ProjectBoardEntity>> getAllProjectsBoards(
@@ -104,6 +100,8 @@ class ProjectBoardController extends GetxController {
           await _useCase.getAllProjectsBoard(page, projectId);
       if (dataState is DataSuccess) {
         if (dataState.data != null) {
+
+          //boardList?.value.addAll(dataState.data!.results ?? []);
           if (dataState.data?.next != null) {
             pagingController.appendPage(
                 dataState.data?.results ?? [], int.parse(page));
@@ -123,7 +121,7 @@ class ProjectBoardController extends GetxController {
   Future<DataState<String>> updateProject() async {
     isLoading.value = true;
 
-    if(boardName.text.isNotEmpty) {
+    if (boardName.text.isNotEmpty) {
       Map<String, dynamic> data = {
         "name": boardName.text,
         "project": GetStorage().read(AppUtils.projectIdConst),
@@ -131,11 +129,9 @@ class ProjectBoardController extends GetxController {
         "parent_sms_board": selectedSmsControlBoard,
         "parent_wifi_board": selectedWifiControlBoard
       };
-      if (Get
-          .find<ConnectionController>()
-          .isConnected
-          .value) {
-        DataState dataState = await _useCase.updateProjectBoard(data, projectId);
+      if (Get.find<ConnectionController>().isConnected.value) {
+        DataState dataState =
+            await _useCase.updateProjectBoard(data, projectId);
         if (dataState is DataSuccess) {
           if (dataState.data != null) {
             makeCreatePageFieldsClean();
@@ -155,11 +151,10 @@ class ProjectBoardController extends GetxController {
         return const DataFailed(
             'لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
       }
-    }else{
+    } else {
       isLoading.value = false;
       return const DataFailed('لطفا اطلاعات لازم را وارد نمایید');
     }
-
   }
 
   Future<DataState<String>> deleteProjectBoard(int id) async {
@@ -179,10 +174,11 @@ class ProjectBoardController extends GetxController {
     }
   }
 
-  Future<DataState<ControlBoardEntity>> getControlBoard(String projectId) async {
+  Future<DataState<ControlBoardEntity>> getControlBoard(
+      String projectId) async {
     if (Get.find<ConnectionController>().isConnected.value) {
-    DataState<ControlBoardEntity> dataState =
-      await _useCase.getControlBoards(projectId);
+      DataState<ControlBoardEntity> dataState =
+          await _useCase.getControlBoards(projectId);
       if (dataState is DataSuccess) {
         if (dataState.data != null) {
           dataState.data?.sms?.forEach((element) {
@@ -202,33 +198,33 @@ class ProjectBoardController extends GetxController {
   }
 
   Future<DataState<String>> createNewBoardNode(int projectBoard) async {
-      Map<String, dynamic> data = {
-        "board_project": projectBoard,
-        "project": projectId,
-      };
-        DataState dataState = await _useCase.addProjectNode(data);
-        if (dataState is DataSuccess) {
-          if (dataState.data != null) {
-            return const DataSuccess('success');
-          } else {
-            isLoading.value = false;
-            return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
-          }
-        } else {
-          isLoading.value = false;
-          return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
-        }
+    Map<String, dynamic> data = {
+      "board_project": projectBoard,
+      "project": projectId,
+    };
+    DataState dataState = await _useCase.addProjectNode(data);
+    if (dataState is DataSuccess) {
+      if (dataState.data != null) {
+        return const DataSuccess('success');
+      } else {
+        isLoading.value = false;
+        return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
+      }
+    } else {
+      isLoading.value = false;
+      return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
+    }
   }
 
-  changeBoardCheckValue(String value, bool check){
-    if(check){
+  changeBoardCheckValue(String value, bool check) {
+    if (check) {
       selectedBoardType = value;
     }
     selectedWifiControlBoard = null;
     selectedSmsControlBoard = null;
   }
 
-  makeCreatePageFieldsClean(){
+  makeCreatePageFieldsClean() {
     boardName.text = '';
     isSensorChecked.value = false;
     isSMSChecked.value = false;

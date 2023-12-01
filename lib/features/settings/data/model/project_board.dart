@@ -5,7 +5,7 @@ class ProjectBoard extends ProjectBoardEntity {
   int? count;
   String? next;
   String? previous;
-  List<ProjectBoardResults>? results;
+  List<ProjectBoardResultsEntity>? results;
 
   ProjectBoard({this.count, this.next, this.previous, this.results})
       : super(

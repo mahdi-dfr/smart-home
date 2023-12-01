@@ -97,7 +97,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
             ),
             dropdownStyleData: DropdownStyleData(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              maxHeight: 400,
+              maxHeight: MediaQuery.sizeOf(context).height/2,
               width: widget.width! * 0.8,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
@@ -111,7 +111,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
               ),
             ),
             menuItemStyleData: const MenuItemStyleData(
-              height: 40,
+              height: 50,
               padding: EdgeInsets.only(left: 14, right: 14),
             ),
           ),

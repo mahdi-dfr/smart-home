@@ -7,6 +7,8 @@ import 'bottom_sheet.dart';
 class TakeTimeWidget extends StatelessWidget {
   const TakeTimeWidget({Key? key}) : super(key: key);
 
+
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -21,9 +23,11 @@ class TakeTimeWidget extends StatelessWidget {
           children: [
             IconButton(
                 onPressed: () {
-                  createBottomSheet();
+                  createBottomSheet((hour, minute) {
+
+                  }, (hour, minute) => null);
                 },
-                icon: const Icon(Icons.timer)),
+                icon: Icon(Icons.timer, color: CustomColors.foregroundColor,)),
             IconButton(
                 onPressed: () {},
                 icon: Icon(

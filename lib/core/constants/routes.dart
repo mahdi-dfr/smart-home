@@ -60,6 +60,7 @@ class PagesRoutes {
     GetPage(
       name: _home,
       page: () => const BasePage(),
+      binding: HomeBinding()
     ),
     GetPage(
       name: _createRoom,
@@ -68,7 +69,7 @@ class PagesRoutes {
     GetPage(
         name: _boardSetting,
         page: () => BoardSettingScreen(),
-        binding: SettingsBindings()),
+    binding: SettingsBinding()),
     GetPage(
       name: _createBoard,
       page: () => CreateBoardScreen(),

@@ -17,6 +17,7 @@ import '../../../../core/constants/routes.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/widget/custom_app_bar.dart';
 import '../../../../core/widget/question_dialog.dart';
+import '../../domain/entity/project_board_resault.dart';
 import '../widget/project_board_widget.dart';
 
 class BoardSettingScreen extends StatelessWidget {
@@ -53,7 +54,7 @@ class BoardSettingScreen extends StatelessWidget {
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: PagedListView<int, ProjectBoardResults>(
+            child: PagedListView<int, ProjectBoardResultsEntity>(
                 pagingController: _controller.pagingController,
                 builderDelegate: PagedChildBuilderDelegate(
                   itemBuilder: (context, item, index) {

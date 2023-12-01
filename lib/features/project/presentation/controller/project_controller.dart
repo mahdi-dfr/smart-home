@@ -75,9 +75,9 @@ class ProjectController extends GetxController{
           projectList.value = dataState.data?.results ?? [];
         }
         isGetProjectsLoading.value = false;
-        print(projectList);
         return DataSuccess(dataState.data);
       } else {
+        print(dataState.error);
         return const DataFailed('err');
       }
 

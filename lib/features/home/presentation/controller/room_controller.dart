@@ -27,6 +27,7 @@ class RoomController extends GetxController{
   @override
   void onInit() {
     roomName = TextEditingController();
+    getAllRooms(GetStorage().read(AppUtils.projectIdConst));
     super.onInit();
   }
 

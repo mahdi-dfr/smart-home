@@ -4,7 +4,7 @@ import 'package:turkeysh_smart_home/features/scenario/presentation/screen/scenar
 import 'package:turkeysh_smart_home/features/special_condition/presentation/screen/special_screen.dart';
 
 import '../../features/home/presentation/screen/home_page.dart';
-import '../../test.dart';
+import '../../mqtt_service.dart';
 
 class AppUtils{
   static const String userTokenAccess = 'UserTokenAccess';
@@ -12,6 +12,7 @@ class AppUtils{
   static const String username = 'username';
 
   static const String projectIdConst = 'projectIdConst';
+  static const String projectNameConst = 'projectNameConst';
 
   static List<IconData> iconList = <IconData>[
     Icons.home,
@@ -19,6 +20,7 @@ class AppUtils{
     Icons.control_point_duplicate_sharp,
     Icons.menu,
   ];
+
 
   static List<String> deviceTypeList =[
    'کلید سه تایمر',

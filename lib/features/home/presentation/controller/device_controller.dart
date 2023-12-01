@@ -59,6 +59,7 @@ class DeviceController extends GetxController {
             return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
           }
         } else {
+          print(dataState.error);
           isLoading.value = false;
           return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
         }

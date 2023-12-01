@@ -93,8 +93,9 @@ class ProjectScreen extends StatelessWidget {
                                 _controller.projectList.value[index].id ?? 0;
                             GetStorage().write(
                                 AppUtils.projectIdConst, _controller.projectId);
-                            await Get.find<RoomController>().getAllRooms(
-                                _controller.projectList.value[index].id ?? 0);
+
+                            GetStorage().write(
+                                AppUtils.projectNameConst, _controller.projectList.value[index].name);
                             Get.toNamed(PagesRoutes.home);
                           },
                           onLongClick: () {
