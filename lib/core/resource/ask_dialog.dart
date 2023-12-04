@@ -20,7 +20,7 @@ Future<void> askDialog(Function() onConfirm ){
             opacity: 0.05),
       ),
       child: const Text(
-        "آیا میخواهید این پروژه را حذف کنید؟",
+        "آیا میخواهید حذف کنید؟",
         textAlign: TextAlign.center,
       ),
     ),

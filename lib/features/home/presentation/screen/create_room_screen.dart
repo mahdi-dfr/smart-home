@@ -18,6 +18,8 @@ class CreateRoomScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.sizeOf(context).width;
+    var height = MediaQuery.sizeOf(context).height;
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
       appBar: CustomAppBar(
@@ -31,7 +33,7 @@ class CreateRoomScreen extends StatelessWidget {
             children: [
               TextFieldBox(
                 title: 'نام اتاق',
-                height: MediaQuery.sizeOf(context).height / 12,
+                height: width > 600 ? height/6 : height / 12,
                 controller: Get.find<RoomController>().roomName,
               ),
               Obx(() {
@@ -39,7 +41,6 @@ class CreateRoomScreen extends StatelessWidget {
                   loading: Get.find<RoomController>().isLoading.value,
                   onClick: () {
                     if (Get.find<RoomController>().isRoomUpdateMode) {
-                      print(Get.find<RoomController>().roomId);
                       Get.find<RoomController>()
                           .updateRoom(Get.find<RoomController>().roomId!,
                               GetStorage().read(AppUtils.projectIdConst))

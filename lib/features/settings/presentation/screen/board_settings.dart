@@ -27,6 +27,7 @@ class BoardSettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.sizeOf(context).width;
     return Scaffold(
         backgroundColor: CustomColors.backgroundColor,
         floatingActionButton: FloatingActionButton(
@@ -45,7 +46,7 @@ class BoardSettingScreen extends StatelessWidget {
         floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         appBar: CustomAppBar(
-          height: 150,
+          height: width > 600 ? 100 : 150,
           titleWidget: const Text(
             'تنظیمات برد ها',
             style: AppStyles.appbarTitleStyle,

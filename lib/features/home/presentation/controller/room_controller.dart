@@ -31,6 +31,8 @@ class RoomController extends GetxController{
     super.onInit();
   }
 
+
+
   Future<DataState<String>> createNewRoom(int projectId) async {
     isLoading.value = true;
     request = RoomRequestModel(name: roomName.text, project: projectId).toJson();
@@ -64,33 +66,30 @@ class RoomController extends GetxController{
 
   Future<DataState<RoomResponseEntity>> getAllRooms(int projectId) async {
     isLoading.value = true;
-    // if (Get
-    //     .find<ConnectionController>()
-    //     .isConnected
-    //     .value) {
     DataState<RoomResponseEntity> dataState = await _useCase.getAllRooms(projectId);
     if (dataState is DataSuccess) {
       if (dataState.data != null) {
+        // print(dataState.data?.count);
         roomsList.value = dataState.data?.results ?? [];
+        print('[[[[[[[[[[[[[[');
+        print(roomsList.length);
+        isLoading.value = false;
+        update();
       }
-      isLoading.value = false;
+
       return DataSuccess(dataState.data);
     } else {
       return const DataFailed('err');
     }
 
-    // } else {
-    //   return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید!');
-    //
-    // }
   }
 
   Future<DataState<RoomResponseEntity>> getOneRooms(int projectId) async {
     isLoading.value = true;
-    // if (Get
-    //     .find<ConnectionController>()
-    //     .isConnected
-    //     .value) {
+    if (Get
+        .find<ConnectionController>()
+        .isConnected
+        .value) {
     DataState<RoomResponseEntity> dataState = await _useCase.getAllRooms(projectId);
     if (dataState is DataSuccess) {
       if (dataState.data != null) {
@@ -102,10 +101,10 @@ class RoomController extends GetxController{
       return const DataFailed('err');
     }
 
-    // } else {
-    //   return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید!');
-    //
-    // }
+    } else {
+      return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید!');
+
+    }
   }
 
   Future<DataState<String>> updateRoom(int id, int projectId) async {

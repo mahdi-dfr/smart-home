@@ -53,7 +53,7 @@ class RegisterScreen extends StatelessWidget {
                         height: height * 0.55,
                         alignment: Alignment.center,
                       )),
-                  Positioned(
+                  width>600 ? const SizedBox(): Positioned(
                       top: 0,
                       left: 0,
                       right: 0,

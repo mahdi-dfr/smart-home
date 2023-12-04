@@ -40,7 +40,7 @@ class LoginScreen extends StatelessWidget {
                       clipper: WaveClipper(),
                       child: Container(
                         color: CustomColors.foregroundColor,
-                        height: height * 0.58,
+                        height: width > 600 ? height*0.45 : height * 0.58,
                       ),
                     ),
                   ),
@@ -50,10 +50,10 @@ class LoginScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: CustomColors.foregroundColor,
                         ),
-                        height: height * 0.55,
+                        height: width > 600 ? height*0.4 : height * 0.55,
                         alignment: Alignment.center,
                       )),
-                  Positioned(
+                  width>600 ? const SizedBox(): Positioned(
                       top: 0,
                       left: 0,
                       right: 0,

@@ -11,11 +11,13 @@ import '../constants/images.dart';
 import 'drawer_item_list.dart';
 
 class MyDrawerWidget extends StatelessWidget {
-  const MyDrawerWidget({Key? key}) : super(key: key);
+  MyDrawerWidget({ Key? key}) : super(key: key);
+
+  //final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
-
+    var width = MediaQuery.sizeOf(context).width;
     return ClipPath(
       clipper: OvalRightBorderClipper(),
       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -32,7 +34,6 @@ class MyDrawerWidget extends StatelessWidget {
               children: <Widget>[
                 Container(
                   alignment: Alignment.centerRight,
-
                   padding:
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
                   child: IconButton(
@@ -50,7 +51,7 @@ class MyDrawerWidget extends StatelessWidget {
                     },
                   ),
                 ),
-                Container(
+                width > 600 ? const SizedBox() : Container(
                   height: 90,
                   width: 90,
                   alignment: Alignment.center,
@@ -116,7 +117,9 @@ class MyDrawerWidget extends StatelessWidget {
                                 icon: const Icon(Icons.developer_board),
                                 title: 'تنظیمات بردها',
                                 onTap: () {
+                                  Get.back();
                                   Get.toNamed(PagesRoutes.boardSetting);
+
                                 }),
                             const SizedBox(height: 15,),
                             const Divider(),

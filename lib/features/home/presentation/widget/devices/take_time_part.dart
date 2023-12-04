@@ -25,7 +25,7 @@ class TakeTimeWidget extends StatelessWidget {
           children: [
             IconButton(
                 onPressed: () {
-                  createBottomSheet();
+                  createBottomSheet(context);
                 },
                 icon: Icon(Icons.timer, color: CustomColors.foregroundColor,)),
             IconButton(

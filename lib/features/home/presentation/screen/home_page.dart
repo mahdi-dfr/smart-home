@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -32,14 +33,16 @@ class HomePage extends StatelessWidget {
     var height = MediaQuery.sizeOf(context).height;
     return Scaffold(
         body: CustomScrollView(slivers: [
-      const SliverPersistentHeader(
+      SliverPersistentHeader(
           floating: true,
           pinned: true,
           delegate: SliverCustomAppBar(
-            lottieAssetSrc: Images.lottieHome2,
-            maxHeight: 250,
-            minHeight: 150,
-          )),
+              lottieAssetSrc: Images.lottieHome2,
+              maxHeight: width > 600 ? 150 : 250,
+              minHeight: width > 600 ? 0 : 150,
+              onOpenDrawer: () {
+                Scaffold.of(context).openDrawer();
+              })),
       SliverList(
           delegate: SliverChildListDelegate([
         const Padding(
@@ -51,232 +54,240 @@ class HomePage extends StatelessWidget {
                 style: AppStyles.style2,
               )),
         ),
-        SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Obx(() {
-              return _controller.isLoading.value
-                  ? SizedBox(
-                      width: width,
-                      child: Center(
-                        child: LoadingAnimationWidget.beat(
-                            color: CustomColors.foregroundColor, size: 35),
-                      ),
-                    )
-                  : Row(
-                      children: List.generate(_controller.roomsList.length + 1,
-                          (index) {
-                        if (index == _controller.roomsList.length) {
-                          return InkWell(
-                            onTap: () {
-                              _controller.isRoomUpdateMode = false;
-                              Get.toNamed(PagesRoutes.createRoom);
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 12),
-                              width: width * 0.8,
-                              height: height * 0.4,
-                              decoration: BoxDecoration(
-                                  image: const DecorationImage(
-                                      image: AssetImage(Images.logo),
-                                      fit: BoxFit.cover,
-                                      opacity: 0.05),
-                                  borderRadius: BorderRadius.circular(
-                                      AppDimensions.borderRadius),
-                                  border: Border.all(
-                                      width: 2,
-                                      color: CustomColors.foregroundColor)),
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.add,
-                                      size: 55,
-                                      color: CustomColors.foregroundColor,
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                    const Text(
-                                      'افزودن اتاق جدید',
-                                      style: AppStyles.style1,
-                                    )
-                                  ],
+        GetBuilder<RoomController>(
+            builder: (logic) {
+              print('///////////////////////////');
+          if (!logic.isLoading.value) {
+            return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: List.generate(logic.roomsList.length + 1, (index) {
+                    if (index == logic.roomsList.length) {
+                      return InkWell(
+                        onTap: () {
+                          _controller.isRoomUpdateMode = false;
+                          Get.toNamed(PagesRoutes.createRoom);
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 12),
+                          width: width > 600 ? width*0.3 : width * 0.8,
+                          height: width > 600 ? height * 0.5 : height * 0.4,
+                          decoration: BoxDecoration(
+                              image: const DecorationImage(
+                                  image: AssetImage(Images.logo),
+                                  fit: BoxFit.cover,
+                                  opacity: 0.05),
+                              borderRadius: BorderRadius.circular(
+                                  AppDimensions.borderRadius),
+                              border: Border.all(
+                                  width: 2,
+                                  color: CustomColors.foregroundColor)),
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add,
+                                  size: 55,
+                                  color: CustomColors.foregroundColor,
                                 ),
-                              ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                const Text(
+                                  'افزودن اتاق جدید',
+                                  style: AppStyles.style1,
+                                )
+                              ],
                             ),
-                          );
-                        } else {
-                          return InkWell(
-                            onTap: () {
-                              Get.find<DeviceController>().roomId =
-                                  _controller.roomsList[index].id;
-                              Get.find<DeviceController>().getAllDevises();
-                              Get.to(() => ViewRoomScreen(
-                                  room: _controller.roomsList[index]));
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 12),
-                              width: width * 0.8,
-                              height: height * 0.4,
-                              decoration: BoxDecoration(
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        color: Colors.grey,
-                                        offset: Offset(0, 0),
-                                        spreadRadius: 2,
-                                        blurRadius: 5)
-                                  ],
-                                  borderRadius: BorderRadius.circular(
-                                      AppDimensions.borderRadius),
-                                  color: CustomColors.foregroundColor),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(12),
-                                    width: width * 0.7,
-                                    height: height * 0.3,
-                                    decoration: BoxDecoration(
-                                        color: CustomColors.backgroundColor,
-                                        borderRadius: const BorderRadius.only(
-                                            bottomRight: Radius.circular(
-                                                AppDimensions.borderRadius),
-                                            bottomLeft: Radius.circular(
-                                                AppDimensions.borderRadius))),
-                                    child: Lottie.asset(
-                                      Images.roomAnim,
-                                    ),
-                                  ),
-                                  Text(
-                                    _controller.roomsList[index].name ?? '',
-                                    style: AppStyles.style3,
-                                  ),
-                                  IconButton(
-                                      onPressed: () {
-                                        Get.defaultDialog(
-                                            title: 'انتخاب کنید',
-                                            content: Container(
-                                              padding: const EdgeInsets.all(
-                                                  AppDimensions.mediumPadding),
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      width: 3,
-                                                      color: CustomColors
-                                                          .foregroundColor),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          AppDimensions
-                                                              .borderRadius)),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
+                          ),
+                        ),
+                      );
+                    } else {
+                      return InkWell(
+                        onTap: () {
+                          if (logic.roomsList[index].id != null) {
+                            Get.find<DeviceController>().roomId =
+                                logic.roomsList[index].id;
+                            Get.find<DeviceController>().getAllDevises();
+                            Get.to(() =>
+                                ViewRoomScreen(room: logic.roomsList[index]));
+                          }
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 12),
+                          width: width > 600 ? width*0.3 : width * 0.8,
+                          height: width > 600 ? height * 0.5 : height * 0.4,
+                          decoration: BoxDecoration(
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.grey,
+                                    offset: Offset(0, 0),
+                                    spreadRadius: 2,
+                                    blurRadius: 5)
+                              ],
+                              borderRadius: BorderRadius.circular(
+                                  AppDimensions.borderRadius),
+                              color: CustomColors.foregroundColor),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(12),
+                                width: width > 600 ? width*0.2 :  width * 0.7,
+                                height: width > 600 ? height*0.3 : height * 0.3,
+                                decoration: BoxDecoration(
+                                    color: CustomColors.backgroundColor,
+                                    borderRadius: const BorderRadius.only(
+                                        bottomRight: Radius.circular(
+                                            AppDimensions.borderRadius),
+                                        bottomLeft: Radius.circular(
+                                            AppDimensions.borderRadius))),
+                                // child: Lottie.asset(
+                                //   Images.roomAnim,
+                                // ),
+                                child: SvgPicture.asset(Images.livingRoom)
+                              ),
+                              Text(
+                                logic.roomsList[index].name ?? '',
+                                style: AppStyles.style3,
+                              ),
+                              IconButton(
+                                  onPressed: () {
+                                    Get.defaultDialog(
+                                        title: 'انتخاب کنید',
+                                        content: Container(
+                                          padding: const EdgeInsets.all(
+                                              AppDimensions.mediumPadding),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  width: 3,
+                                                  color: CustomColors
+                                                      .foregroundColor),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      AppDimensions
+                                                          .borderRadius)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Column(
                                                 children: [
-                                                  Column(
-                                                    children: [
-                                                      IconButton(
-                                                          onPressed: () {
-                                                            Get.back();
-                                                            askDialog(() {
-                                                              _controller
-                                                                  .deleteRoom(
-                                                                      _controller
-                                                                          .roomsList[
-                                                                              index]
-                                                                          .id!,
-                                                                      Get.find<ProjectController>()
-                                                                              .projectId ??
-                                                                          0)
-                                                                  .then(
-                                                                      (value) {
-                                                                if (value
-                                                                    is DataSuccess) {
-                                                                  showTopSnackBar(
-                                                                    Overlay.of(
-                                                                        context),
-                                                                    CustomSnackBar
-                                                                        .success(
-                                                                      message: value
-                                                                              .data ??
-                                                                          'اطلاعات با موفقیت حذف شد',
-                                                                    ),
-                                                                  );
-                                                                } else {
-                                                                  showTopSnackBar(
-                                                                    Overlay.of(
-                                                                        context),
-                                                                    CustomSnackBar
-                                                                        .error(
-                                                                      message: value
-                                                                              .error ??
-                                                                          'خطا در ارسال اطلاعات',
-                                                                    ),
-                                                                  );
-                                                                }
-                                                              });
-                                                              Get.back();
-                                                            });
-                                                          },
-                                                          icon: Icon(
-                                                            Icons.delete,
-                                                            color: CustomColors
-                                                                .foregroundColor,
-                                                          )),
-                                                      const Text(
-                                                        'حذف',
-                                                      )
-                                                    ],
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 8,
-                                                  ),
-                                                  Column(
-                                                    children: [
-                                                      IconButton(
-                                                          onPressed: () {
-                                                            Get.back();
-                                                            _controller.roomId =
-                                                                _controller
-                                                                    .roomsList[
-                                                                        index]
-                                                                    .id;
+                                                  IconButton(
+                                                      onPressed: () {
+                                                        Get.back();
+                                                        askDialog(() {
+                                                          if (_controller
+                                                                  .roomsList[
+                                                                      index]
+                                                                  .id !=
+                                                              null) {
                                                             _controller
-                                                                    .isRoomUpdateMode =
-                                                                true;
-                                                            Get.toNamed(
-                                                                PagesRoutes
-                                                                    .createRoom);
-                                                          },
-                                                          icon: Icon(
-                                                            Icons.edit,
-                                                            color: CustomColors
-                                                                .foregroundColor,
-                                                          )),
-                                                      const Text(
-                                                        'ویرایش',
-                                                      )
-                                                    ],
-                                                  ),
+                                                                .deleteRoom(
+                                                                    _controller
+                                                                        .roomsList[
+                                                                            index]
+                                                                        .id!,
+                                                                    Get.find<ProjectController>()
+                                                                            .projectId ??
+                                                                        0)
+                                                                .then((value) {
+                                                              if (value
+                                                                  is DataSuccess) {
+                                                                showTopSnackBar(
+                                                                  Overlay.of(
+                                                                      context),
+                                                                  CustomSnackBar
+                                                                      .success(
+                                                                    message: value
+                                                                            .data ??
+                                                                        'اطلاعات با موفقیت حذف شد',
+                                                                  ),
+                                                                );
+                                                              } else {
+                                                                showTopSnackBar(
+                                                                  Overlay.of(
+                                                                      context),
+                                                                  CustomSnackBar
+                                                                      .error(
+                                                                    message: value
+                                                                            .error ??
+                                                                        'خطا در ارسال اطلاعات',
+                                                                  ),
+                                                                );
+                                                              }
+                                                            });
+                                                          }
+                                                          Get.back();
+                                                        });
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.delete,
+                                                        color: CustomColors
+                                                            .foregroundColor,
+                                                      )),
+                                                  const Text(
+                                                    'حذف',
+                                                  )
                                                 ],
                                               ),
-                                            ));
-                                      },
-                                      icon: const Icon(
-                                        Icons.menu,
-                                        color: Colors.white,
-                                      ))
-                                ],
-                              ),
-                            ),
-                          );
-                        }
-                      }),
-                    );
-            })),
+                                              const SizedBox(
+                                                width: 8,
+                                              ),
+                                              Column(
+                                                children: [
+                                                  IconButton(
+                                                      onPressed: () {
+                                                        Get.back();
+                                                        _controller.roomId =
+                                                            _controller
+                                                                .roomsList[
+                                                                    index]
+                                                                .id;
+                                                        _controller
+                                                                .isRoomUpdateMode =
+                                                            true;
+                                                        Get.toNamed(PagesRoutes
+                                                            .createRoom);
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.edit,
+                                                        color: CustomColors
+                                                            .foregroundColor,
+                                                      )),
+                                                  const Text(
+                                                    'ویرایش',
+                                                  )
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ));
+                                  },
+                                  icon: const Icon(
+                                    Icons.menu,
+                                    color: Colors.white,
+                                  ))
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                  }),
+                ));
+          } else {
+            return SizedBox(
+              width: width,
+              child: Center(
+                child: LoadingAnimationWidget.beat(
+                    color: CustomColors.foregroundColor, size: 35),
+              ),
+            );
+          }
+        }),
         const Padding(
           padding: EdgeInsets.fromLTRB(16, 32, 16, 0),
           child: Align(

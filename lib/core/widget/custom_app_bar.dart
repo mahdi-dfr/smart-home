@@ -21,6 +21,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
         color: backgroundColor,
         child: Stack(fit: StackFit.loose, children: <Widget>[
@@ -65,6 +66,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               centerTitle: centerTitle,
               backgroundColor: Colors.transparent,
               elevation: 0,
+              automaticallyImplyLeading: false,
+              actions: [
+                MediaQuery.sizeOf(context).width>600 ? Padding(
+                  padding:const EdgeInsets.symmetric(horizontal: 12),
+                  child: IconButton(onPressed: (){
+                    Get.back();
+                  }, icon: const Icon(Icons.arrow_forward_rounded, color: Colors.white,)),
+                ) : const SizedBox()
+              ],
             ),
           )
         ]));

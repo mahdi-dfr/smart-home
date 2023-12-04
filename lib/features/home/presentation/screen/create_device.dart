@@ -18,10 +18,12 @@ class CreateDeviceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.sizeOf(context).width;
+    var height = MediaQuery.sizeOf(context).height;
     return Scaffold(
         backgroundColor: CustomColors.backgroundColor,
         appBar: CustomAppBar(
-          height: 150,
+          height: width > 600 ? 100 : 150,
         ),
         body: SafeArea(
             child: Padding(
@@ -31,7 +33,7 @@ class CreateDeviceScreen extends StatelessWidget {
               child: Column(children: [
                 TextFieldBox(
                   title: 'نام تجهیز',
-                  height: MediaQuery.sizeOf(context).height / 12,
+                  height: width > 600 ? height/6 : height / 12,
                   controller: _controller.deviceName,
                 ),
                 CustomDropDown(
@@ -76,8 +78,8 @@ class CreateDeviceScreen extends StatelessWidget {
                             .toString();
                       });
                 }),
-                const SizedBox(
-                  height: 24,
+                SizedBox(
+                  height: width > 600 ? height/5 : 24,
                 ),
               ]),
             ),

@@ -57,6 +57,7 @@ dependencies:
   isar: ^3.1.0+1
   isar_flutter_libs: ^3.1.0+1
   path_provider: ^2.1.1
+  uuid: ^4.2.1
 
 
 
@@ -95,6 +96,7 @@ flutter:
     - assets/images/home.svg
     - assets/images/left.svg
     - assets/images/right.svg
+    - assets/images/livingroom.svg
     - assets/animation/home_anim.json
     - assets/animation/home2.json
     - assets/animation/room.json

@@ -26,10 +26,12 @@ class LoginEditText extends StatefulWidget {
 class _LoginEditTextState extends State<LoginEditText> {
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.sizeOf(context).width;
+    var height = MediaQuery.sizeOf(context).height;
     return Container(
       margin: const EdgeInsets.fromLTRB(30, 0, 30, 8),
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 15,
+      height: width > 600 ? height/7 : height / 15,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(13),

@@ -81,10 +81,11 @@ class DeviceController extends GetxController {
       if (dataState.data != null) {
         deviceNodeList.clear();
         deviceNodeNames.clear();
+
         deviceNodeList.value = dataState.data!;
         deviceNodeList.value.forEach((element) {
           if (element.nodeType != null) {
-            deviceNodeNames['${element.nodeType!} ${element.uniqueId}'] =
+            deviceNodeNames['${element.nodeType!} ${element.uniqueId} - ${element.boardProject}'] =
                 element.id;
           }
         });

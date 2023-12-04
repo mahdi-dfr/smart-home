@@ -20,7 +20,7 @@ class TextFieldBox extends StatefulWidget {
     required this.height,
     this.disable = false,
     this.type = TextInputType.text,
-    this.fontSize = 12,
+    this.fontSize = 14,
     this.controller,
     this.value = '',
   }) : super(key: key);

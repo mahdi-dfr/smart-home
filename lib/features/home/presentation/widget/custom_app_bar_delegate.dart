@@ -16,12 +16,14 @@ class SliverCustomAppBar extends SliverPersistentHeaderDelegate {
   final bool centerTitle;
   final Color backgroundColor;
   final Widget? titleWidget;
+  Function() onOpenDrawer;
 
-  const SliverCustomAppBar(
+  SliverCustomAppBar(
       {required this.maxHeight,
       this.imageAssetSrc,
       this.lottieAssetSrc,
       required this.minHeight,
+      required this.onOpenDrawer,
       this.centerTitle = false,
       this.titleWidget,
       this.backgroundColor = Colors.transparent});
@@ -136,6 +138,16 @@ class SliverCustomAppBar extends SliverPersistentHeaderDelegate {
               centerTitle: centerTitle,
               backgroundColor: Colors.transparent,
               elevation: 0,
+              automaticallyImplyLeading: false,
+              actions: [
+                Padding(
+                  padding:const EdgeInsets.symmetric(horizontal: 12),
+                  child: IconButton(onPressed: (){
+                    Get.back();
+          }, icon: const Icon(Icons.arrow_forward_rounded, color: Colors.white,)),
+                )
+              ],
+              leading: IconButton(icon: const Icon(Icons.menu, color: Colors.white,), onPressed: onOpenDrawer,),
             ),
           ),
         ]));

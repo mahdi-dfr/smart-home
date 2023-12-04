@@ -24,6 +24,7 @@ class ViewRoomScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
       floatingActionButton: FloatingActionButton(
@@ -39,7 +40,7 @@ class ViewRoomScreen extends StatelessWidget {
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: CustomAppBar(
-        height: 150,
+        height: width > 600 ? 100 : 150,
         titleWidget: Text(
           room.name ?? '',
           style: AppStyles.appbarTitleStyle,

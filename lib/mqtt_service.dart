@@ -1,6 +1,6 @@
 
 import 'dart:convert';
-
+import 'package:uuid/uuid.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mqtt_client/mqtt_client.dart';
@@ -24,7 +24,12 @@ class MqttService extends GetxController{
   }
 
   initializeMqtt() async {
-    client = MqttServerClient.withPort('remote-asiatech.runflare.com', 'milad', 31951);
+    String generateUniqueClientId() {
+      const Uuid uuid = Uuid();
+      return uuid.v4();
+    }
+    String uniqueClientId = generateUniqueClientId();
+    client = MqttServerClient.withPort('remote-asiatech.runflare.com',uniqueClientId, 31951);
     client.logging(on: true);
     client.onConnected = onConnected;
     client.onDisconnected = onDisconnected;
@@ -53,7 +58,7 @@ class MqttService extends GetxController{
     }
     const topic = 'test/1';
     print('Subscribing to the $topic topic');
-    client.subscribe(topic, MqttQos.atMostOnce);
+    client.subscribe(topic, MqttQos.atLeastOnce);
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
       final recMess = c![0].payload as MqttPublishMessage;
       final pt =

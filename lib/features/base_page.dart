@@ -18,16 +18,19 @@ class BasePage extends StatefulWidget {
 class _BasePageState extends State<BasePage> {
   int currentIndex = 0;
   final _advancedDrawerController = AdvancedDrawerController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.sizeOf(context).width;
     return Scaffold(
+      key: _scaffoldKey,
       floatingActionButton: FloatingActionButton(onPressed: () {  },
         shape: const CircleBorder(),
         backgroundColor: Colors.white,
         child: const Icon(Icons.monitor),
       ),
-      drawer: const MyDrawerWidget(),
+      drawer: MyDrawerWidget(),
       //key: _scaffoldKey,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar.builder(
@@ -36,7 +39,7 @@ class _BasePageState extends State<BasePage> {
         notchSmoothness: NotchSmoothness.verySmoothEdge,
         leftCornerRadius: 20,
         blurEffect: true,
-        height: MediaQuery.sizeOf(context).height / 12,
+        height: width > 600 ? MediaQuery.sizeOf(context).height / 6 : MediaQuery.sizeOf(context).height / 12,
         rightCornerRadius: 20,
         elevation: 10,
         splashColor: CustomColors.foregroundColor,

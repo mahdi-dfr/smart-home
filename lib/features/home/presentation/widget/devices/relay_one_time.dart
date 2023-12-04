@@ -146,7 +146,7 @@ class RelayOneTimeWidget extends StatelessWidget {
                                   {
                                     'board_id': boardId,
                                     'node_id': nodeId,
-                                    'status': true
+                                    'node_status': true
                                   },
                                   '$projectName/$username/relay');
                             } else {
@@ -154,7 +154,7 @@ class RelayOneTimeWidget extends StatelessWidget {
                                   {
                                     'board_id': boardId,
                                     'node_id': nodeId,
-                                    'status': false
+                                    'node_status': false
                                   },
                                   '$projectName/$username/relay');
                             }

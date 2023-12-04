@@ -33,7 +33,7 @@ class CreateBoardScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
       appBar: CustomAppBar(
-        height: 150,
+        height:  width > 600 ? 100 : 150,
         titleWidget: const Text(
           'ثبت برد جدید',
           style: AppStyles.appbarTitleStyle,
@@ -49,7 +49,7 @@ class CreateBoardScreen extends StatelessWidget {
                 children: [
                   TextFieldBox(
                     title: 'نام برد',
-                    height: height / 12,
+                    height: width > 600 ? height/6 : height / 12,
                     fontSize: 14,
                     controller: _controller.boardName,),
                   const SizedBox(

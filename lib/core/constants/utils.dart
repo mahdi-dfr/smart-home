@@ -37,7 +37,9 @@ class AppUtils{
     HomePage(),
     ScenarioScreen(),
     SpecialScreen(),
-    MyDrawerWidget(),
+    //MyDrawerWidget(),
+    SizedBox()
+
   ];
 
   static List<String> navTitle = [

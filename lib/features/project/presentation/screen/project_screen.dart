@@ -7,7 +7,6 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:turkeysh_smart_home/core/constants/colors.dart';
 import 'package:turkeysh_smart_home/core/constants/utils.dart';
 import 'package:turkeysh_smart_home/core/widget/custom_app_bar.dart';
-import 'package:turkeysh_smart_home/features/home/presentation/controller/room_controller.dart';
 import '../../../../core/constants/dimens.dart';
 import '../../../../core/constants/routes.dart';
 import '../../../../core/resource/ask_dialog.dart';
@@ -23,9 +22,10 @@ class ProjectScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: CustomAppBar(
-        height: 150,
+        height: width > 600 ? 100 : 150,
       ),
       backgroundColor: CustomColors.backgroundColor,
       floatingActionButton: FloatingActionButton(
@@ -78,9 +78,8 @@ class ProjectScreen extends StatelessWidget {
                       child: LoadingAnimationWidget.beat(
                           color: CustomColors.foregroundColor, size: 35))
                   : GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: width > 600 ? 3 : 2,
                         mainAxisSpacing: 4,
                         crossAxisSpacing: 4,
                       ),
@@ -94,8 +93,8 @@ class ProjectScreen extends StatelessWidget {
                             GetStorage().write(
                                 AppUtils.projectIdConst, _controller.projectId);
 
-                            GetStorage().write(
-                                AppUtils.projectNameConst, _controller.projectList.value[index].name);
+                            GetStorage().write(AppUtils.projectNameConst,
+                                _controller.projectList.value[index].name);
                             Get.toNamed(PagesRoutes.home);
                           },
                           onLongClick: () {
