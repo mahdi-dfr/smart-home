@@ -56,7 +56,6 @@ class HomePage extends StatelessWidget {
         ),
         GetBuilder<RoomController>(
             builder: (logic) {
-              print('///////////////////////////');
           if (!logic.isLoading.value) {
             return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,

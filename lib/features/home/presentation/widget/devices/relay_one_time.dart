@@ -64,7 +64,7 @@ class RelayOneTimeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    var width = MediaQuery.sizeOf(context).width;
     return Column(
       children: [
         Row(
@@ -73,9 +73,7 @@ class RelayOneTimeWidget extends StatelessWidget {
           children: [
             SvgPicture.asset(
               Images.right,
-              width: MediaQuery
-                  .sizeOf(context)
-                  .width / 3,
+              width: width > 600 ?  width / 7 : width /3,
               color: CustomColors.foregroundColor,
             ),
             const Text(
@@ -84,9 +82,7 @@ class RelayOneTimeWidget extends StatelessWidget {
             ),
             SvgPicture.asset(
               Images.left,
-              width: MediaQuery
-                  .sizeOf(context)
-                  .width / 3,
+              width: width > 600 ?  width / 7 : width /3,
               color: CustomColors.foregroundColor,
             ),
           ],
@@ -233,83 +229,6 @@ class RelayOneTimeWidget extends StatelessWidget {
                         Icons.send,
                         color: CustomColors.foregroundColor,
                       ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    const SizedBox(
-                      height: 32,
-                    ),
-                    Obx(() {
-                      return InkWell(
-                          onTap: () {
-                            isPowerButtonExpanded.value =
-                            !isPowerButtonExpanded.value;
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text('حذف زمان های تنظیم شده'),
-                                Icon(
-                                  !isPowerButtonExpanded.value
-                                      ? Icons.expand_more
-                                      : Icons.expand_less,
-                                  color: CustomColors.foregroundColor,
-                                ),
-                              ],
-                            ),
-                          ));
-                    }),
-                    Obx(
-                          () =>
-                      isPowerButtonExpanded.value
-                          ? Column(
-                        children: [
-                          const SizedBox(
-                            height: 12,
-                          ),
-                          Divider(
-                            height: 0.5,
-                            color: CustomColors.foregroundColor,
-                          ),
-                          const SizedBox(
-                            height: 24,
-                          ),
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                'حذف',
-                                style: AppStyles.style7,
-                              ),
-
-                              Obx(() {
-                                return Switch(
-                                    value: isDeviceSwitchOn.value,
-                                    activeColor: CustomColors.backgroundColor,
-                                    activeTrackColor: CustomColors.foregroundColor,
-                                    inactiveThumbColor: Colors.grey,
-                                    onChanged: (value) {
-                                      isDeviceSwitchOn.value = !isDeviceSwitchOn.value;
-                                      // setState(() {
-                                      //   isDeviceSwitchOn = !isDeviceSwitchOn;
-                                      // });
-                                    });
-                              })
-
-
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                        ],
-                      )
-                          : const SizedBox(),
                     ),
                   ],
                 ),

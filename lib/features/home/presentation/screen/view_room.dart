@@ -48,78 +48,80 @@ class ViewRoomScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: Obx(() {
-          return _controller.isDeviceLoading.value
-              ? Center(
-                  child: LoadingAnimationWidget.beat(
-                      color: CustomColors.foregroundColor, size: 35),
-                )
-              : Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  child: Center(
-                      child: _controller.deviceList.isEmpty
-                          ? Lottie.asset(Images.empty,
-                              width: MediaQuery.sizeOf(context).width / 2)
-                          : ListView.separated(
-                              itemBuilder: (context, index) {
-                                if (_controller.deviceList[index].deviceType ==
-                                    '0') {
-                                  return RelayOneTimeWidget(
-                                    boardId: _controller.deviceList[index].nodeProject?.boardProject,
-                                    nodeId: _controller.deviceList[index].nodeProject?.uniqueId,
-                                    title: _controller
-                                        .deviceList.value[index].name,
-                                    onLongPress: () {
-                                      questionDialog(
-                                          title: 'حذف تجهیز',
-                                          question:
-                                              'آیا میخواهید این تجهز را حذف کنید؟',
-                                          onYesClicked: () {
-                                            _controller.deleteDevice(_controller.deviceList[index].id!).then((value) {
-                                              if(value is DataSuccess){
-                                                Get.back();
-                                                const CustomSnackBar.success(message: 'تجهیز با موفقیت حذف شد!');
-                                              }else{
-                                                const CustomSnackBar.error(message: 'خطا در ارسال اطلاعات');
-                                              }
-                                            });
-                                          });
-                                    },
-                                  );
-                                } else {
-                                  return SensorWidget(
-                                    title: _controller.deviceList[index].name,
-                                    type: _controller
-                                        .deviceList[index].deviceType
-                                        .toString(),
-                                    onLongPress: (){
-                                      questionDialog(
-                                          title: 'حذف تجهیز',
-                                          question:
-                                          'آیا میخواهید این تجهز را حذف کنید؟',
-                                          onYesClicked: () {
-                                            _controller.deleteDevice(_controller.deviceList[index].id!).then((value) {
-                                              if(value is DataSuccess){
-                                                Get.back();
-                                                const CustomSnackBar.success(message: 'تجهیز با موفقیت حذف شد!');
-                                              }else{
-                                                const CustomSnackBar.error(message: 'خطا در ارسال اطلاعات');
-                                              }
-                                            });
-                                          });
-                                    },
-                                  );
-                                }
-                              },
-                              separatorBuilder: (context, index) {
-                                return const SizedBox(
-                                  height: 24,
-                                );
-                              },
-                              itemCount: _controller.deviceList.length)),
-                );
-        }),
-      ),
-    );
+              return _controller.isDeviceLoading.value
+                  ? Center(
+                child: LoadingAnimationWidget.beat(
+                    color: CustomColors.foregroundColor, size: 35),
+              )
+                  : Padding(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                child: Center(
+                  child: _controller.deviceList.isEmpty
+                      ? Lottie.asset(Images.empty,
+                      width: MediaQuery.sizeOf(context).width / 2)
+                      : GridView.builder(gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: width > 600 ? 2 : 1,
+                    mainAxisSpacing: 0,
+                    crossAxisSpacing: 12,
+                  ), itemBuilder: (BuildContext context, int index) {
+                    if (_controller.deviceList[index].deviceType ==
+                        '0') {
+                      return RelayOneTimeWidget(
+                        boardId: _controller.deviceList[index].nodeProject?.boardProject,
+                        nodeId: _controller.deviceList[index].nodeProject?.uniqueId,
+                        title: _controller
+                            .deviceList.value[index].name,
+                        onLongPress: () {
+                          questionDialog(
+                              title: 'حذف تجهیز',
+                              question:
+                              'آیا میخواهید این تجهز را حذف کنید؟',
+                              onYesClicked: () {
+                                _controller.deleteDevice(_controller.deviceList[index].id!).then((value) {
+                                  if(value is DataSuccess){
+                                    Get.back();
+                                    const CustomSnackBar.success(message: 'تجهیز با موفقیت حذف شد!');
+                                  }else{
+                                    const CustomSnackBar.error(message: 'خطا در ارسال اطلاعات');
+                                  }
+                                });
+                              });
+                        },
+                      );
+                    } else {
+                      return SensorWidget(
+                        title: _controller.deviceList[index].name,
+                        type: _controller
+                            .deviceList[index].deviceType
+                            .toString(),
+                        onLongPress: (){
+                          questionDialog(
+                              title: 'حذف تجهیز',
+                              question:
+                              'آیا میخواهید این تجهز را حذف کنید؟',
+                              onYesClicked: () {
+                                _controller.deleteDevice(_controller.deviceList[index].id!).then((value) {
+                                  if(value is DataSuccess){
+                                    Get.back();
+                                    const CustomSnackBar.success(message: 'تجهیز با موفقیت حذف شد!');
+                                  }else{
+                                    const CustomSnackBar.error(message: 'خطا در ارسال اطلاعات');
+                                  }
+                                });
+                              });
+                        },
+                      );
+                    }
+
+
+                  },
+                      itemCount: _controller.deviceList.length),
+                ),
+              );
+            })
+        ),
+      );
   }
 }

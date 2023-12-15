@@ -68,12 +68,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               elevation: 0,
               automaticallyImplyLeading: false,
               actions: [
-                MediaQuery.sizeOf(context).width>600 ? Padding(
+                IconButton(onPressed: (){}, icon: const Icon(Icons.grid_view_outlined, color: Colors.white,)),
+
+                MediaQuery.sizeOf(context).width<600 ? Padding(
                   padding:const EdgeInsets.symmetric(horizontal: 12),
                   child: IconButton(onPressed: (){
                     Get.back();
                   }, icon: const Icon(Icons.arrow_forward_rounded, color: Colors.white,)),
-                ) : const SizedBox()
+                ) : const SizedBox(),
               ],
             ),
           )
