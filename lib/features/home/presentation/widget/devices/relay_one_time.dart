@@ -73,7 +73,7 @@ class RelayOneTimeWidget extends StatelessWidget {
           children: [
             SvgPicture.asset(
               Images.right,
-              width: width > 600 ?  width / 7 : width /3,
+              width: width > 600 ?  width / 4 : width /3,
               color: CustomColors.foregroundColor,
             ),
             const Text(
@@ -82,7 +82,7 @@ class RelayOneTimeWidget extends StatelessWidget {
             ),
             SvgPicture.asset(
               Images.left,
-              width: width > 600 ?  width / 7 : width /3,
+              width: width > 600 ?  width / 4 : width /3,
               color: CustomColors.foregroundColor,
             ),
           ],
@@ -93,10 +93,9 @@ class RelayOneTimeWidget extends StatelessWidget {
         InkWell(
           onLongPress: onLongPress,
           child: Container(
+            margin: const EdgeInsets.only(bottom: 32),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-            width: MediaQuery
-                .sizeOf(context)
-                .width,
+            width: width > 600 ? width*0.6 : width,
             decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: [
@@ -138,7 +137,8 @@ class RelayOneTimeWidget extends StatelessWidget {
                             String username = GetStorage().read(
                                 AppUtils.username);
                             if (value) {
-                              _controller.publishMessage(
+                              ///////////// _controller را به logic تغییر دادم:
+                              logic.publishMessage(
                                   {
                                     'board_id': boardId,
                                     'node_id': nodeId,
@@ -146,7 +146,7 @@ class RelayOneTimeWidget extends StatelessWidget {
                                   },
                                   '$projectName/$username/relay');
                             } else {
-                              _controller.publishMessage(
+                              logic.publishMessage(
                                   {
                                     'board_id': boardId,
                                     'node_id': nodeId,

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:turkeysh_smart_home/core/constants/utils.dart';
-import 'package:turkeysh_smart_home/features/settings/data/model/project_board.dart';
 import 'package:turkeysh_smart_home/features/settings/domain/entity/control_board_entity.dart';
 import 'package:turkeysh_smart_home/features/settings/domain/entity/project_board_entity.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -237,5 +236,6 @@ class ProjectBoardController extends GetxController {
   void dispose() {
     super.dispose();
     pagingController.dispose();
+    boardName.dispose();
   }
 }

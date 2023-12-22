@@ -9,12 +9,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool centerTitle;
   final Color backgroundColor;
   final Widget? titleWidget;
+  final bool haveBackButton;
 
   CustomAppBar(
       {Key? key,
       required this.height,
       this.centerTitle = false,
       this.titleWidget,
+      this.haveBackButton = true,
       this.backgroundColor = Colors.transparent})
       : preferredSize = Size.fromHeight(height),
         super(key: key);
@@ -36,7 +38,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           Align(
               alignment: const Alignment(0.0, 0.8),
               child: Container(
-                  height: Get.height / 14,
+                  height: Get.width < 600 ? Get.height / 14 : Get.height / 10,
                   padding: const EdgeInsets.only(left: 30, right: 30),
                   child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -68,14 +70,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               elevation: 0,
               automaticallyImplyLeading: false,
               actions: [
-                IconButton(onPressed: (){}, icon: const Icon(Icons.grid_view_outlined, color: Colors.white,)),
-
-                MediaQuery.sizeOf(context).width<600 ? Padding(
+                MediaQuery.sizeOf(context).width<600 ? haveBackButton ? Padding(
                   padding:const EdgeInsets.symmetric(horizontal: 12),
                   child: IconButton(onPressed: (){
                     Get.back();
                   }, icon: const Icon(Icons.arrow_forward_rounded, color: Colors.white,)),
-                ) : const SizedBox(),
+                ) : const SizedBox() : const SizedBox(),
               ],
             ),
           )

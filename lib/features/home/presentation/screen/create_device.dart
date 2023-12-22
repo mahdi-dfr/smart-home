@@ -69,6 +69,7 @@ class CreateDeviceScreen extends StatelessWidget {
                 Obx(() {
                   return CustomDropDown(
                       items: _controller.deviceNodeNames.value.keys.toList(),
+                      isLoading: _controller.isGetNodesLoading.value,
                       title: 'نود انتخابی در تابلو',
                       width: MediaQuery.sizeOf(context).width,
                       height: MediaQuery.sizeOf(context).height / 12,

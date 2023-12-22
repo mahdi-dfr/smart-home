@@ -89,14 +89,14 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/register_image.png
+    - assets/images/login.svg
     - assets/images/logo_raw.png
     - assets/images/logo_raw_dark.png
     - assets/images/logo_wide.png
     - assets/images/home.svg
     - assets/images/left.svg
     - assets/images/right.svg
-    - assets/images/livingroom.svg
+    - assets/images/room4.svg
     - assets/animation/home_anim.json
     - assets/animation/home2.json
     - assets/animation/room.json

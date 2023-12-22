@@ -26,33 +26,35 @@ class CreateProjectDialog extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.all(AppDimensions.mediumPadding),
-      height: height * 0.55,
+      //height: height * 0.5,
       decoration: BoxDecoration(
           border: Border.all(width: 3, color: CustomColors.foregroundColor),
           borderRadius: BorderRadius.circular(AppDimensions.borderRadius)),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            TextFieldBox(
-              title: 'نام پروژه',
-              height: width > 600 ? height/6 : height / 12,
-              controller: Get.find<ProjectController>().projectName,
-            ),
-            TextFieldBox(
-              title: 'آدرس پروژه',
-              height: width > 600 ? height/6 : height / 12,
-              controller: Get.find<ProjectController>().projectAddress,
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            CustomButton(
-              onClick: onSaveClicked,
-              buttonTitle: isEditMode ? 'ویرایش' : 'ذخیره',
-              loading: loading,
-            )
-          ],
-        ),
+      child: Column(
+        children: [
+          Column(
+            children: [
+              TextFieldBox(
+                title: 'نام پروژه',
+                height: width > 600 ? height/6 : height / 12,
+                controller: Get.find<ProjectController>().projectName,
+              ),
+              TextFieldBox(
+                title: 'آدرس پروژه',
+                height: width > 600 ? height/6 : height / 12,
+                controller: Get.find<ProjectController>().projectAddress,
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              CustomButton(
+                onClick: onSaveClicked,
+                buttonTitle: isEditMode ? 'ویرایش' : 'ذخیره',
+                loading: loading,
+              )
+            ],
+          ),
+        ],
       ),
     );
   }

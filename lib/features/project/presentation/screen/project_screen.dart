@@ -26,6 +26,7 @@ class ProjectScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         height: width > 600 ? 100 : 150,
+        haveBackButton: false,
       ),
       backgroundColor: CustomColors.backgroundColor,
       floatingActionButton: FloatingActionButton(

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:turkeysh_smart_home/core/constants/routes.dart';
 import 'package:turkeysh_smart_home/core/resource/data_state.dart';
 import 'package:turkeysh_smart_home/features/auth/presentation/widget/wave_widget.dart';
 import '../../../../core/constants/colors.dart';
+import '../../../../core/constants/images.dart';
 import '../controller/register_controller.dart';
 import '../widget/confirm_button.dart';
 import '../widget/input_field.dart';
@@ -18,12 +20,8 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery
-        .sizeOf(context)
-        .width;
-    var height = MediaQuery
-        .sizeOf(context)
-        .height;
+    var width = MediaQuery.sizeOf(context).width;
+    var height = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
@@ -53,18 +51,20 @@ class RegisterScreen extends StatelessWidget {
                         height: height * 0.55,
                         alignment: Alignment.center,
                       )),
-                  width>600 ? const SizedBox(): Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      child: SizedBox(
-                        child: Padding(
-                          padding: const EdgeInsets.all(50.0),
-                          child: Image.asset(
-                            'assets/images/register_image.png',
+                  width > 600
+                      ? const SizedBox()
+                      : Align(
+                          alignment: Alignment.topCenter,
+                          child: SizedBox(
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: SvgPicture.asset(
+                                Images.login,
+                                width: width * 0.9,
+                              ),
+                            ),
                           ),
                         ),
-                      )),
                 ],
               ),
             ),
@@ -151,37 +151,38 @@ class RegisterScreen extends StatelessWidget {
               return SizedBox(
                 child: _controller.isRegisterLoading.value
                     ? LoadingAnimationWidget.beat(
-                    color: CustomColors.foregroundColor, size: 35)
-                    : LoginButton(buttonTitle: 'ثبت نام', onClick: () {
-                  _controller.signUpUser().then((value) {
-                    if (value is DataSuccess) {
-                      showTopSnackBar(
-                        Overlay.of(context),
-                        const CustomSnackBar.success(
-                          message:
-                          "اطلاعات ذخیره شد",
-                        ),
-                      );
-                    } else {
-                      showTopSnackBar(
-                        Overlay.of(context),
-                        CustomSnackBar.error(
-                          message:
-                          value.error.toString(),
-                        ),
-                      );
-                    }
-                  });
-                }),
+                        color: CustomColors.foregroundColor, size: 35)
+                    : LoginButton(
+                        buttonTitle: 'ثبت نام',
+                        onClick: () {
+                          _controller.signUpUser().then((value) {
+                            if (value is DataSuccess) {
+                              showTopSnackBar(
+                                Overlay.of(context),
+                                const CustomSnackBar.success(
+                                  message: "اطلاعات ذخیره شد",
+                                ),
+                              );
+                            } else {
+                              showTopSnackBar(
+                                Overlay.of(context),
+                                CustomSnackBar.error(
+                                  message: value.error.toString(),
+                                ),
+                              );
+                            }
+                          });
+                        }),
               );
             }),
             const SizedBox(
               height: 20,
             ),
-            TextButton(onPressed: () {
-              Get.toNamed(PagesRoutes.login);
-            }, child: const Text('قبلا ثبت نام کرده اید؟ | ورود')),
-
+            TextButton(
+                onPressed: () {
+                  Get.toNamed(PagesRoutes.login);
+                },
+                child: const Text('قبلا ثبت نام کرده اید؟ | ورود')),
             const SizedBox(
               height: 20,
             ),

@@ -3,17 +3,13 @@ import 'package:get/get.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:turkeysh_smart_home/core/constants/colors.dart';
-import 'package:turkeysh_smart_home/core/constants/dimens.dart';
 import 'package:turkeysh_smart_home/core/resource/data_state.dart';
 import 'package:turkeysh_smart_home/core/widget/custom_button.dart';
 import 'package:turkeysh_smart_home/core/widget/text_field.dart';
-import 'package:turkeysh_smart_home/features/settings/data/model/project_board.dart';
 import 'package:turkeysh_smart_home/features/settings/presentation/controller/project_board_controller.dart';
 
-import '../../../../core/constants/images.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/widget/custom_app_bar.dart';
-import '../../../../core/widget/drop_box.dart';
 import '../widget/board_item.dart';
 
 class CreateBoardScreen extends StatelessWidget {

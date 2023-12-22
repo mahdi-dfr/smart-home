@@ -20,6 +20,7 @@ class DeviceController extends GetxController {
   var isLoading = false.obs;
   var isDeviceLoading = false.obs;
   var isDeleteDeviceLoading = false.obs;
+  var isGetNodesLoading = false.obs;
   String? deviceType;
   String? nodeProject;
   int? roomId;
@@ -27,6 +28,8 @@ class DeviceController extends GetxController {
   RxList<DeviceNodeEntity> deviceNodeList = RxList();
   RxList<DeviceEntity> deviceList = RxList();
   RxMap<String, dynamic> deviceNodeNames = RxMap();
+  RxList<DeviceEntity> oneTimeDeviceList = RxList();
+
 
   @override
   void onInit() {
@@ -59,7 +62,6 @@ class DeviceController extends GetxController {
             return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
           }
         } else {
-          print(dataState.error);
           isLoading.value = false;
           return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
         }
@@ -74,6 +76,7 @@ class DeviceController extends GetxController {
   }
 
   Future<DataState<List<DeviceNodeEntity>>> getDeviceNodes() async {
+    isGetNodesLoading.value = true;
     int projectId = GetStorage().read(AppUtils.projectIdConst);
     DataState<List<DeviceNodeEntity>> dataState =
         await _useCase.getDeviceNodes(projectId, deviceType!);
@@ -89,11 +92,14 @@ class DeviceController extends GetxController {
                 element.id;
           }
         });
+        isGetNodesLoading.value = false;
         return DataSuccess(deviceNodeList);
       } else {
+        isGetNodesLoading.value = false;
         return const DataFailed('err');
       }
     } else {
+      isGetNodesLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید!');
     }
   }
@@ -134,6 +140,17 @@ class DeviceController extends GetxController {
     } else {
       isDeleteDeviceLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
+    }
+  }
+
+  filterDevicesBasedOnOneTime(){
+    oneTimeDeviceList.clear();
+    if(deviceList.isNotEmpty){
+      for (var element in deviceList) {
+        if(element.deviceType == '0'){
+          oneTimeDeviceList.add(element);
+        }
+      }
     }
   }
 

@@ -6,7 +6,8 @@ class Images {
   static const String home = 'assets/images/home.svg';
   static const String left = 'assets/images/left.svg';
   static const String right = 'assets/images/right.svg';
-  static const String livingRoom = 'assets/images/livingroom.svg';
+  static const String livingRoom = 'assets/images/room4.svg';
+  static const String login = 'assets/images/login.svg';
 
   /// animations:
   static const String homeAnim = 'assets/animation/home_anim.json';

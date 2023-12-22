@@ -10,7 +10,7 @@ import 'package:turkeysh_smart_home/core/constants/colors.dart';
 import 'package:turkeysh_smart_home/features/home/presentation/controller/device_controller.dart';
 import 'package:turkeysh_smart_home/features/home/presentation/controller/room_controller.dart';
 import 'package:turkeysh_smart_home/features/home/presentation/screen/spetial_device.dart';
-import 'package:turkeysh_smart_home/features/home/presentation/screen/view_room.dart';
+import 'package:turkeysh_smart_home/features/home/presentation/screen/device_list.dart';
 import 'package:turkeysh_smart_home/features/project/presentation/controller/project_controller.dart';
 import '../../../../core/constants/dimens.dart';
 import '../../../../core/constants/images.dart';
@@ -33,16 +33,16 @@ class HomePage extends StatelessWidget {
     var height = MediaQuery.sizeOf(context).height;
     return Scaffold(
         body: CustomScrollView(slivers: [
-      SliverPersistentHeader(
-          floating: true,
-          pinned: true,
-          delegate: SliverCustomAppBar(
-              lottieAssetSrc: Images.lottieHome2,
-              maxHeight: width > 600 ? 150 : 250,
-              minHeight: width > 600 ? 0 : 150,
-              onOpenDrawer: () {
-                Scaffold.of(context).openDrawer();
-              })),
+        SliverPersistentHeader(
+            floating: true,
+            pinned: true,
+            delegate: SliverCustomAppBar(
+                lottieAssetSrc: Images.lottieHome2,
+                maxHeight: width > 600 ? 150 : 250,
+                minHeight: width > 600 ? 0 : 150,
+                onOpenDrawer: () {
+                  Scaffold.of(context).openDrawer();
+                })),
       SliverList(
           delegate: SliverChildListDelegate([
         const Padding(
@@ -111,7 +111,7 @@ class HomePage extends StatelessWidget {
                                 logic.roomsList[index].id;
                             Get.find<DeviceController>().getAllDevises();
                             Get.to(() =>
-                                ViewRoomScreen(room: logic.roomsList[index]));
+                                DeviceListScreen(room: logic.roomsList[index]));
                           }
                         },
                         child: Container(
@@ -144,9 +144,6 @@ class HomePage extends StatelessWidget {
                                             AppDimensions.borderRadius),
                                         bottomLeft: Radius.circular(
                                             AppDimensions.borderRadius))),
-                                // child: Lottie.asset(
-                                //   Images.roomAnim,
-                                // ),
                                 child: SvgPicture.asset(Images.livingRoom)
                               ),
                               Text(

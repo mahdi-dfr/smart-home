@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -6,6 +7,7 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:turkeysh_smart_home/core/resource/data_state.dart';
 import 'package:turkeysh_smart_home/features/auth/presentation/widget/wave_widget.dart';
 import '../../../../core/constants/colors.dart';
+import '../../../../core/constants/images.dart';
 import '../../../../core/constants/routes.dart';
 import '../controller/register_controller.dart';
 import '../widget/confirm_button.dart';
@@ -53,18 +55,16 @@ class LoginScreen extends StatelessWidget {
                         height: width > 600 ? height*0.4 : height * 0.55,
                         alignment: Alignment.center,
                       )),
-                  width>600 ? const SizedBox(): Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      child: SizedBox(
-                        child: Padding(
-                          padding: const EdgeInsets.all(50.0),
-                          child: Image.asset(
-                            'assets/images/register_image.png',
-                          ),
-                        ),
-                      )),
+                  width>600 ? const SizedBox():
+                  Align(alignment: Alignment.topCenter, child:  SizedBox(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: SvgPicture.asset(
+                        Images.login,
+                        width: width * 0.9,
+                      ),
+                    ),
+                  ),),
                 ],
               ),
             ),
