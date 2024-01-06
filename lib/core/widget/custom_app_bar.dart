@@ -39,6 +39,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               alignment: const Alignment(0.0, 0.8),
               child: Container(
                   height: Get.width < 600 ? Get.height / 14 : Get.height / 10,
+                  width: Get.width*0.8,
                   padding: const EdgeInsets.only(left: 30, right: 30),
                   child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -60,7 +61,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           )
                         ],
                       ),
-                      child: Image.asset(Images.logoWide)))),
+                      child: Image.asset(Images.logoWide, fit: BoxFit.cover,)))),
           Align(
             alignment: const Alignment(0, 0),
             child: AppBar(

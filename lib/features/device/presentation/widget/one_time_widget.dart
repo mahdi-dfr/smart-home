@@ -65,10 +65,8 @@ class OneTimeWidget extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          image: DecorationImage(
-              image: AssetImage((Get.isDarkMode
-                  ? Images.logoDark
-                  : Images.logo)),
+          image: const DecorationImage(
+              image: AssetImage(Images.logo),
               fit: BoxFit.cover,
               opacity: 0.05),
           borderRadius: BorderRadius.circular(
@@ -79,17 +77,21 @@ class OneTimeWidget extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 12),
-              child: Text(
-                title ??
-                    '',
-                style:
-                const TextStyle(fontSize: 16),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 8),
+                child: Text(
+                  title ??
+                      '',
+                  style:
+                  const TextStyle(fontSize: 16),
+                ),
               ),
             ),
             Expanded(
+              flex: 2,
               child: GetBuilder<MqttService>(builder: (logic) {
                 setRelayOneTimeValue();
                 return IconButton(

@@ -92,14 +92,13 @@ flutter:
     - assets/images/login.svg
     - assets/images/logo_raw.png
     - assets/images/logo_raw_dark.png
-    - assets/images/logo_wide.png
-    - assets/images/home.svg
+    - assets/images/logo_wide2.png
     - assets/images/left.svg
     - assets/images/right.svg
-    - assets/images/room4.svg
+    - assets/images/room.svg
+    - assets/images/living_room.svg
     - assets/animation/home_anim.json
     - assets/animation/home2.json
-    - assets/animation/room.json
     - assets/animation/empty.json
   #   - images/a_dot_ham.jpeg
 

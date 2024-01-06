@@ -1,6 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:turkeysh_smart_home/core/constants/utils.dart';
+
+import '../../../../core/constants/routes.dart';
+import '../../../auth/data/data_source/api_provider.dart';
 
 
 class ProjectBoardApiInterceptor extends Interceptor{
@@ -18,51 +22,39 @@ class ProjectBoardApiInterceptor extends Interceptor{
     print(options.path);
   }
 
-  // @override
-  // void onError(DioException err, ErrorInterceptorHandler handler) {
-  //   super.onError(err, handler);
-  //
-  //
-  //   /// get new access token if previous token is expired
-  //   if (err.response!.statusCode == 401) {
-  //     if (GetStorage().read(AppUtils.userTokenAccess) != null &&
-  //         GetStorage().read(AppUtils.userTokenRefresh) != null) {
-  //       var refreshToken = GetStorage().read(AppUtils.userTokenRefresh);
-  //
-  //       Map<String, dynamic> refresh = {"refresh": refreshToken};
-  //
-  //       try {
-  //         AuthApiProvider().refreshToken(refresh).then((response) async {
-  //           if (response is DioException) {
-  //             DioException er = response;
-  //             if (response != null) {
-  //               if (er.response?.statusCode == 401) {
-  //                 Get.back();
-  //               }
-  //             }
-  //           } else {
-  //             if (response.statusCode == 200) {
-  //               GetStorage().write(
-  //                   AppUtils.userTokenAccess, response.data['access']);
-  //             }
-  //           }
-  //         });
-  //       } catch (e) {
-  //       }
-  //     } else {
-  //       Get.to('/');
-  //     }
-  //   }
-  //
-  //   if (err.response!.statusCode == 500 ||
-  //       err.response!.statusCode == 503) {
-  //     Get.snackbar('خطا', 'خطا در اتصال به سرور');
-  //   }
-  //
-  //
-  //
-  //
-  //
-  // }
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    super.onError(err, handler);
 
+    // handle error separately
+    DioErrorInterceptor.handleError(err);
+  }
+}
+
+class DioErrorInterceptor {
+  static Future<void> handleError(DioException err) async {
+    if (err.response?.statusCode == 401) {
+      if (GetStorage().read(AppUtils.userTokenAccess) != null) {
+        var refreshToken = GetStorage().read(AppUtils.userTokenRefresh);
+
+        Map<String, dynamic> refresh = {"refresh": refreshToken};
+
+        try {
+          var response = await AuthApiProvider().refreshToken(refresh);
+          if (response is! DioException) {
+            if (response.statusCode == 200) {
+              GetStorage().write(
+                  AppUtils.userTokenAccess, response.data['access']);
+              GetStorage().write(
+                  AppUtils.userTokenRefresh, response.data['refresh']);
+            } else {
+              // handle other error cases
+            }
+          } else {
+            Get.offAllNamed(PagesRoutes.login);
+          }
+        } catch (e) {}
+      }
+    }
+  }
 }

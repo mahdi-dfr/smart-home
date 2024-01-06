@@ -144,7 +144,7 @@ class HomePage extends StatelessWidget {
                                             AppDimensions.borderRadius),
                                         bottomLeft: Radius.circular(
                                             AppDimensions.borderRadius))),
-                                child: SvgPicture.asset(Images.livingRoom)
+                                child: SvgPicture.asset(Images.room)
                               ),
                               Text(
                                 logic.roomsList[index].name ?? '',

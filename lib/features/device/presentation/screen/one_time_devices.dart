@@ -73,8 +73,8 @@ class OneTimeDeviceScreen extends StatelessWidget {
               ),
               SliverGrid.builder(
                   gridDelegate:
-                  SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: width > 600 ? 3 : 2,
+                  const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
                     mainAxisSpacing: 12,
                     crossAxisSpacing: 12,
                   ),
@@ -82,10 +82,7 @@ class OneTimeDeviceScreen extends StatelessWidget {
                     return OneTimeWidget(title: _controller.oneTimeDeviceList[index]
                         .name, boardId: _controller.deviceList[index].nodeProject?.boardProject,
                         nodeId: _controller.deviceList[index].nodeProject?.uniqueId,
-                        onPressed: (){
-                          print('ssssaaaaaa');
-
-                        });
+                        onPressed: (){});
                   },
                   itemCount: _controller.oneTimeDeviceList.length),
             ]),

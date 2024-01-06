@@ -25,47 +25,35 @@ class HomeApiInterceptor extends Interceptor{
   void onError(DioException err, ErrorInterceptorHandler handler) {
     super.onError(err, handler);
 
+    // handle error separately
+    DioErrorInterceptor.handleError(err);
+  }
+}
 
-    /// get new access token if previous token is expired
-    if (err.response!.statusCode == 401) {
-      if (GetStorage().read(AppUtils.userTokenAccess) != null &&
-          GetStorage().read(AppUtils.userTokenRefresh) != null) {
+class DioErrorInterceptor {
+  static Future<void> handleError(DioException err) async {
+    if (err.response?.statusCode == 401) {
+      if (GetStorage().read(AppUtils.userTokenAccess) != null) {
         var refreshToken = GetStorage().read(AppUtils.userTokenRefresh);
 
         Map<String, dynamic> refresh = {"refresh": refreshToken};
 
         try {
-          AuthApiProvider().refreshToken(refresh).then((response) async {
-            if (response is DioException) {
-              DioException er = response;
-              if (response != null) {
-                if (er.response?.statusCode == 401) {
-                  Get.back();
-                }
-              }
+          var response = await AuthApiProvider().refreshToken(refresh);
+          if (response is! DioException) {
+            if (response.statusCode == 200) {
+              GetStorage().write(
+                  AppUtils.userTokenAccess, response.data['access']);
+              GetStorage().write(
+                  AppUtils.userTokenRefresh, response.data['refresh']);
             } else {
-              if (response.statusCode == 200) {
-                GetStorage().write(
-                    AppUtils.userTokenAccess, response.data['access']);
-              }
+              // handle other error cases
             }
-          });
-        } catch (e) {
-        }
-      } else {
-        Get.offAllNamed(PagesRoutes.login);
+          } else {
+            Get.offAllNamed(PagesRoutes.login);
+          }
+        } catch (e) {}
       }
     }
-
-    if (err.response!.statusCode == 500 ||
-        err.response!.statusCode == 503) {
-      Get.snackbar('خطا', 'خطا در اتصال به سرور');
-    }
-
-
-
-
-
   }
-
 }

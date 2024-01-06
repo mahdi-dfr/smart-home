@@ -53,10 +53,9 @@ class MyTurkeyshCard extends StatelessWidget {
             child: Container(
               height: imageHeight,
               width: imageWidth,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage(
-                        (Get.isDarkMode ? Images.logoDark : Images.logo)),
+                    image: AssetImage(Images.logo),
                     fit: BoxFit.cover,
                     opacity: 0.05),
               ),
