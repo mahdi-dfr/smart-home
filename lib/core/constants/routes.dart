@@ -3,6 +3,8 @@ import 'package:turkeysh_smart_home/core/resource/app_bindings.dart';
 import 'package:turkeysh_smart_home/features/base_page.dart';
 import 'package:turkeysh_smart_home/features/home/presentation/screen/create_device.dart';
 import 'package:turkeysh_smart_home/features/project/presentation/screen/project_screen.dart';
+import 'package:turkeysh_smart_home/features/scenario/presentation/screen/choose_scenario.dart';
+import 'package:turkeysh_smart_home/features/scenario/presentation/screen/panel_screen.dart';
 import '../../features/auth/presentation/screen/login.dart';
 import '../../features/auth/presentation/screen/register.dart';
 import '../../features/settings/presentation/screen/board_settings.dart';
@@ -22,6 +24,8 @@ class PagesRoutes {
   static const String _boardSetting = '/board_Setting';
   static const String _createBoard = '/create_board';
   static const String _createDevice = '/create_device';
+  static const String _panelScreen = '/panel_screen';
+  static const String _chooseScenario = '/choose_scenario';
 
   static String get boardSetting => _boardSetting;
 
@@ -42,6 +46,10 @@ class PagesRoutes {
   static String get createBoard => _createBoard;
 
   static String get createDevice => _createDevice;
+
+  static String get panelScreen => _panelScreen;
+
+  static String get chooseScenario => _chooseScenario;
 
   static List<GetPage<dynamic>> pages = [
     GetPage(
@@ -78,6 +86,16 @@ class PagesRoutes {
     GetPage(
       name: _createDevice,
       page: () => CreateDeviceScreen(),
+    ),
+
+    GetPage(
+      name: _panelScreen,
+      page: () => const PanelScreen(),
+    ),
+
+    GetPage(
+      name: _chooseScenario,
+      page: () => const ChooseScenarioScreen(),
     ),
   ];
 }
