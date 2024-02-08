@@ -4,7 +4,7 @@ class DeviceNodeModel extends DeviceNodeEntity {
   int? id;
   int? uniqueId;
   bool? isActive;
-  String? nodeType;
+  int? nodeType;
   int? boardProject;
   int? project;
 

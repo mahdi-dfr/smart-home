@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:turkeysh_smart_home/core/widget/question_dialog.dart';
 
 import '../constants/images.dart';
+import '../constants/routes.dart';
+import '../constants/utils.dart';
 import 'custom_toolbar_shape.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -76,7 +80,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: IconButton(onPressed: (){
                     Get.back();
                   }, icon: const Icon(Icons.arrow_forward_rounded, color: Colors.white,)),
-                ) : const SizedBox() : const SizedBox(),
+                ) : Padding(
+                  padding:const EdgeInsets.symmetric(horizontal: 12),
+                  child: IconButton(onPressed: (){
+                    questionDialog(title: 'خروج از حساب کاربری', question: 'آیا میخواهید از حساب کاربری خود خارج شوید؟', onYesClicked: () {
+                      GetStorage().remove(AppUtils.userTokenAccess);
+                      GetStorage().remove(AppUtils.userTokenRefresh);
+                      GetStorage().remove(AppUtils.username);
+                      Get.offAllNamed(PagesRoutes.login);
+                    });
+                  }, icon: const Icon(Icons.power_settings_new_rounded, color: Colors.white,)),
+                ) : const SizedBox(),
               ],
             ),
           )

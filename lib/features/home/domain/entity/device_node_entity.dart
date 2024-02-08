@@ -2,7 +2,7 @@ class DeviceNodeEntity {
   int? id;
   int? uniqueId;
   bool? isActive;
-  String? nodeType;
+  int? nodeType;
   int? boardProject;
   int? project;
 

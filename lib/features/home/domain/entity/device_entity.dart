@@ -24,7 +24,7 @@ class DeviceEntity {
 
 class NodeProjectEntity {
   int? id;
-  String? nodeType;
+  int? nodeType;
   int? uniqueId;
   bool? isActive;
   int? boardProject;

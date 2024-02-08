@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:turkeysh_smart_home/core/constants/dimens.dart';
 import 'package:turkeysh_smart_home/core/widget/drop_box.dart';
+import 'package:turkeysh_smart_home/features/scenario/presentation/controller/scenario_controller.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/images.dart';
@@ -46,11 +47,21 @@ class ScenarioScreen extends StatelessWidget {
                   Column(
                     children: [
                       PanelItem(title: 'پنل یک', onItemPressed: (){
+                        Get.find<ScenarioController>().changePanelType('1');
                         Get.toNamed(PagesRoutes.panelScreen);
                       },),
-                      PanelItem(title: 'پنل دو', onItemPressed: (){},),
-                      PanelItem(title: 'پنل سه', onItemPressed: (){},),
-                      PanelItem(title: 'پنل چهار', onItemPressed: (){},),
+                      PanelItem(title: 'پنل دو', onItemPressed: (){
+                        Get.find<ScenarioController>().changePanelType('2');
+                        Get.toNamed(PagesRoutes.panelScreen);
+                      },),
+                      PanelItem(title: 'پنل سه', onItemPressed: (){
+                        Get.find<ScenarioController>().changePanelType('3');
+                        Get.toNamed(PagesRoutes.panelScreen);
+                      },),
+                      PanelItem(title: 'پنل چهار', onItemPressed: (){
+                        Get.find<ScenarioController>().changePanelType('4');
+                        Get.toNamed(PagesRoutes.panelScreen);
+                      },),
 
                     ],
                   )

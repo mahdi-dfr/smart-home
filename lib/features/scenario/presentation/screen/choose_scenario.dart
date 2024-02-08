@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:turkeysh_smart_home/core/constants/utils.dart';
+import 'package:turkeysh_smart_home/core/resource/data_state.dart';
 import 'package:turkeysh_smart_home/core/widget/custom_button.dart';
+import 'package:turkeysh_smart_home/features/scenario/presentation/controller/scenario_controller.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/dimens.dart';
@@ -9,12 +16,18 @@ import '../../../../core/widget/custom_app_bar.dart';
 import '../../../../core/widget/drop_box.dart';
 
 class ChooseScenarioScreen extends StatelessWidget {
-  const ChooseScenarioScreen({Key? key}) : super(key: key);
+  ChooseScenarioScreen({Key? key}) : super(key: key);
+
+  final _controller = Get.find<ScenarioController>();
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.sizeOf(context).width;
-    var height = MediaQuery.sizeOf(context).height;
+    var width = MediaQuery
+        .sizeOf(context)
+        .width;
+    var height = MediaQuery
+        .sizeOf(context)
+        .height;
 
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
@@ -30,57 +43,105 @@ class ChooseScenarioScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
           child: Stack(
             children: [
-              CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: CustomDropDown(
-                            items: const ['روشن', 'خاموش'],
-                            title: 'نوع سناریو',
-                            width: width,
-                            height: height/12,
-                            onPressed: (value) {}),
-                      )
-                  ),
-                  SliverList.builder(itemBuilder: (context, index){
-                    return Container(
-                        width: width,
-                        height: height / 12,
-                        margin: const EdgeInsets.symmetric(
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.black, width: 0.5),
-                          borderRadius:
-                          BorderRadius.circular(AppDimensions.borderRadius),
-                        ),
+              Obx(() {
+                return CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              RoundCheckBox(
-                                size: 30,
-                                checkedColor: CustomColors.foregroundColor,
-                                onTap: (value) {},
-                              ),
-                              const SizedBox(
-                                width: 12,
-                              ),
-                              const Text('کلید یک')
-                            ],
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: CustomDropDown(
+                              items: const ['روشن', 'خاموش'],
+                              title: 'نوع سناریو',
+                              width: width,
+                              height: height / 12,
+                              onPressed: (value) {
+                                if (value == 'روشن') {
+                                  _controller.scenarioOnOff = '1';
+                                } else {
+                                  _controller.scenarioOnOff = '0';
+                                }
+                              }),
+                        )
+                    ),
+                    SliverList.builder(itemBuilder: (context, index) {
+                      return Container(
+                          width: width,
+                          height: height / 12,
+                          margin: const EdgeInsets.symmetric(
+                            vertical: 4,
                           ),
-                        ));
-                  }, itemCount: 10,),
-                  SliverToBoxAdapter(child: SizedBox(height: height/11,),)
-                ],
-              ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.black, width: 0.5),
+                            borderRadius:
+                            BorderRadius.circular(AppDimensions.borderRadius),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                RoundCheckBox(
+                                  size: 30,
+                                  checkedColor: CustomColors.foregroundColor,
+                                  onTap: (value) {
+                                    if (value!) {
+                                      if (_controller.scenarioOnOff != null) {
+                                        _controller.addNewData(
+                                            _controller.relayList[index]
+                                                .id!);
+                                      } else {
+                                        showTopSnackBar(
+                                          Overlay.of(context),
+                                          const CustomSnackBar.error(
+                                            message: 'لطفا ابتدا نوع سناریو را مشخص کنید',
+                                          ),
+                                        );
+                                      }
+                                    } else {
+
+                                    }
+                                  },
+                                ),
+                                const SizedBox(
+                                  width: 12,
+                                ),
+                                Text(_controller.relayList.value[index].name ??
+                                    '', style: AppStyles.style6,)
+                              ],
+                            ),
+                          ));
+                    }, itemCount: _controller.relayList.length,),
+                    SliverToBoxAdapter(child: SizedBox(height: height / 11,),)
+                  ],
+                );
+              }),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: CustomButton(onClick: (){},),
+                child: Obx(() {
+                  return CustomButton(
+                    loading: _controller.isLoading.value,
+                    onClick: () {
+                      _controller.setNewScenario().then((value) {
+                        if (value is DataSuccess) {
+                          showTopSnackBar(
+                            Overlay.of(context),
+                            CustomSnackBar.success(
+                              message: value.data ?? 'ذخیره شد',
+                            ),
+                          );
+                        } else {
+                          showTopSnackBar(
+                            Overlay.of(context),
+                            CustomSnackBar.error(
+                              message: value.error ?? 'خطا در ارسال اطلاعات',
+                            ),
+                          );
+                        }
+                      });
+                    },);
+                }),
               )
             ],
           ),

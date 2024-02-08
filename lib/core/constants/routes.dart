@@ -95,7 +95,7 @@ class PagesRoutes {
 
     GetPage(
       name: _chooseScenario,
-      page: () => const ChooseScenarioScreen(),
+      page: () => ChooseScenarioScreen(),
     ),
   ];
 }

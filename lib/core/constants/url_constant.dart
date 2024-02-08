@@ -2,8 +2,8 @@ class UrlConstant {
   UrlConstant._();
 
   /// base url:
-  //static const String baseUrl = 'http://192.168.234.141:8000/api/';
-  static const String baseUrl = 'https://abzarsanat.runflare.run/api/';
+  static const String baseUrl = 'http://192.168.98.141:8000/api/';
+  // static const String baseUrl = 'https://abzarsanat.runflare.run/api/';
 
   /// auth urls:
   static const String register = 'user/auth/register/';
@@ -21,5 +21,6 @@ class UrlConstant {
   /// device:
   static const String deviceNode = 'project/device_nodes/';
   static const String device = 'project/device/';
+  static const String scenario = 'project/scenario/';
   static const String nodeProject = 'project/node_project/';
 }

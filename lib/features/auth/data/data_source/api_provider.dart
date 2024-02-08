@@ -29,8 +29,6 @@ class AuthApiProvider {
       var response = await _dio.post(UrlConstant.baseUrl + UrlConstant.login,
           options: Options(responseType: ResponseType.json, method: 'POST'),
           data: {'username': username, 'password': password});
-      print('ssssddddd');
-      print(response);
       return response;
     } catch (err) {
       if (err is DioException) {

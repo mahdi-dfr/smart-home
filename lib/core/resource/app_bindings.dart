@@ -11,6 +11,11 @@ import 'package:turkeysh_smart_home/features/project/data/repository/project_rep
 import 'package:turkeysh_smart_home/features/project/domain/repository/project_repository.dart';
 import 'package:turkeysh_smart_home/features/project/domain/usecase/project_usecase.dart';
 import 'package:turkeysh_smart_home/features/project/presentation/controller/project_controller.dart';
+import 'package:turkeysh_smart_home/features/scenario/data/data_source/api_provider.dart';
+import 'package:turkeysh_smart_home/features/scenario/data/repository/repository_impl.dart';
+import 'package:turkeysh_smart_home/features/scenario/domain/repostory/scenario_repository.dart';
+import 'package:turkeysh_smart_home/features/scenario/domain/usecase/scenario_usecase.dart';
+import 'package:turkeysh_smart_home/features/scenario/presentation/controller/scenario_controller.dart';
 import 'package:turkeysh_smart_home/features/settings/data/data_source/api_provider.dart';
 import 'package:turkeysh_smart_home/features/settings/domain/repository/project_board_repository.dart';
 import 'package:turkeysh_smart_home/features/settings/domain/usecase/project_board_usecase.dart';
@@ -33,13 +38,19 @@ class AppBindings extends Bindings{
 
     /// api providers:
     Get.put<AuthApiProvider>(AuthApiProvider());
+    Get.lazyPut(() => ScenarioApiProvider(), fenix: true);
     /// repositories:
     Get.put<AuthRepository>(AuthRepositoryImpl(Get.find<AuthApiProvider>()));
+    Get.lazyPut(() => ScenarioRepositoryImpl(Get.find<ScenarioApiProvider>()), fenix: true);
     ///useCase:
     Get.put<AuthUseCase>(AuthUseCase(Get.find<AuthRepository>()));
+    Get.lazyPut(() => ScenarioUseCase(Get.find<ScenarioRepositoryImpl>()), fenix: true);
     /// controllers:
     Get.put(ConnectionController());
     Get.put(RegisterController(Get.find<AuthUseCase>()));
+    Get.lazyPut(() => ScenarioController(Get.find<ScenarioUseCase>()), fenix: true);
+
+
 
   }
 }

@@ -50,7 +50,7 @@ class DeviceModel extends DeviceEntity {
 
 class NodeProject extends NodeProjectEntity {
   int? id;
-  String? nodeType;
+  int? nodeType;
   int? uniqueId;
   bool? isActive;
   int? boardProject;
