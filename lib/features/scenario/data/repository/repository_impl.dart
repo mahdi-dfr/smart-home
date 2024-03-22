@@ -64,6 +64,7 @@ class ScenarioRepositoryImpl implements ScenarioRepository{
     if (response is! DioException) {
       if (response.statusCode == 200) {
         List<ScenarioEntity> dataList = [];
+        print(response.data);
         for (int i = 0; i < response.data.length; i++) {
           dataList.add(ScenarioModel.fromJson(response.data[i]));
         }

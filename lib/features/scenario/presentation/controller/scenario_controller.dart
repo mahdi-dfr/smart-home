@@ -16,6 +16,7 @@ class ScenarioController extends GetxController{
   var isRelayLoading = false.obs;
   var isScenarioLoading = false.obs;
   var isLoading = false.obs;
+  var isDeleteLoading = false.obs;
   RxList<RelayEntity> relayList = RxList();
   RxList<ScenarioEntity> scenarioList = RxList();
   String? panelType;
@@ -77,6 +78,7 @@ class ScenarioController extends GetxController{
         DataState dataState = await _useCase.addNewScenario(scenarioData!);
         if (dataState is DataSuccess) {
           if (dataState.data != null) {
+            scenarioOnOff=null;
             isLoading.value = false;
             getScenario(panelType!);
             scenarioData?.clear();
@@ -93,6 +95,24 @@ class ScenarioController extends GetxController{
 
   }
 
+  Future<DataState<String>> deleteScenario(int id) async {
+    isDeleteLoading.value = true;
+    if (Get.find<ConnectionController>().isConnected.value) {
+      DataState dataState = await _useCase.deleteScenario(id);
+      if(dataState is DataSuccess){
+        getScenario(panelType!);
+        isDeleteLoading.value = false;
+        return const DataSuccess('سناریو با موفقیت حذف شد');
+      }else{
+        isDeleteLoading.value = false;
+        return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
+      }
+    }else{
+      isDeleteLoading.value = false;
+      return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
+    }
+  }
+
   addNewData(int relayId){
     newData = {
       'device': relayId,
@@ -100,7 +120,6 @@ class ScenarioController extends GetxController{
       'type': panelType,
       'project': projectId
     };
-    print(scenarioOnOff);
     if(newData != null){
       scenarioData!.add(newData!);
     }

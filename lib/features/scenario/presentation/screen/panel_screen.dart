@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:turkeysh_smart_home/core/resource/data_state.dart';
 import 'package:turkeysh_smart_home/features/scenario/presentation/controller/scenario_controller.dart';
 
 import '../../../../core/constants/colors.dart';
@@ -8,7 +11,9 @@ import '../../../../core/constants/dimens.dart';
 import '../../../../core/constants/images.dart';
 import '../../../../core/constants/routes.dart';
 import '../../../../core/constants/styles.dart';
+import '../../../../core/resource/ask_dialog.dart';
 import '../../../../core/widget/custom_app_bar.dart';
+import '../../../../mqtt_service.dart';
 
 class PanelScreen extends StatelessWidget {
   const PanelScreen({Key? key}) : super(key: key);
@@ -18,9 +23,8 @@ class PanelScreen extends StatelessWidget {
     var width = MediaQuery.sizeOf(context).width;
     var height = MediaQuery.sizeOf(context).height;
 
-    Get.find<ScenarioController>().getScenario(
-        Get.find<ScenarioController>().panelType!
-    );
+    Get.find<ScenarioController>()
+        .getScenario(Get.find<ScenarioController>().panelType!);
 
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
@@ -66,7 +70,37 @@ class PanelScreen extends StatelessWidget {
                     SliverList.builder(
                       itemBuilder: (context, index) {
                         return InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            // Get.find<MqttService>().publishMessage(, )
+                          },
+                          onLongPress: () {
+                            askDialog(() {
+                              Get.find<ScenarioController>()
+                                  .deleteScenario(Get.find<ScenarioController>()
+                                      .scenarioList[index]
+                                      .id!)
+                                  .then((value) {
+                                if (value is DataSuccess) {
+                                  showTopSnackBar(
+                                    Overlay.of(context),
+                                    CustomSnackBar.success(
+                                      message: value.data ??
+                                          'اطلاعات با موفقیت حذف شد',
+                                    ),
+                                  );
+                                } else {
+                                  showTopSnackBar(
+                                    Overlay.of(context),
+                                    CustomSnackBar.error(
+                                      message:
+                                          value.error ?? 'خطا در ارسال اطلاعات',
+                                    ),
+                                  );
+                                }
+                              });
+                              Get.back();
+                            });
+                          },
                           child: Container(
                               width: width,
                               height: height / 12,

@@ -53,7 +53,6 @@ class ScenarioApiProvider {
   }
 
   Future<dynamic> setScenario(List<dynamic> data) async {
-    print('ssssaaa');
     _dio.interceptors.add(ScenarioApiInterceptor());
     try {
       var response = await _dio.post(
@@ -61,10 +60,8 @@ class ScenarioApiProvider {
         options: Options(responseType: ResponseType.json, method: 'POST'),
         data: data
       );
-      print(response);
       return response;
     } catch (err) {
-      print(err);
       if (err is DioException) {
         return err;
       }
