@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:turkeysh_smart_home/core/constants/dimens.dart';
+import 'package:turkeysh_smart_home/core/constants/utils.dart';
 import 'package:turkeysh_smart_home/core/widget/drop_box.dart';
-import 'package:turkeysh_smart_home/features/scenario/presentation/controller/scenario_controller.dart';
+import 'package:turkeysh_smart_home/features/scenario/presentation/controller/hardware_scenario_controller.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/images.dart';
@@ -15,10 +16,16 @@ import '../widget/panel_item.dart';
 class ScenarioScreen extends StatelessWidget {
   ScenarioScreen({Key? key}) : super(key: key);
 
+  final _controller = Get.find<HardwareScenarioController>();
+
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.sizeOf(context).width;
-    var height = MediaQuery.sizeOf(context).height;
+    var width = MediaQuery
+        .sizeOf(context)
+        .width;
+    var height = MediaQuery
+        .sizeOf(context)
+        .height;
 
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
@@ -33,40 +40,52 @@ class ScenarioScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  CustomDropDown(
-                      items: const ['پنل دیواری', 'نرم افزار'],
-                      title: 'نوع سناریو',
-                      width: width,
-                      height: height/12,
-                      onPressed: (value) {}),
+              child: Obx(() {
+                return Column(
+                  children: [
+                    CustomDropDown(
+                        items: AppUtils.scenarioTypeList,
+                        title: 'نوع سناریو',
+                        width: width,
+                        height: height / 12,
+                        onPressed: (value) {
+                          if(value == 'پنل دیواری'){
+                            _controller.isHardwareScenario.value = true;
+                          }else{
+                            _controller.isHardwareScenario.value = false;
+                          }
 
-                  const SizedBox(height: 12,),
+                        }),
 
-                  Column(
-                    children: [
-                      PanelItem(title: 'پنل یک', onItemPressed: (){
-                        Get.find<ScenarioController>().changePanelType('1');
-                        Get.toNamed(PagesRoutes.panelScreen);
-                      },),
-                      PanelItem(title: 'پنل دو', onItemPressed: (){
-                        Get.find<ScenarioController>().changePanelType('2');
-                        Get.toNamed(PagesRoutes.panelScreen);
-                      },),
-                      PanelItem(title: 'پنل سه', onItemPressed: (){
-                        Get.find<ScenarioController>().changePanelType('3');
-                        Get.toNamed(PagesRoutes.panelScreen);
-                      },),
-                      PanelItem(title: 'پنل چهار', onItemPressed: (){
-                        Get.find<ScenarioController>().changePanelType('4');
-                        Get.toNamed(PagesRoutes.panelScreen);
-                      },),
+                    const SizedBox(height: 12,),
 
-                    ],
-                  )
-                ],
-              ),
+                    _controller.isHardwareScenario.value ? Column(
+                      children: [
+                        PanelItem(title: 'پنل یک', onItemPressed: () async {
+                          await _controller.changePanelType('1');
+                          Get.toNamed(PagesRoutes.panelScreen);
+                        },),
+                        PanelItem(title: 'پنل دو', onItemPressed: () async {
+                          await _controller.changePanelType('2');
+                          Get.toNamed(PagesRoutes.panelScreen);
+                        },),
+                        PanelItem(title: 'پنل سه', onItemPressed: () {
+                          _controller.changePanelType('3');
+                          Get.toNamed(PagesRoutes.panelScreen);
+                        },),
+                        PanelItem(title: 'پنل چهار', onItemPressed: () {
+                          _controller.changePanelType('4');
+                          Get.toNamed(PagesRoutes.panelScreen);
+                        },),
+
+                      ],
+                    ) : PanelItem(
+                      title: 'ساخت سناریوی نرم افزاری', onItemPressed: () {
+                      Get.toNamed(PagesRoutes.panelScreen);
+                    },),
+                  ],
+                );
+              }),
             ),
           )),
     );

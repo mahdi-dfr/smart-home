@@ -57,6 +57,11 @@ class ProjectBoardController extends GetxController {
     isLoading.value = true;
 
     if (boardName.text.isNotEmpty) {
+
+      print('ssssss00');
+      print(selectedSmsControlBoard);
+      print(selectedWifiControlBoard);
+
       Map<String, dynamic> data = {
         "name": boardName.text,
         "project": projectId,
@@ -64,6 +69,7 @@ class ProjectBoardController extends GetxController {
         "parent_sms_board": selectedSmsControlBoard,
         "parent_wifi_board": selectedWifiControlBoard
       };
+      print(data);
       if (Get.find<ConnectionController>().isConnected.value) {
         DataState dataState = await _useCase.addProjectBoard(data);
         if (dataState is DataSuccess) {

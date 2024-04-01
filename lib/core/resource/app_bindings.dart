@@ -15,7 +15,7 @@ import 'package:turkeysh_smart_home/features/scenario/data/data_source/api_provi
 import 'package:turkeysh_smart_home/features/scenario/data/repository/repository_impl.dart';
 import 'package:turkeysh_smart_home/features/scenario/domain/repostory/scenario_repository.dart';
 import 'package:turkeysh_smart_home/features/scenario/domain/usecase/scenario_usecase.dart';
-import 'package:turkeysh_smart_home/features/scenario/presentation/controller/scenario_controller.dart';
+import 'package:turkeysh_smart_home/features/scenario/presentation/controller/hardware_scenario_controller.dart';
 import 'package:turkeysh_smart_home/features/settings/data/data_source/api_provider.dart';
 import 'package:turkeysh_smart_home/features/settings/domain/repository/project_board_repository.dart';
 import 'package:turkeysh_smart_home/features/settings/domain/usecase/project_board_usecase.dart';
@@ -28,6 +28,7 @@ import '../../features/home/data/repository/home_repository_impl.dart';
 import '../../features/home/domain/usecase/device_usecase.dart';
 import '../../features/home/domain/usecase/room_usecase.dart';
 import '../../features/project/data/data_source/api_provider.dart';
+import '../../features/scenario/presentation/controller/software_controller.dart';
 import '../../features/settings/data/repository/project_board_repository_impl.dart';
 import '../../mqtt_service.dart';
 import 'mqtt_receiver.dart';
@@ -48,7 +49,8 @@ class AppBindings extends Bindings{
     /// controllers:
     Get.put(ConnectionController());
     Get.put(RegisterController(Get.find<AuthUseCase>()));
-    Get.lazyPut(() => ScenarioController(Get.find<ScenarioUseCase>()), fenix: true);
+    Get.lazyPut(() => HardwareScenarioController(Get.find<ScenarioUseCase>()), fenix: true);
+    // Get.lazyPut(() => SoftwareScenarioController());
 
 
 

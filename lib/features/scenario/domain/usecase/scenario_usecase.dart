@@ -16,7 +16,7 @@ class ScenarioUseCase{
     return _repository.deleteScenario(id);
   }
 
-  Future<DataState<String>> addNewScenario(List<dynamic> data){
+  Future<DataState<String>> addNewScenario(Map<String,dynamic> data){
     return _repository.addNewScenario(data);
   }
 

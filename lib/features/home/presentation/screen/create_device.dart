@@ -75,8 +75,10 @@ class CreateDeviceScreen extends StatelessWidget {
                       height: MediaQuery.sizeOf(context).height / 12,
                       onPressed: (value) {
                         _controller.nodeProject = _controller
-                            .deviceNodeNames.value[value.toString()]
+                            .deviceNodeNames.value[value.toString()]['id']
                             .toString();
+                        _controller.boardId = _controller
+                            .deviceNodeNames.value[value.toString()]['boardId'];
                       });
                 }),
                 SizedBox(

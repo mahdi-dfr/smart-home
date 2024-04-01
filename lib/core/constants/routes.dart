@@ -90,7 +90,7 @@ class PagesRoutes {
 
     GetPage(
       name: _panelScreen,
-      page: () => const PanelScreen(),
+      page: () => PanelScreen(),
     ),
 
     GetPage(

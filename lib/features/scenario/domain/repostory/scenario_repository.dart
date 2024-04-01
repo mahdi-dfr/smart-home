@@ -9,7 +9,7 @@ abstract class ScenarioRepository{
 
   Future<DataState<String>> deleteScenario(int id);
 
-  Future<DataState<String>> addNewScenario(List<dynamic> data);
+  Future<DataState<String>> addNewScenario(Map<String,dynamic> data);
 
   Future<DataState<List<ScenarioEntity>>> getScenario(int projectId, String type);
 }

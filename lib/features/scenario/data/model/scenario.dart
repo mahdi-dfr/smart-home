@@ -2,10 +2,11 @@ import 'package:turkeysh_smart_home/features/scenario/domain/entity/scenario.dar
 
 class ScenarioModel extends ScenarioEntity {
   int? id;
+  String? name;
   List<UserScenario>? user;
   String? type;
   String? status;
-  int? device;
+  List<int>? device;
   int? project;
 
   ScenarioModel(
@@ -29,8 +30,13 @@ class ScenarioModel extends ScenarioEntity {
     }
     type = json['type'];
     status = json['status'];
-    device = json['device'];
+    if(device != null){
+      device!.add(json['device']);
+    }else{
+      device = [];
+    }
     project = json['project'];
+    name = json['name'];
   }
 }
 

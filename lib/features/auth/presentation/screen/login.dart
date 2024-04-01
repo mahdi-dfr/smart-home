@@ -139,7 +139,7 @@ class LoginScreen extends StatelessWidget {
             ),
 
             TextButton(onPressed: () {
-              Get.toNamed(PagesRoutes.register);
+              Get.offAllNamed(PagesRoutes.register);
             }, child: const Text('حساب کاربری ندارید؟ | ثبت نام')),
 
             const SizedBox(

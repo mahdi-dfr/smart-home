@@ -13,7 +13,7 @@ class ScenarioRepositoryImpl implements ScenarioRepository{
   ScenarioRepositoryImpl(this._apiProvider);
 
   @override
-  Future<DataState<String>> addNewScenario(List<dynamic> data) async {
+  Future<DataState<String>> addNewScenario(Map<String,dynamic> data) async {
     var response = await _apiProvider.setScenario(data);
     if (response is! DioException) {
       if (response.statusCode == 201) {

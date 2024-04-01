@@ -24,12 +24,12 @@ class DeviceController extends GetxController {
   String? deviceType;
   String? nodeProject;
   int? roomId;
+  int? boardId;
 
   RxList<DeviceNodeEntity> deviceNodeList = RxList();
   RxList<DeviceEntity> deviceList = RxList();
   RxMap<String, dynamic> deviceNodeNames = RxMap();
   RxList<DeviceEntity> oneTimeDeviceList = RxList();
-
 
   @override
   void onInit() {
@@ -45,6 +45,7 @@ class DeviceController extends GetxController {
       'project': GetStorage().read(AppUtils.projectIdConst),
       'device_type': deviceType,
       'node_project': nodeProject,
+      'project_board': boardId
     };
     if (Get.find<ConnectionController>().isConnected.value) {
       if (deviceName.text.isNotEmpty &&
@@ -86,12 +87,14 @@ class DeviceController extends GetxController {
         deviceNodeNames.clear();
 
         deviceNodeList.value = dataState.data!;
+        print(deviceNodeList);
         deviceNodeList.value.forEach((element) {
           if (element.nodeType != null) {
             deviceNodeNames['${element.nodeType!} ${element.uniqueId} - ${element.boardProject}'] =
-                element.id;
+                {'id': element.id, 'boardId': element.boardProject};
           }
         });
+
         isGetNodesLoading.value = false;
         return DataSuccess(deviceNodeList);
       } else {
@@ -143,11 +146,11 @@ class DeviceController extends GetxController {
     }
   }
 
-  filterDevicesBasedOnOneTime(){
+  filterDevicesBasedOnOneTime() {
     oneTimeDeviceList.clear();
-    if(deviceList.isNotEmpty){
+    if (deviceList.isNotEmpty) {
       for (var element in deviceList) {
-        if(element.deviceType == '0'){
+        if (element.deviceType == '0') {
           oneTimeDeviceList.add(element);
         }
       }

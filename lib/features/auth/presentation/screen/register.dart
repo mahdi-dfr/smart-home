@@ -180,7 +180,7 @@ class RegisterScreen extends StatelessWidget {
             ),
             TextButton(
                 onPressed: () {
-                  Get.toNamed(PagesRoutes.login);
+                  Get.offAllNamed(PagesRoutes.login);
                 },
                 child: const Text('قبلا ثبت نام کرده اید؟ | ورود')),
             const SizedBox(

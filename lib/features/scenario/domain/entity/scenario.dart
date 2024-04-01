@@ -2,10 +2,11 @@ import '../../data/model/scenario.dart';
 
 class ScenarioEntity {
   int? id;
+  String? name;
   List<UserScenario>? user;
   String? type;
   String? status;
-  int? device;
+  List<int>? device;
   int? project;
 
   ScenarioEntity(

@@ -52,7 +52,7 @@ class ScenarioApiProvider {
     }
   }
 
-  Future<dynamic> setScenario(List<dynamic> data) async {
+  Future<dynamic> setScenario(Map<String,dynamic> data) async {
     _dio.interceptors.add(ScenarioApiInterceptor());
     try {
       var response = await _dio.post(

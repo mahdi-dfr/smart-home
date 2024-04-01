@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:turkeysh_smart_home/features/scenario/domain/entity/relay.dart';
@@ -7,23 +8,22 @@ import 'package:turkeysh_smart_home/features/scenario/domain/usecase/scenario_us
 import '../../../../core/constants/utils.dart';
 import '../../../../core/resource/connection_controller.dart';
 import '../../../../core/resource/data_state.dart';
+import 'base_scenario_controller.dart';
 
-class ScenarioController extends GetxController{
+class HardwareScenarioController extends BaseScenarioController {
   final ScenarioUseCase _useCase;
-  ScenarioController(this._useCase);
+
+  HardwareScenarioController(this._useCase);
 
   final projectId = GetStorage().read(AppUtils.projectIdConst);
-  var isRelayLoading = false.obs;
-  var isScenarioLoading = false.obs;
-  var isLoading = false.obs;
-  var isDeleteLoading = false.obs;
-  RxList<RelayEntity> relayList = RxList();
-  RxList<ScenarioEntity> scenarioList = RxList();
+  TextEditingController scenarioName = TextEditingController();
+
   String? panelType;
   String? scenarioOnOff;
-  Map<String, dynamic>? newData;
-  List<Map<String, dynamic>>? scenarioData = [];
-
+  RxList<RelayEntity> relayList = RxList();
+  RxList<ScenarioEntity> scenarioList = RxList();
+  RxList<int> deviceList = RxList();
+  Map<String, dynamic>? scenarioData = {};
 
   Future<DataState<List<RelayEntity>>> getAllRelays() async {
     isRelayLoading.value = true;
@@ -31,18 +31,19 @@ class ScenarioController extends GetxController{
       isRelayLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید!');
     }
-      DataState<List<RelayEntity>> dataState = await _useCase.getAllRelays(
-          GetStorage().read(AppUtils.projectIdConst), '0');
-      if (dataState is DataSuccess) {
-        if (dataState.data != null) {
-          relayList.value = dataState.data ?? [];
-          isRelayLoading.value = false;
-        }
-        return DataSuccess(dataState.data);
-      } else {
+
+    DataState<List<RelayEntity>> dataState = await _useCase.getAllRelays(
+        GetStorage().read(AppUtils.projectIdConst), '0');
+    if (dataState is DataSuccess) {
+      if (dataState.data != null) {
+        relayList.value = dataState.data ?? [];
         isRelayLoading.value = false;
-        return const DataFailed('err');
       }
+      return DataSuccess(dataState.data);
+    } else {
+      isRelayLoading.value = false;
+      return const DataFailed('err');
+    }
   }
 
   Future<DataState<List<ScenarioEntity>>> getScenario(String type) async {
@@ -71,66 +72,72 @@ class ScenarioController extends GetxController{
       isLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
     }
-      if (scenarioData!.isEmpty || scenarioData == []) {
+    addNewData();
+    if (scenarioData == {} ||
+        scenarioName.text.isEmpty ||
+        deviceList.isEmpty ||
+        scenarioOnOff == null) {
+      isLoading.value = false;
+      return const DataFailed('لطفا تمام اطلاعات را وارد نمایید');
+    }
+    DataState dataState = await _useCase.addNewScenario(scenarioData!);
+    if (dataState is DataSuccess) {
+      if (dataState.data != null) {
+        scenarioOnOff = null;
         isLoading.value = false;
-        return const DataFailed('لطفا تمام اطلاعات را وارد نمایید');
+        getScenario(panelType!);
+        clearData();
+        return const DataSuccess('اطلاعات با موفقیت ذخیره شد');
+      } else {
+        isLoading.value = false;
+        return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
       }
-        DataState dataState = await _useCase.addNewScenario(scenarioData!);
-        if (dataState is DataSuccess) {
-          if (dataState.data != null) {
-            scenarioOnOff=null;
-            isLoading.value = false;
-            getScenario(panelType!);
-            scenarioData?.clear();
-            newData?.clear();
-            return const DataSuccess('اطلاعات با موفقیت ذخیره شد');
-          } else {
-            isLoading.value = false;
-            return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
-          }
-        } else {
-          isLoading.value = false;
-          return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
-        }
-
+    } else {
+      isLoading.value = false;
+      return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
+    }
   }
 
   Future<DataState<String>> deleteScenario(int id) async {
     isDeleteLoading.value = true;
     if (Get.find<ConnectionController>().isConnected.value) {
       DataState dataState = await _useCase.deleteScenario(id);
-      if(dataState is DataSuccess){
+      if (dataState is DataSuccess) {
         getScenario(panelType!);
         isDeleteLoading.value = false;
         return const DataSuccess('سناریو با موفقیت حذف شد');
-      }else{
+      } else {
         isDeleteLoading.value = false;
         return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
       }
-    }else{
+    } else {
       isDeleteLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
     }
   }
 
-  addNewData(int relayId){
-    newData = {
-      'device': relayId,
+  void addNewData() {
+    scenarioData = {
+      'name': scenarioName.text,
+      'device': deviceList,
       'status': scenarioOnOff,
       'type': panelType,
       'project': projectId
     };
-    if(newData != null){
-      scenarioData!.add(newData!);
-    }
+  }
 
+  void clearData() {
+    scenarioData?.clear();
+    scenarioName.clear();
+    deviceList.clear();
+    scenarioOnOff = null;
   }
 
   // removeData(int relayId){
   //   scenarioData?.removeWhere((element) => element.);
   // }
 
-  changePanelType(String newPanelType){
+  changePanelType(String newPanelType) {
     panelType = newPanelType;
   }
 }
