@@ -1,6 +1,6 @@
 import 'package:turkeysh_smart_home/features/scenario/domain/entity/scenario.dart';
 
-class ScenarioModel extends ScenarioEntity {
+class HardwareScenarioModel extends HardwareScenarioEntity {
   int? id;
   String? name;
   List<UserScenario>? user;
@@ -9,7 +9,7 @@ class ScenarioModel extends ScenarioEntity {
   List<int>? device;
   int? project;
 
-  ScenarioModel(
+  HardwareScenarioModel(
       {this.id, this.user, this.type, this.status, this.device, this.project})
       : super(
           id: id,
@@ -20,7 +20,7 @@ class ScenarioModel extends ScenarioEntity {
           project: project,
         );
 
-  ScenarioModel.fromJson(Map<String, dynamic> json) {
+  HardwareScenarioModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     if (json['user'] != null) {
       user = <UserScenario>[];

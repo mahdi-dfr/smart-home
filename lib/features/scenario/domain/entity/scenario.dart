@@ -1,6 +1,6 @@
 import '../../data/model/scenario.dart';
 
-class ScenarioEntity {
+class HardwareScenarioEntity {
   int? id;
   String? name;
   List<UserScenario>? user;
@@ -9,6 +9,6 @@ class ScenarioEntity {
   List<int>? device;
   int? project;
 
-  ScenarioEntity(
+  HardwareScenarioEntity(
       {this.id, this.user, this.type, this.status, this.device, this.project});
 }

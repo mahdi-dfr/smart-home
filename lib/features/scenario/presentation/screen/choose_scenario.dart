@@ -15,11 +15,13 @@ import '../../../../core/constants/dimens.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/widget/custom_app_bar.dart';
 import '../../../../core/widget/drop_box.dart';
+import '../../../../mqtt_service.dart';
 
 class ChooseScenarioScreen extends StatelessWidget {
   ChooseScenarioScreen({Key? key}) : super(key: key);
 
   final _controller = Get.find<HardwareScenarioController>();
+  final _mqttController = Get.find<MqttService>();
 
   @override
   Widget build(BuildContext context) {
@@ -126,12 +128,15 @@ class ChooseScenarioScreen extends StatelessWidget {
                   return CustomButton(
                     loading: _controller.isLoading.value,
                     onClick: () {
-                      _controller.setNewScenario().then((value) {
+                      _controller.setNewHardwareScenario().then((value) {
                         if (value is DataSuccess) {
+                          _controller.getHardwareScenarioMessage(value.data!.id!).then((value) {
+                            _mqttController.publishMessage(value.data!, '');
+                          });
                           showTopSnackBar(
                             Overlay.of(context),
-                            CustomSnackBar.success(
-                              message: value.data ?? 'ذخیره شد',
+                            const CustomSnackBar.success(
+                              message: 'اطلاعات با موفقیت ذخیره شد',
                             ),
                           );
                         } else {

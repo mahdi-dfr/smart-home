@@ -8,6 +8,8 @@ import 'package:turkeysh_smart_home/features/scenario/domain/usecase/scenario_us
 import '../../../../core/constants/utils.dart';
 import '../../../../core/resource/connection_controller.dart';
 import '../../../../core/resource/data_state.dart';
+import '../../data/model/hardware_scenario_message.dart';
+import '../../domain/entity/hardware_message_entity.dart';
 import 'base_scenario_controller.dart';
 
 class HardwareScenarioController extends BaseScenarioController {
@@ -21,9 +23,10 @@ class HardwareScenarioController extends BaseScenarioController {
   String? panelType;
   String? scenarioOnOff;
   RxList<RelayEntity> relayList = RxList();
-  RxList<ScenarioEntity> scenarioList = RxList();
+  RxList<HardwareScenarioEntity> scenarioList = RxList();
   RxList<int> deviceList = RxList();
   Map<String, dynamic>? scenarioData = {};
+  Map<String, dynamic>? scenarioMessage = {};
 
   Future<DataState<List<RelayEntity>>> getAllRelays() async {
     isRelayLoading.value = true;
@@ -46,14 +49,15 @@ class HardwareScenarioController extends BaseScenarioController {
     }
   }
 
-  Future<DataState<List<ScenarioEntity>>> getScenario(String type) async {
+  Future<DataState<List<HardwareScenarioEntity>>> getHardwareScenario(
+      String type) async {
     isScenarioLoading.value = true;
     if (!Get.find<ConnectionController>().isConnected.value) {
       isScenarioLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید!');
     }
-    DataState<List<ScenarioEntity>> dataState = await _useCase.getScenario(
-        GetStorage().read(AppUtils.projectIdConst), type);
+    DataState<List<HardwareScenarioEntity>> dataState = await _useCase
+        .getHardwareScenario(projectId, type);
     if (dataState is DataSuccess) {
       if (dataState.data != null) {
         scenarioList.value = dataState.data ?? [];
@@ -66,7 +70,7 @@ class HardwareScenarioController extends BaseScenarioController {
     }
   }
 
-  Future<DataState<String>> setNewScenario() async {
+  Future<DataState<CreateHardwareScenarioModel>> setNewHardwareScenario() async {
     isLoading.value = true;
     if (!Get.find<ConnectionController>().isConnected.value) {
       isLoading.value = false;
@@ -80,14 +84,14 @@ class HardwareScenarioController extends BaseScenarioController {
       isLoading.value = false;
       return const DataFailed('لطفا تمام اطلاعات را وارد نمایید');
     }
-    DataState dataState = await _useCase.addNewScenario(scenarioData!);
+    DataState dataState = await _useCase.addNewHardwareScenario(scenarioData!);
     if (dataState is DataSuccess) {
       if (dataState.data != null) {
         scenarioOnOff = null;
         isLoading.value = false;
-        getScenario(panelType!);
+        getHardwareScenario(panelType!);
         clearData();
-        return const DataSuccess('اطلاعات با موفقیت ذخیره شد');
+        return DataSuccess(dataState.data);
       } else {
         isLoading.value = false;
         return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
@@ -98,12 +102,12 @@ class HardwareScenarioController extends BaseScenarioController {
     }
   }
 
-  Future<DataState<String>> deleteScenario(int id) async {
+  Future<DataState<String>> deleteHardwareScenario(int id) async {
     isDeleteLoading.value = true;
     if (Get.find<ConnectionController>().isConnected.value) {
-      DataState dataState = await _useCase.deleteScenario(id);
+      DataState dataState = await _useCase.deleteHardwareScenario(id);
       if (dataState is DataSuccess) {
-        getScenario(panelType!);
+        getHardwareScenario(panelType!);
         isDeleteLoading.value = false;
         return const DataSuccess('سناریو با موفقیت حذف شد');
       } else {
@@ -113,6 +117,35 @@ class HardwareScenarioController extends BaseScenarioController {
     } else {
       isDeleteLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
+    }
+  }
+
+  Future<DataState<Map<String, dynamic>>> getHardwareScenarioMessage(
+      int scenarioId) async {
+    if (!Get.find<ConnectionController>().isConnected.value) {
+      isLoading.value = false;
+      return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
+    }
+    DataState<HardwareScenarioMessageEntity> dataState =
+        await _useCase.getHardwareScenarioMessage(projectId, scenarioId);
+    if (dataState is DataSuccess) {
+      if (dataState.data != null) {
+        isScenarioLoading.value = false;
+        var scenarioMessageData = dataState.data!;
+
+        scenarioMessage = {
+          "type": scenarioMessageData.type,
+          "key_num": scenarioMessageData.keyNum,
+          "total_board_ids": scenarioMessageData.totalBoardIds,
+          "total_board_ids_used": scenarioMessageData.totalBoardIdsUsed,
+          "node_ids": scenarioMessageData.nodeIds,
+          "status": scenarioMessageData.status
+        };
+      }
+      return DataSuccess(scenarioMessage);
+    } else {
+      isScenarioLoading.value = false;
+      return const DataFailed('err');
     }
   }
 

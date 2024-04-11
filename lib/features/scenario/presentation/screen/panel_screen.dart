@@ -77,7 +77,7 @@ class PanelScreen extends StatelessWidget {
                           onLongPress: () {
                             askDialog(() {
                               Get.find<HardwareScenarioController>()
-                                  .deleteScenario(
+                                  .deleteHardwareScenario(
                                       Get.find<HardwareScenarioController>()
                                           .scenarioList[index]
                                           .id!)
@@ -166,7 +166,7 @@ class PanelScreen extends StatelessWidget {
   void getScenarioData() {
     if (_hardwareController.isHardwareScenario.value) {
       _hardwareController
-          .getScenario(Get.find<HardwareScenarioController>().panelType!);
+          .getHardwareScenario(Get.find<HardwareScenarioController>().panelType!);
     } else {
       // _softwareController.getSoftwareScenario();
     }

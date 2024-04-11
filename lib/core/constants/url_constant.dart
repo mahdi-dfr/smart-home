@@ -21,6 +21,9 @@ class UrlConstant {
   /// device:
   static const String deviceNode = 'project/device_nodes/';
   static const String device = 'project/device/';
-  static const String scenario = 'project/scenario/';
   static const String nodeProject = 'project/node_project/';
+
+  /// scenario
+  static const String hardwareScenario = 'project/hardware_scenario/';
+  static const String hardwareScenarioMessage = 'project/hardware_scenario/get_scenario_message';
 }
