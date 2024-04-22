@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
@@ -69,7 +70,12 @@ class ChooseScenarioScreen extends StatelessWidget {
                                     }),
                               ],
                             ))),
-                    SliverList.builder(
+                    _controller.isRelayLoading.value ? SliverToBoxAdapter(
+                      child: Center(
+                        child: LoadingAnimationWidget.beat(
+                            color: CustomColors.foregroundColor, size: 35),
+                      ),
+                    ) : SliverList.builder(
                       itemBuilder: (context, index) {
                         return Container(
                             width: width,
@@ -130,8 +136,17 @@ class ChooseScenarioScreen extends StatelessWidget {
                     onClick: () {
                       _controller.setNewHardwareScenario().then((value) {
                         if (value is DataSuccess) {
-                          _controller.getHardwareScenarioMessage(value.data!.id!).then((value) {
-                            _mqttController.publishMessage(value.data!, '');
+                          _controller
+                              .getHardwareScenarioMessage(value.data!.id!)
+                              .then((value) {
+                                print(value.data!);
+                            _mqttController.publishMessage(
+                                value.data!,
+                                GetStorage().read(AppUtils.username) +
+                                    '/' +
+                                    _controller.projectName +
+                                    '/' +
+                                    'add_hardware_scenario');
                           });
                           showTopSnackBar(
                             Overlay.of(context),

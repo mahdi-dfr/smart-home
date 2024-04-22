@@ -6,7 +6,7 @@ class UrlConstant {
   // static const String baseUrl = 'https://abzarsanat.runflare.run/api/';
 
   /// auth urls:
-  static const String register = 'user/auth/register/';
+  static const String register = 'user/management/';
   static const String login = 'user/auth/token/';
   static const String refresh = 'user/auth/refresh/';
 

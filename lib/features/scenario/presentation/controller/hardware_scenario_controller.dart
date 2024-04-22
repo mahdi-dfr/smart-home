@@ -18,6 +18,7 @@ class HardwareScenarioController extends BaseScenarioController {
   HardwareScenarioController(this._useCase);
 
   final projectId = GetStorage().read(AppUtils.projectIdConst);
+  final projectName = GetStorage().read(AppUtils.projectNameConst);
   TextEditingController scenarioName = TextEditingController();
 
   String? panelType;
@@ -39,6 +40,7 @@ class HardwareScenarioController extends BaseScenarioController {
         GetStorage().read(AppUtils.projectIdConst), '0');
     if (dataState is DataSuccess) {
       if (dataState.data != null) {
+        print(dataState.data);
         relayList.value = dataState.data ?? [];
         isRelayLoading.value = false;
       }
@@ -84,7 +86,7 @@ class HardwareScenarioController extends BaseScenarioController {
       isLoading.value = false;
       return const DataFailed('لطفا تمام اطلاعات را وارد نمایید');
     }
-    DataState dataState = await _useCase.addNewHardwareScenario(scenarioData!);
+    DataState dataState = await _useCase.addNewHardwareScenario(scenarioData!, projectId);
     if (dataState is DataSuccess) {
       if (dataState.data != null) {
         scenarioOnOff = null;
@@ -138,7 +140,8 @@ class HardwareScenarioController extends BaseScenarioController {
           "key_num": scenarioMessageData.keyNum,
           "total_board_ids": scenarioMessageData.totalBoardIds,
           "total_board_ids_used": scenarioMessageData.totalBoardIdsUsed,
-          "node_ids": scenarioMessageData.nodeIds,
+          // "node_ids": scenarioMessageData.nodeIds,
+          "node_ids": '1:1|2:12',
           "status": scenarioMessageData.status
         };
       }

@@ -13,6 +13,7 @@ class AppStyles{
   static const style8 = TextStyle(fontSize: 14, color: Colors.black);
   static const style9 = TextStyle(fontSize: 16, color: Colors.black);
   static const style10 = TextStyle(fontSize: 14, color: Colors.white);
+  static const style11 = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
 
   static const appbarTitleStyle = TextStyle(color: Colors.white, fontSize: 17);
 }

@@ -17,8 +17,8 @@ class ScenarioRepositoryImpl implements ScenarioRepository {
 
   @override
   Future<DataState<CreateHardwareScenarioModel>> addNewHardwareScenario(
-      Map<String, dynamic> data) async {
-    var response = await _apiProvider.setHardwareScenario(data);
+      Map<String, dynamic> data, int projectId) async {
+    var response = await _apiProvider.setHardwareScenario(data, projectId);
     if (response is! DioException) {
       if (response.statusCode == 201) {
         CreateHardwareScenarioModel hardwareScenario =
@@ -61,6 +61,9 @@ class ScenarioRepositoryImpl implements ScenarioRepository {
         return DataFailed(response.statusCode);
       }
     } else {
+      print(response.error);
+      print(response.message);
+      print(response.response);
       return DataFailed(response.response.toString());
     }
   }

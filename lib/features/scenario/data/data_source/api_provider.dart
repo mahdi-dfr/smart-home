@@ -54,12 +54,13 @@ class ScenarioApiProvider {
     }
   }
 
-  Future<dynamic> setHardwareScenario(Map<String, dynamic> data) async {
+  Future<dynamic> setHardwareScenario(Map<String, dynamic> data, int projectId,) async {
     _dio.interceptors.add(ScenarioApiInterceptor());
     try {
       var response = await _dio.post(
           UrlConstant.baseUrl + UrlConstant.hardwareScenario,
           options: Options(responseType: ResponseType.json, method: 'POST'),
+          queryParameters: {'project': projectId},
           data: data);
       return response;
     } catch (err) {

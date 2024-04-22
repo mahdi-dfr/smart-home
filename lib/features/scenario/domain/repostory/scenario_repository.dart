@@ -11,7 +11,7 @@ abstract class ScenarioRepository{
 
   Future<DataState<String>> deleteHardwareScenario(int id);
 
-  Future<DataState<CreateHardwareScenarioModel>> addNewHardwareScenario(Map<String,dynamic> data);
+  Future<DataState<CreateHardwareScenarioModel>> addNewHardwareScenario(Map<String,dynamic> data, int projectId);
 
   Future<DataState<List<HardwareScenarioEntity>>> getHardwareScenario(int projectId, String type);
 
