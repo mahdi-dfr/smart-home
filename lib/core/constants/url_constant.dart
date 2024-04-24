@@ -26,4 +26,7 @@ class UrlConstant {
   /// scenario
   static const String hardwareScenario = 'project/hardware_scenario/';
   static const String hardwareScenarioMessage = 'project/hardware_scenario/get_scenario_message';
+
+  static const String softwareScenario = 'project/software_scenario/';
+  static const String softwareScenarioMessage = 'project/software_scenario/get_software_message';
 }

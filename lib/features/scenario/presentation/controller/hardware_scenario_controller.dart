@@ -86,7 +86,7 @@ class HardwareScenarioController extends BaseScenarioController {
       isLoading.value = false;
       return const DataFailed('لطفا تمام اطلاعات را وارد نمایید');
     }
-    DataState dataState = await _useCase.addNewHardwareScenario(scenarioData!, projectId);
+    DataState dataState = await _useCase.addNewHardwareScenario(scenarioData!);
     if (dataState is DataSuccess) {
       if (dataState.data != null) {
         scenarioOnOff = null;

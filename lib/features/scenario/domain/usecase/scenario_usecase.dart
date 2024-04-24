@@ -21,8 +21,8 @@ class ScenarioUseCase {
   }
 
   Future<DataState<CreateHardwareScenarioModel>> addNewHardwareScenario(
-      Map<String, dynamic> data, int projectId) {
-    return _repository.addNewHardwareScenario(data, projectId);
+      Map<String, dynamic> data) {
+    return _repository.addNewHardwareScenario(data);
   }
 
   Future<DataState<List<HardwareScenarioEntity>>> getHardwareScenario(

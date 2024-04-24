@@ -54,13 +54,12 @@ class ScenarioApiProvider {
     }
   }
 
-  Future<dynamic> setHardwareScenario(Map<String, dynamic> data, int projectId,) async {
+  Future<dynamic> setHardwareScenario(Map<String, dynamic> data,) async {
     _dio.interceptors.add(ScenarioApiInterceptor());
     try {
       var response = await _dio.post(
           UrlConstant.baseUrl + UrlConstant.hardwareScenario,
           options: Options(responseType: ResponseType.json, method: 'POST'),
-          queryParameters: {'project': projectId},
           data: data);
       return response;
     } catch (err) {
@@ -81,6 +80,75 @@ class ScenarioApiProvider {
             'project': projectId,
             'scenario': scenarioId,
           });
+      return response;
+    } catch (err) {
+      if (err is DioException) {
+        return err;
+      }
+    }
+  }
+
+
+
+
+
+  /// software:
+
+  Future<dynamic> deleteSoftwareScenarioById(
+      int id,
+      ) async {
+    _dio.interceptors.add(ScenarioApiInterceptor());
+    try {
+      var response = await _dio.delete(
+        '${UrlConstant.baseUrl}${UrlConstant.softwareScenario}$id/',
+        options: Options(responseType: ResponseType.json, method: 'DELETE'),
+      );
+      return response;
+    } catch (err) {
+      if (err is DioException) {
+        return err;
+      }
+    }
+  }
+
+  Future<dynamic> getSoftwareScenarios(int projectId) async {
+    _dio.interceptors.add(ScenarioApiInterceptor());
+    try {
+      var response = await _dio.get(
+        UrlConstant.baseUrl + UrlConstant.softwareScenario,
+        queryParameters: {'project': projectId,},
+        options: Options(responseType: ResponseType.json, method: 'GET'),
+      );
+      return response;
+    } catch (err) {
+      if (err is DioException) {
+        return err;
+      }
+    }
+  }
+
+  Future<dynamic> setSoftwareScenario(Map<String, dynamic> data,) async {
+    _dio.interceptors.add(ScenarioApiInterceptor());
+    try {
+      var response = await _dio.post(
+          UrlConstant.baseUrl + UrlConstant.softwareScenario,
+          options: Options(responseType: ResponseType.json, method: 'POST'),
+          data: data);
+      return response;
+    } catch (err) {
+      if (err is DioException) {
+        return err;
+      }
+    }
+  }
+
+  Future<dynamic> getSoftwareScenarioMessage(
+      int projectId, int scenarioId) async {
+    _dio.interceptors.add(ScenarioApiInterceptor());
+    try {
+      var response = await _dio.get(
+          UrlConstant.baseUrl + UrlConstant.softwareScenarioMessage,
+          options: Options(responseType: ResponseType.json, method: 'GET'),);
       return response;
     } catch (err) {
       if (err is DioException) {

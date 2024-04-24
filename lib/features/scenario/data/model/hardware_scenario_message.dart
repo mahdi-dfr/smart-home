@@ -32,17 +32,6 @@ class HardwareScenarioMessage extends HardwareScenarioMessageEntity {
     nodeIds = json['node_ids'];
     status = json['status'];
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['type'] = type;
-    data['key_num'] = keyNum;
-    data['total_board_ids'] = totalBoardIds;
-    data['total_board_ids_used'] = totalBoardIdsUsed;
-    data['node_ids'] = nodeIds;
-    data['status'] = status;
-    return data;
-  }
 }
 
 class CreateHardwareScenarioModel {

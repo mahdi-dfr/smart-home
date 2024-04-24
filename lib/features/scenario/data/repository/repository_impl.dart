@@ -3,9 +3,11 @@ import 'package:turkeysh_smart_home/core/resource/data_state.dart';
 import 'package:turkeysh_smart_home/features/scenario/data/data_source/api_provider.dart';
 import 'package:turkeysh_smart_home/features/scenario/data/model/relay.dart';
 import 'package:turkeysh_smart_home/features/scenario/data/model/scenario.dart';
+import 'package:turkeysh_smart_home/features/scenario/data/model/software_scenario.dart';
 import 'package:turkeysh_smart_home/features/scenario/domain/entity/hardware_message_entity.dart';
 import 'package:turkeysh_smart_home/features/scenario/domain/entity/relay.dart';
 import 'package:turkeysh_smart_home/features/scenario/domain/entity/scenario.dart';
+import 'package:turkeysh_smart_home/features/scenario/domain/entity/software_entity.dart';
 import 'package:turkeysh_smart_home/features/scenario/domain/repostory/scenario_repository.dart';
 
 import '../model/hardware_scenario_message.dart';
@@ -17,8 +19,8 @@ class ScenarioRepositoryImpl implements ScenarioRepository {
 
   @override
   Future<DataState<CreateHardwareScenarioModel>> addNewHardwareScenario(
-      Map<String, dynamic> data, int projectId) async {
-    var response = await _apiProvider.setHardwareScenario(data, projectId);
+      Map<String, dynamic> data) async {
+    var response = await _apiProvider.setHardwareScenario(data);
     if (response is! DioException) {
       if (response.statusCode == 201) {
         CreateHardwareScenarioModel hardwareScenario =
@@ -61,9 +63,6 @@ class ScenarioRepositoryImpl implements ScenarioRepository {
         return DataFailed(response.statusCode);
       }
     } else {
-      print(response.error);
-      print(response.message);
-      print(response.response);
       return DataFailed(response.response.toString());
     }
   }
@@ -97,6 +96,43 @@ class ScenarioRepositoryImpl implements ScenarioRepository {
         HardwareScenarioMessageEntity entity =
             HardwareScenarioMessage.fromJson(response.data);
         return DataSuccess(entity);
+      } else {
+        return DataFailed(response.statusCode);
+      }
+    } else {
+      return DataFailed(response.response.toString());
+    }
+  }
+
+  @override
+  Future<DataState<String>> addNewSoftwareScenario(Map<String, dynamic> data, int projectId) {
+    // TODO: implement addNewSoftwareScenario
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataState<String>> deleteSoftwareScenario(int id) {
+    // TODO: implement deleteSoftwareScenario
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataState<HardwareScenarioMessageEntity>> getSoftwareMessage(int projectId, int scenarioId) {
+    // TODO: implement getSoftwareMessage
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataState<List<SoftwareScenarioEntity>>> getSoftwareScenario(int projectId
+      ) async {
+    var response = await _apiProvider.getSoftwareScenarios(projectId, );
+    if (response is! DioException) {
+      if (response.statusCode == 200) {
+        List<SoftwareScenarioEntity> dataList = [];
+        for (int i = 0; i < response.data.length; i++) {
+          dataList.add(SoftwareScenarioModel.fromJson(response.data[i]));
+        }
+        return DataSuccess(dataList);
       } else {
         return DataFailed(response.statusCode);
       }
