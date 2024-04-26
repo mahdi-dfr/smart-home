@@ -142,8 +142,7 @@ class ScenarioApiProvider {
     }
   }
 
-  Future<dynamic> getSoftwareScenarioMessage(
-      int projectId, int scenarioId) async {
+  Future<dynamic> getSoftwareScenarioMessage(int scenarioId) async {
     _dio.interceptors.add(ScenarioApiInterceptor());
     try {
       var response = await _dio.get(

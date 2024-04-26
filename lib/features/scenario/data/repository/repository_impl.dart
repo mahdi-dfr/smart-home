@@ -2,15 +2,17 @@ import 'package:dio/dio.dart';
 import 'package:turkeysh_smart_home/core/resource/data_state.dart';
 import 'package:turkeysh_smart_home/features/scenario/data/data_source/api_provider.dart';
 import 'package:turkeysh_smart_home/features/scenario/data/model/relay.dart';
-import 'package:turkeysh_smart_home/features/scenario/data/model/scenario.dart';
-import 'package:turkeysh_smart_home/features/scenario/data/model/software_scenario.dart';
+import 'package:turkeysh_smart_home/features/scenario/data/model/hardware_scenario_model.dart';
+import 'package:turkeysh_smart_home/features/scenario/data/model/software_scenario_model.dart';
 import 'package:turkeysh_smart_home/features/scenario/domain/entity/hardware_message_entity.dart';
 import 'package:turkeysh_smart_home/features/scenario/domain/entity/relay.dart';
 import 'package:turkeysh_smart_home/features/scenario/domain/entity/scenario.dart';
 import 'package:turkeysh_smart_home/features/scenario/domain/entity/software_entity.dart';
+import 'package:turkeysh_smart_home/features/scenario/domain/entity/software_message_entity.dart';
 import 'package:turkeysh_smart_home/features/scenario/domain/repostory/scenario_repository.dart';
 
 import '../model/hardware_scenario_message.dart';
+import '../model/software_scenario_massage.dart';
 
 class ScenarioRepositoryImpl implements ScenarioRepository {
   final ScenarioApiProvider _apiProvider;
@@ -105,21 +107,47 @@ class ScenarioRepositoryImpl implements ScenarioRepository {
   }
 
   @override
-  Future<DataState<String>> addNewSoftwareScenario(Map<String, dynamic> data, int projectId) {
-    // TODO: implement addNewSoftwareScenario
-    throw UnimplementedError();
+  Future<DataState<String>> addNewSoftwareScenario(Map<String, dynamic> data) async {
+    var response = await _apiProvider.setSoftwareScenario(data);
+    if (response is! DioException) {
+      if (response.statusCode == 201) {
+        return const DataSuccess('success');
+      } else {
+        return DataFailed(response.message);
+      }
+    } else {
+      return DataFailed(response.response.toString());
+    }
   }
 
   @override
-  Future<DataState<String>> deleteSoftwareScenario(int id) {
-    // TODO: implement deleteSoftwareScenario
-    throw UnimplementedError();
+  Future<DataState<String>> deleteSoftwareScenario(int id) async {
+    var response = await _apiProvider.deleteSoftwareScenarioById(id);
+    if (response is! DioException) {
+      if (response.statusCode == 204) {
+        return const DataSuccess('success');
+      } else {
+        return DataFailed(response.statusCode);
+      }
+    } else {
+      return DataFailed(response.toString());
+    }
   }
 
   @override
-  Future<DataState<HardwareScenarioMessageEntity>> getSoftwareMessage(int projectId, int scenarioId) {
-    // TODO: implement getSoftwareMessage
-    throw UnimplementedError();
+  Future<DataState<SoftwareMessageEntity>> getSoftwareMessage(int scenarioId) async {
+    var response = await _apiProvider.getSoftwareScenarioMessage(scenarioId);
+    if (response is! DioException) {
+      if (response.statusCode == 200) {
+        SoftwareMessageEntity entity =
+        SoftwareMessageModel.fromJson(response.data);
+        return DataSuccess(entity);
+      } else {
+        return DataFailed(response.statusCode);
+      }
+    } else {
+      return DataFailed(response.response.toString());
+    }
   }
 
   @override

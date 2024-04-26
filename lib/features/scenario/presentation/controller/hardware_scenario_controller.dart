@@ -23,33 +23,11 @@ class HardwareScenarioController extends BaseScenarioController {
 
   String? panelType;
   String? scenarioOnOff;
-  RxList<RelayEntity> relayList = RxList();
   RxList<HardwareScenarioEntity> scenarioList = RxList();
   RxList<int> deviceList = RxList();
   Map<String, dynamic>? scenarioData = {};
   Map<String, dynamic>? scenarioMessage = {};
 
-  Future<DataState<List<RelayEntity>>> getAllRelays() async {
-    isRelayLoading.value = true;
-    if (!Get.find<ConnectionController>().isConnected.value) {
-      isRelayLoading.value = false;
-      return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید!');
-    }
-
-    DataState<List<RelayEntity>> dataState = await _useCase.getAllRelays(
-        GetStorage().read(AppUtils.projectIdConst), '0');
-    if (dataState is DataSuccess) {
-      if (dataState.data != null) {
-        print(dataState.data);
-        relayList.value = dataState.data ?? [];
-        isRelayLoading.value = false;
-      }
-      return DataSuccess(dataState.data);
-    } else {
-      isRelayLoading.value = false;
-      return const DataFailed('err');
-    }
-  }
 
   Future<DataState<List<HardwareScenarioEntity>>> getHardwareScenario(
       String type) async {

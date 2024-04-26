@@ -5,11 +5,15 @@ import '../../data/model/hardware_scenario_message.dart';
 import '../entity/hardware_message_entity.dart';
 import '../entity/relay.dart';
 import '../entity/scenario.dart';
+import '../entity/software_entity.dart';
+import '../entity/software_message_entity.dart';
 
 class ScenarioUseCase {
   final ScenarioRepository _repository;
 
   ScenarioUseCase(this._repository);
+
+  /// hardware
 
   Future<DataState<List<RelayEntity>>> getAllRelays(
       int projectId, String type) {
@@ -33,5 +37,25 @@ class ScenarioUseCase {
   Future<DataState<HardwareScenarioMessageEntity>> getHardwareScenarioMessage(
       int projectId, int scenarioId) {
     return _repository.getHardwareMessage(projectId, scenarioId);
+  }
+
+  // software:
+
+  Future<DataState<String>> deleteSoftwareScenario(int id) {
+    return _repository.deleteSoftwareScenario(id);
+  }
+
+  Future<DataState<String>> addNewSoftwareScenario(
+      Map<String, dynamic> data) {
+    return _repository.addNewSoftwareScenario(data);
+  }
+
+  Future<DataState<List<SoftwareScenarioEntity>>> getSoftwareScenario(
+      int projectId) {
+    return _repository.getSoftwareScenario(projectId);
+  }
+
+  Future<DataState<SoftwareMessageEntity>> getSoftwareScenarioMessage(int scenarioId) {
+    return _repository.getSoftwareMessage(scenarioId);
   }
 }

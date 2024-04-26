@@ -5,6 +5,7 @@ import '../../../../core/resource/data_state.dart';
 import '../../data/model/hardware_scenario_message.dart';
 import '../entity/hardware_message_entity.dart';
 import '../entity/software_entity.dart';
+import '../entity/software_message_entity.dart';
 
 abstract class ScenarioRepository {
   Future<DataState<List<RelayEntity>>> getAllRelays(int projectId, String type);
@@ -25,11 +26,10 @@ abstract class ScenarioRepository {
   Future<DataState<String>> deleteSoftwareScenario(int id);
 
   Future<DataState<String>> addNewSoftwareScenario(
-      Map<String, dynamic> data, int projectId);
+      Map<String, dynamic> data);
 
   Future<DataState<List<SoftwareScenarioEntity>>> getSoftwareScenario(
       int projectId,);
 
-  Future<DataState<HardwareScenarioMessageEntity>> getSoftwareMessage(
-      int projectId, int scenarioId);
+  Future<DataState<SoftwareMessageEntity>> getSoftwareMessage(int scenarioId);
 }
