@@ -1,31 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:turkeysh_smart_home/core/resource/data_state.dart';
 import 'package:turkeysh_smart_home/features/scenario/presentation/controller/hardware_scenario_controller.dart';
 import 'package:turkeysh_smart_home/features/scenario/presentation/controller/software_controller.dart';
+import 'package:turkeysh_smart_home/mqtt_service.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/dimens.dart';
 import '../../../../core/constants/routes.dart';
 import '../../../../core/constants/styles.dart';
+import '../../../../core/constants/utils.dart';
 import '../../../../core/resource/ask_dialog.dart';
 import '../../../../core/widget/custom_app_bar.dart';
+import '../widget/software_scenario_item.dart';
 
 class PanelScreen extends StatelessWidget {
   PanelScreen({Key? key}) : super(key: key);
 
-  final _hardwareController = Get.find<HardwareScenarioController>();
-  // final _softwareController = Get.find<SoftwareScenarioController>();
+  final _softwareController = Get.find<SoftwareScenarioController>();
+  final _mqttController = Get.find<MqttService>();
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.sizeOf(context).width;
     var height = MediaQuery.sizeOf(context).height;
 
-    getScenarioData();
+    _softwareController.getSoftwareScenario();
 
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
@@ -38,7 +42,6 @@ class PanelScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.find<HardwareScenarioController>().getAllRelays();
           Get.toNamed(PagesRoutes.chooseScenario);
         },
         backgroundColor: CustomColors.foregroundColor,
@@ -53,7 +56,7 @@ class PanelScreen extends StatelessWidget {
           child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Obx(() {
-          return Get.find<HardwareScenarioController>().isScenarioLoading.value
+          return Get.find<SoftwareScenarioController>().isScenarioLoading.value
               ? Center(
                   child: LoadingAnimationWidget.beat(
                       color: CustomColors.foregroundColor, size: 35),
@@ -70,105 +73,42 @@ class PanelScreen extends StatelessWidget {
                     )),
                     SliverList.builder(
                       itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            // Get.find<MqttService>().publishMessage(, )
-                          },
-                          onLongPress: () {
-                            askDialog(() {
-                              Get.find<HardwareScenarioController>()
-                                  .deleteHardwareScenario(
-                                      Get.find<HardwareScenarioController>()
-                                          .scenarioList[index]
-                                          .id!)
-                                  .then((value) {
-                                if (value is DataSuccess) {
-                                  showTopSnackBar(
-                                    Overlay.of(context),
-                                    CustomSnackBar.success(
-                                      message: value.data ??
-                                          'اطلاعات با موفقیت حذف شد',
-                                    ),
-                                  );
-                                } else {
-                                  showTopSnackBar(
-                                    Overlay.of(context),
-                                    CustomSnackBar.error(
-                                      message:
-                                          value.error ?? 'خطا در ارسال اطلاعات',
-                                    ),
-                                  );
-                                }
-                              });
-                              Get.back();
+                        return SoftwareScenarioItem(
+                          index: index,
+                          onItemClicked: () {
+                            _softwareController.getSoftwareScenarioMessage(
+                                _softwareController.scenarioList[index].id!).then((value) {
+                                  print(value.data);
+                                  if(value is DataSuccess){
+                                    _mqttController.publishMessage(value.data!, GetStorage().read(AppUtils.username) +
+                                        '/' +
+                                        _softwareController.projectName +
+                                        '/' +
+                                        'add_software_scenario');
+                                    showTopSnackBar(
+                                      Overlay.of(context),
+                                      const CustomSnackBar.success(
+                                        message: 'سناریو با موفقیت فعال شد',
+                                      ),
+                                    );
+                                  } else {
+                                    showTopSnackBar(
+                                      Overlay.of(context),
+                                      CustomSnackBar.error(
+                                        message: value.error ?? 'خطا در ارسال اطلاعات',
+                                      ),
+                                    );
+                                  }
                             });
                           },
-                          child: Container(
-                              width: width,
-                              height: height / 12,
-                              margin: const EdgeInsets.symmetric(
-                                vertical: 8,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border:
-                                    Border.all(color: Colors.black, width: 0.5),
-                                borderRadius: BorderRadius.circular(
-                                    AppDimensions.borderRadius),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 8),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: width / 8,
-                                      height: height / 10,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color:
-                                            Get.find<HardwareScenarioController>()
-                                                        .scenarioList[index]
-                                                        .status ==
-                                                    '1'
-                                                ? Colors.green
-                                                : Colors.red,
-                                      ),
-                                      child: const Icon(
-                                        Icons.power_settings_new_rounded,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 12,
-                                    ),
-                                    Text(Get.find<HardwareScenarioController>()
-                                            .scenarioList[index]
-                                            .name ??
-                                        'تعریف نشده')
-                                  ],
-                                ),
-                              )),
                         );
                       },
-                      itemCount: Get.find<HardwareScenarioController>()
-                          .scenarioList
-                          .length,
+                      itemCount: _softwareController.scenarioList.length,
                     )
                   ],
                 );
         }),
       )),
     );
-  }
-
-  void getScenarioData() {
-    if (_hardwareController.isHardwareScenario.value) {
-      _hardwareController
-          .getHardwareScenario(Get.find<HardwareScenarioController>().panelType!);
-    } else {
-      // _softwareController.getSoftwareScenario();
-    }
   }
 }

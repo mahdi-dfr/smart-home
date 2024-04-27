@@ -14,18 +14,18 @@ import 'base_scenario_controller.dart';
 
 class HardwareScenarioController extends BaseScenarioController {
   final ScenarioUseCase _useCase;
-
   HardwareScenarioController(this._useCase);
+
 
   final projectId = GetStorage().read(AppUtils.projectIdConst);
   final projectName = GetStorage().read(AppUtils.projectNameConst);
-  TextEditingController scenarioName = TextEditingController();
+
 
   String? panelType;
-  String? scenarioOnOff;
+
   RxList<HardwareScenarioEntity> scenarioList = RxList();
-  RxList<int> deviceList = RxList();
-  Map<String, dynamic>? scenarioData = {};
+
+
   Map<String, dynamic>? scenarioMessage = {};
 
 
@@ -57,6 +57,8 @@ class HardwareScenarioController extends BaseScenarioController {
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
     }
     addNewData();
+    print(scenarioData);
+
     if (scenarioData == {} ||
         scenarioName.text.isEmpty ||
         deviceList.isEmpty ||
@@ -118,8 +120,7 @@ class HardwareScenarioController extends BaseScenarioController {
           "key_num": scenarioMessageData.keyNum,
           "total_board_ids": scenarioMessageData.totalBoardIds,
           "total_board_ids_used": scenarioMessageData.totalBoardIdsUsed,
-          // "node_ids": scenarioMessageData.nodeIds,
-          "node_ids": '1:1|2:12',
+          "node_ids": scenarioMessageData.nodeIds,
           "status": scenarioMessageData.status
         };
       }
@@ -140,12 +141,7 @@ class HardwareScenarioController extends BaseScenarioController {
     };
   }
 
-  void clearData() {
-    scenarioData?.clear();
-    scenarioName.clear();
-    deviceList.clear();
-    scenarioOnOff = null;
-  }
+
 
   // removeData(int relayId){
   //   scenarioData?.removeWhere((element) => element.);

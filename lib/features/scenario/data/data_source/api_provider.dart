@@ -146,7 +146,7 @@ class ScenarioApiProvider {
     _dio.interceptors.add(ScenarioApiInterceptor());
     try {
       var response = await _dio.get(
-          UrlConstant.baseUrl + UrlConstant.softwareScenarioMessage,
+          '${UrlConstant.baseUrl}${UrlConstant.softwareScenarioMessage}/$scenarioId',
           options: Options(responseType: ResponseType.json, method: 'GET'),);
       return response;
     } catch (err) {

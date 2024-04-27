@@ -40,7 +40,6 @@ class HardwareScenarioWidget extends StatelessWidget {
                     title: pannelScenarioNumberList[index],
                     onClick: () {
                       _controller.changePanelType((index+1).toString());
-                      Get.find<HardwareScenarioController>().getAllRelays();
                       Get.toNamed(PagesRoutes.chooseScenario);
                     }, onLongClick: () {  },
                   );

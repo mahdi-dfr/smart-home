@@ -15,6 +15,7 @@ import 'package:turkeysh_smart_home/features/scenario/data/data_source/api_provi
 import 'package:turkeysh_smart_home/features/scenario/data/repository/repository_impl.dart';
 import 'package:turkeysh_smart_home/features/scenario/domain/repostory/scenario_repository.dart';
 import 'package:turkeysh_smart_home/features/scenario/domain/usecase/scenario_usecase.dart';
+import 'package:turkeysh_smart_home/features/scenario/presentation/controller/base_scenario_controller.dart';
 import 'package:turkeysh_smart_home/features/scenario/presentation/controller/hardware_scenario_controller.dart';
 import 'package:turkeysh_smart_home/features/settings/data/data_source/api_provider.dart';
 import 'package:turkeysh_smart_home/features/settings/domain/repository/project_board_repository.dart';
@@ -50,7 +51,7 @@ class AppBindings extends Bindings{
     Get.put(ConnectionController());
     Get.put(RegisterController(Get.find<AuthUseCase>()));
     Get.lazyPut(() => HardwareScenarioController(Get.find<ScenarioUseCase>()), fenix: true);
-    // Get.lazyPut(() => SoftwareScenarioController());
+    Get.lazyPut(() => SoftwareScenarioController(Get.find<ScenarioUseCase>()), fenix: true);
 
 
 
