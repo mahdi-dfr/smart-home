@@ -34,6 +34,7 @@ class ChooseScenarioScreen extends StatelessWidget {
     var height = MediaQuery.sizeOf(context).height;
 
     _softwareController.getAllRelays();
+    print(_hardwareController.isHardwareScenario.value);
 
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
@@ -167,6 +168,7 @@ class ChooseScenarioScreen extends StatelessWidget {
   onSoftwareScenarioCreated(BuildContext context) {
     _softwareController.setNewSoftwareScenario().then((value) {
       if (value is DataSuccess) {
+        Get.back();
         showTopSnackBar(
           Overlay.of(context),
           const CustomSnackBar.success(

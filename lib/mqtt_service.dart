@@ -140,6 +140,8 @@ class MqttService extends GetxController{
 
   setRelayList(String payload){
     final Map<String, dynamic> jsonMessage = json.decode(payload);
+    print('.....................');
+    print(jsonMessage);
 
     removeSameMessages(jsonMessage);
 

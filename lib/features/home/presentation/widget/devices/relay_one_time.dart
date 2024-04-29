@@ -140,6 +140,7 @@ class RelayOneTimeWidget extends StatelessWidget {
                               ///////////// _controller را به logic تغییر دادم:
                               logic.publishMessage(
                                   {
+                                    'type':'relay',
                                     'board_id': boardId,
                                     'node_id': nodeId,
                                     'node_status': true
@@ -148,6 +149,7 @@ class RelayOneTimeWidget extends StatelessWidget {
                             } else {
                               logic.publishMessage(
                                   {
+                                    'type':'relay',
                                     'board_id': boardId,
                                     'node_id': nodeId,
                                     'node_status': false

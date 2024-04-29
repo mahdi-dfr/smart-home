@@ -2,8 +2,8 @@ class UrlConstant {
   UrlConstant._();
 
   /// base url:
-  static const String baseUrl = 'http://192.168.66.141:8000/api/';
-  // static const String baseUrl = 'https://abzarsanat.runflare.run/api/';
+  // static const String baseUrl = 'http://192.168.66.141:8000/api/';
+  static const String baseUrl = 'https://abzarsanat.runflare.run/api/';
 
   /// auth urls:
   static const String register = 'user/management/';

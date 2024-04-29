@@ -8,7 +8,6 @@ class BaseScenarioController extends GetxController{
   var isScenarioLoading = false.obs;
   var isLoading = false.obs;
   var isDeleteLoading = false.obs;
-  var isHardwareScenario = true.obs;
 
   TextEditingController scenarioName = TextEditingController();
   String? scenarioOnOff;

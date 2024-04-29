@@ -114,6 +114,8 @@ class HomeApiProvider {
         queryParameters: {'project': projectId, 'room': room},
         options: Options(responseType: ResponseType.json, method: 'GET'),
       );
+      print(projectId);
+      print(room);
       return response;
     } catch (err) {
       if (err is DioException) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:lottie/lottie.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:turkeysh_smart_home/core/resource/data_state.dart';
@@ -11,6 +12,7 @@ import 'package:turkeysh_smart_home/mqtt_service.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/dimens.dart';
+import '../../../../core/constants/images.dart';
 import '../../../../core/constants/routes.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/utils.dart';
@@ -71,39 +73,49 @@ class PanelScreen extends StatelessWidget {
                         style: AppStyles.style6,
                       ),
                     )),
+                    _softwareController.scenarioList.value.isNotEmpty ?
                     SliverList.builder(
                       itemBuilder: (context, index) {
                         return SoftwareScenarioItem(
                           index: index,
                           onItemClicked: () {
-                            _softwareController.getSoftwareScenarioMessage(
-                                _softwareController.scenarioList[index].id!).then((value) {
-                                  print(value.data);
-                                  if(value is DataSuccess){
-                                    _mqttController.publishMessage(value.data!, GetStorage().read(AppUtils.username) +
-                                        '/' +
-                                        _softwareController.projectName +
-                                        '/' +
-                                        'add_software_scenario');
-                                    showTopSnackBar(
-                                      Overlay.of(context),
-                                      const CustomSnackBar.success(
-                                        message: 'سناریو با موفقیت فعال شد',
-                                      ),
-                                    );
-                                  } else {
-                                    showTopSnackBar(
-                                      Overlay.of(context),
-                                      CustomSnackBar.error(
-                                        message: value.error ?? 'خطا در ارسال اطلاعات',
-                                      ),
-                                    );
-                                  }
+                            askDialog('فعال کردن سناریو', 'آیا مطمئن هستید؟', (){
+                              Get.back();
+                              _softwareController.getSoftwareScenarioMessage(
+                                  _softwareController.scenarioList[index].id!).then((value) {
+                                print(value.data);
+                                if(value is DataSuccess){
+                                  _mqttController.publishMessage(value.data!, GetStorage().read(AppUtils.username) +
+                                      '/' +
+                                      _softwareController.projectName +
+                                      '/' +
+                                      'add_software_scenario');
+                                  showTopSnackBar(
+                                    Overlay.of(context),
+                                    const CustomSnackBar.success(
+                                      message: 'سناریو با موفقیت فعال شد',
+                                    ),
+                                  );
+                                } else {
+                                  showTopSnackBar(
+                                    Overlay.of(context),
+                                    CustomSnackBar.error(
+                                      message: value.error ?? 'خطا در ارسال اطلاعات',
+                                    ),
+                                  );
+                                }
+                              });
                             });
                           },
                         );
                       },
                       itemCount: _softwareController.scenarioList.length,
+                    )
+                        : SliverToBoxAdapter(
+                      child: Center(
+                        child: Lottie.asset(Images.empty,
+                            width: MediaQuery.sizeOf(context).width / 2),
+                      ),
                     )
                   ],
                 );

@@ -119,7 +119,7 @@ class ProjectScreen extends StatelessWidget {
                                           IconButton(
                                               onPressed: () {
                                                 Get.back();
-                                                askDialog(() {
+                                                askDialog('حذف پروژه', 'آیا مطمئن هستید؟',() {
                                                   _controller
                                                       .deleteProject(_controller
                                                           .projectList[index]

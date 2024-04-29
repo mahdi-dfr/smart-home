@@ -112,10 +112,11 @@ class DeviceController extends GetxController {
     if (Get.find<ConnectionController>().isConnected.value) {
       DataState<List<DeviceEntity>> dataState = await _useCase.getDevices(
           GetStorage().read(AppUtils.projectIdConst), roomId!);
-      print(roomId);
+
       if (dataState is DataSuccess) {
         if (dataState.data != null) {
           deviceList.value = dataState.data ?? [];
+
           isDeviceLoading.value = false;
         }
         return DataSuccess(dataState.data);

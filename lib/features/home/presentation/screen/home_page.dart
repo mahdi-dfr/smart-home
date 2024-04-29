@@ -175,7 +175,7 @@ class HomePage extends StatelessWidget {
                                                   IconButton(
                                                       onPressed: () {
                                                         Get.back();
-                                                        askDialog(() {
+                                                        askDialog('حذف اتاق', 'آیا مطمئن هستید؟', () {
                                                           if (_controller
                                                                   .roomsList[
                                                                       index]

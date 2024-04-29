@@ -20,12 +20,9 @@ class HardwareScenarioController extends BaseScenarioController {
   final projectId = GetStorage().read(AppUtils.projectIdConst);
   final projectName = GetStorage().read(AppUtils.projectNameConst);
 
-
   String? panelType;
-
   RxList<HardwareScenarioEntity> scenarioList = RxList();
-
-
+  var isHardwareScenario = true.obs;
   Map<String, dynamic>? scenarioMessage = {};
 
 

@@ -91,7 +91,7 @@ class DeviceListScreen extends StatelessWidget {
                                     '0') {
                                   return RelayOneTimeWidget(
                                     boardId: _controller.deviceList[index]
-                                        .nodeProject?.boardProject,
+                                        .projectBoard?.uniqueId,
                                     nodeId: _controller.deviceList[index]
                                         .nodeProject?.uniqueId,
                                     title: _controller

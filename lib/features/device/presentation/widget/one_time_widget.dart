@@ -58,11 +58,16 @@ class OneTimeWidget extends StatelessWidget {
 
   }
 
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1,
       child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
           color: Colors.white,
           image: const DecorationImage(
@@ -76,20 +81,9 @@ class OneTimeWidget extends StatelessWidget {
               width: 1),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 8),
-                child: Text(
-                  title ??
-                      '',
-                  style:
-                  const TextStyle(fontSize: 16),
-                ),
-              ),
-            ),
+
             Expanded(
               flex: 2,
               child: GetBuilder<MqttService>(builder: (logic) {
@@ -133,8 +127,23 @@ class OneTimeWidget extends StatelessWidget {
                 );
               }),
             ),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 8),
+                child: Text(
+                  title ??
+                      '',
+                  style:
+                  const TextStyle(fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
           ],
         ),
+
       ),
     );
 

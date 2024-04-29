@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import '../constants/colors.dart';
 import '../constants/images.dart';
 
-Future<void> askDialog(Function() onConfirm ){
+Future<void> askDialog(String title, String content, Function() onConfirm ){
   return Get.defaultDialog(
-    title: "حذف پروژه",
+    title: title,
     titleStyle: TextStyle(
       color: CustomColors.foregroundColor,
       fontWeight: FontWeight.bold,
@@ -19,8 +19,8 @@ Future<void> askDialog(Function() onConfirm ){
             fit: BoxFit.cover,
             opacity: 0.05),
       ),
-      child: const Text(
-        "آیا میخواهید حذف کنید؟",
+      child: Text(
+        content,
         textAlign: TextAlign.center,
       ),
     ),

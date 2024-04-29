@@ -127,6 +127,24 @@ class SoftwareScenarioController extends BaseScenarioController{
     }
   }
 
+  Future<DataState<String>> deleteSoftwareScenario(int id) async {
+    isDeleteLoading.value = true;
+    if (Get.find<ConnectionController>().isConnected.value) {
+      DataState dataState = await _useCase.deleteSoftwareScenario(id);
+      if (dataState is DataSuccess) {
+        getSoftwareScenario();
+        isDeleteLoading.value = false;
+        return const DataSuccess('سناریو با موفقیت حذف شد');
+      } else {
+        isDeleteLoading.value = false;
+        return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
+      }
+    } else {
+      isDeleteLoading.value = false;
+      return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
+    }
+  }
+
   void addNewData() {
     scenarioData = {
       'name': scenarioName.text,

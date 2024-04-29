@@ -24,10 +24,10 @@ class SoftwareScenarioItem extends StatelessWidget {
     return InkWell(
       onTap: onItemClicked,
       onLongPress: () {
-        askDialog(() {
-          Get.find<HardwareScenarioController>()
-              .deleteHardwareScenario(
-              Get.find<HardwareScenarioController>()
+        askDialog('حذف سناریو', 'آیا میخواهید سناریو را حذف کنید؟', () {
+          Get.find<SoftwareScenarioController>()
+              .deleteSoftwareScenario(
+              Get.find<SoftwareScenarioController>()
                   .scenarioList[index]
                   .id!)
               .then((value) {
