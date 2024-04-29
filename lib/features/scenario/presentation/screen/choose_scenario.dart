@@ -73,17 +73,22 @@ class ChooseScenarioScreen extends StatelessWidget {
                                     height: height / 12,
                                     onPressed: (value) {
                                       if (value == 'روشن') {
-                                        if(_hardwareController.isHardwareScenario.value){
-                                          _hardwareController.scenarioOnOff = '1';
-                                        }else{
-                                          _softwareController.scenarioOnOff = '1';
+                                        if (_hardwareController
+                                            .isHardwareScenario.value) {
+                                          _hardwareController.scenarioOnOff =
+                                              '1';
+                                        } else {
+                                          _softwareController.scenarioOnOff =
+                                              '1';
                                         }
-
                                       } else {
-                                        if(_hardwareController.isHardwareScenario.value){
-                                          _hardwareController.scenarioOnOff = '0';
-                                        }else{
-                                          _softwareController.scenarioOnOff = '0';
+                                        if (_hardwareController
+                                            .isHardwareScenario.value) {
+                                          _hardwareController.scenarioOnOff =
+                                              '0';
+                                        } else {
+                                          _softwareController.scenarioOnOff =
+                                              '0';
                                         }
                                       }
                                     }),
@@ -142,9 +147,9 @@ class ChooseScenarioScreen extends StatelessWidget {
           print(value.data!);
           _mqttController.publishMessage(
               value.data!,
-              GetStorage().read(AppUtils.username) +
+              _hardwareController.projectName +
                   '/' +
-                  _hardwareController.projectName +
+                  GetStorage().read(AppUtils.username) +
                   '/' +
                   'add_hardware_scenario');
         });

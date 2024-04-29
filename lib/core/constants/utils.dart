@@ -63,4 +63,6 @@ class AppUtils{
   };
 
   static List<String> scenarioTypeList = const ['پنل دیواری', 'نرم افزار'];
+
+
 }

@@ -14,11 +14,12 @@ import '../../../../../mqtt_service.dart';
 class RelayOneTimeWidget extends StatelessWidget {
   RelayOneTimeWidget(
       {required this.title, required this.boardId, required this.nodeId,
-        required this.onLongPress, Key? key})
+        required this.onLongPress, required this.boardUniqueId, Key? key})
       : super(key: key);
 
   String? title;
   int? boardId;
+  int? boardUniqueId;
   int? nodeId;
 
   final _controller = Get.find<MqttService>();
@@ -30,7 +31,8 @@ class RelayOneTimeWidget extends StatelessWidget {
 
   setRelaySwitchValue() {
     for (var element in _controller.relayDataList) {
-      if (element.boardId == boardId) {
+      print(element.boardId);
+      if (element.boardId == boardUniqueId) {
         switch (nodeId) {
           case 1:
             isPowerSwitchOn.value = element.key1 ?? false;
@@ -141,7 +143,7 @@ class RelayOneTimeWidget extends StatelessWidget {
                               logic.publishMessage(
                                   {
                                     'type':'relay',
-                                    'board_id': boardId,
+                                    'board_id': boardUniqueId,
                                     'node_id': nodeId,
                                     'node_status': true
                                   },
@@ -150,7 +152,7 @@ class RelayOneTimeWidget extends StatelessWidget {
                               logic.publishMessage(
                                   {
                                     'type':'relay',
-                                    'board_id': boardId,
+                                    'board_id': boardUniqueId,
                                     'node_id': nodeId,
                                     'node_status': false
                                   },

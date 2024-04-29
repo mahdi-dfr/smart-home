@@ -161,6 +161,7 @@ class MqttService extends GetxController{
     );
 
     relayDataList.add(relayData);
+
     update();
   }
 

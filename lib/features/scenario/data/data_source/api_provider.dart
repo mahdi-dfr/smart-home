@@ -148,6 +148,7 @@ class ScenarioApiProvider {
       var response = await _dio.get(
           '${UrlConstant.baseUrl}${UrlConstant.softwareScenarioMessage}/$scenarioId',
           options: Options(responseType: ResponseType.json, method: 'GET'),);
+      print(response);
       return response;
     } catch (err) {
       if (err is DioException) {

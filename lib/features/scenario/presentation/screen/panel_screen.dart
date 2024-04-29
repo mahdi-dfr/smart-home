@@ -85,9 +85,7 @@ class PanelScreen extends StatelessWidget {
                                   _softwareController.scenarioList[index].id!).then((value) {
                                 print(value.data);
                                 if(value is DataSuccess){
-                                  _mqttController.publishMessage(value.data!, GetStorage().read(AppUtils.username) +
-                                      '/' +
-                                      _softwareController.projectName +
+                                  _mqttController.publishMessage(value.data!,_softwareController.projectName +'/'+ GetStorage().read(AppUtils.username) +
                                       '/' +
                                       'add_software_scenario');
                                   showTopSnackBar(

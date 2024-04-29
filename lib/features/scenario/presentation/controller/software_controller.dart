@@ -119,6 +119,8 @@ class SoftwareScenarioController extends BaseScenarioController{
           "node_ids": scenarioMessageData.nodeIds,
           "status": scenarioMessageData.status
         };
+        print('wwwwwww');
+        print(scenarioMessageData);
       }
       return DataSuccess(scenarioMessage);
     } else {
