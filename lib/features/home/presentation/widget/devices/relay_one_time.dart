@@ -13,12 +13,11 @@ import '../../../../../mqtt_service.dart';
 
 class RelayOneTimeWidget extends StatelessWidget {
   RelayOneTimeWidget(
-      {required this.title, required this.boardId, required this.nodeId,
+      {required this.title, required this.nodeId,
         required this.onLongPress, required this.boardUniqueId, Key? key})
       : super(key: key);
 
   String? title;
-  int? boardId;
   int? boardUniqueId;
   int? nodeId;
 

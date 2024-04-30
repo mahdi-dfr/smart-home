@@ -2,17 +2,19 @@ import 'package:dio/dio.dart';
 import 'package:turkeysh_smart_home/core/resource/data_state.dart';
 import 'package:turkeysh_smart_home/features/scenario/data/data_source/api_provider.dart';
 import 'package:turkeysh_smart_home/features/scenario/data/model/relay.dart';
-import 'package:turkeysh_smart_home/features/scenario/data/model/hardware_scenario_model.dart';
-import 'package:turkeysh_smart_home/features/scenario/data/model/software_scenario_model.dart';
-import 'package:turkeysh_smart_home/features/scenario/domain/entity/hardware_message_entity.dart';
+import 'package:turkeysh_smart_home/features/scenario/data/model/hardware/hardware_scenario_model.dart';
+import 'package:turkeysh_smart_home/features/scenario/data/model/software/software_scenario_model.dart';
+import 'package:turkeysh_smart_home/features/scenario/domain/entity/hardware/hardware_message_entity.dart';
 import 'package:turkeysh_smart_home/features/scenario/domain/entity/relay.dart';
 import 'package:turkeysh_smart_home/features/scenario/domain/entity/scenario.dart';
-import 'package:turkeysh_smart_home/features/scenario/domain/entity/software_entity.dart';
-import 'package:turkeysh_smart_home/features/scenario/domain/entity/software_message_entity.dart';
+import 'package:turkeysh_smart_home/features/scenario/domain/entity/software/software_entity.dart';
+import 'package:turkeysh_smart_home/features/scenario/domain/entity/software/software_message_entity.dart';
 import 'package:turkeysh_smart_home/features/scenario/domain/repostory/scenario_repository.dart';
 
-import '../model/hardware_scenario_message.dart';
-import '../model/software_scenario_massage.dart';
+import '../../domain/entity/software/create_software_entity.dart';
+import '../model/hardware/hardware_scenario_message.dart';
+import '../model/software/create_software_model.dart';
+import '../model/software/software_scenario_massage.dart';
 
 class ScenarioRepositoryImpl implements ScenarioRepository {
   final ScenarioApiProvider _apiProvider;
@@ -37,16 +39,16 @@ class ScenarioRepositoryImpl implements ScenarioRepository {
   }
 
   @override
-  Future<DataState<String>> deleteHardwareScenario(int id) async {
-    var response = await _apiProvider.deleteHardwareScenarioById(id);
+  Future<DataState<String>> deleteHardwareScenario(int projectId, String type) async {
+    var response = await _apiProvider.deleteHardwareScenario(projectId, type);
     if (response is! DioException) {
       if (response.statusCode == 204) {
         return const DataSuccess('success');
       } else {
         return DataFailed(response.statusCode);
       }
-    } else {
-      return DataFailed(response.toString());
+    } else  {
+      return const DataFailed('سناریویی برای این کلید تنظیم نشده است!');
     }
   }
 
@@ -107,11 +109,13 @@ class ScenarioRepositoryImpl implements ScenarioRepository {
   }
 
   @override
-  Future<DataState<String>> addNewSoftwareScenario(Map<String, dynamic> data) async {
+  Future<DataState<CreateSoftwareScenarioEntity>> addNewSoftwareScenario(Map<String, dynamic> data) async {
     var response = await _apiProvider.setSoftwareScenario(data);
     if (response is! DioException) {
       if (response.statusCode == 201) {
-        return const DataSuccess('success');
+        CreateSoftwareScenarioEntity scenario =
+        CreateSoftwareScenarioModel.fromJson(response.data);
+        return DataSuccess(scenario);
       } else {
         return DataFailed(response.message);
       }

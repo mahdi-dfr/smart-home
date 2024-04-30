@@ -1,4 +1,4 @@
-import '../../domain/entity/software_message_entity.dart';
+import '../../../domain/entity/software/software_message_entity.dart';
 
 class SoftwareMessageModel extends SoftwareMessageEntity {
   String? type;

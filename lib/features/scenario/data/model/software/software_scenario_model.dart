@@ -1,4 +1,4 @@
-import '../../domain/entity/software_entity.dart';
+import '../../../domain/entity/software/software_entity.dart';
 
 class SoftwareScenarioModel extends SoftwareScenarioEntity {
   int? id;

@@ -96,7 +96,7 @@ class OneTimeWidget extends StatelessWidget {
                     username = GetStorage().read(
                         AppUtils.username);
 
-                    if (isOneTimeButtonEnabled.value) {
+                    if (!isOneTimeButtonEnabled.value) {
                       ///////////// _controller را به logic تغییر دادم:
                       logic.publishMessage(
                           {

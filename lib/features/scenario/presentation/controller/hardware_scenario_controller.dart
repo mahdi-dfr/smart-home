@@ -8,8 +8,8 @@ import 'package:turkeysh_smart_home/features/scenario/domain/usecase/scenario_us
 import '../../../../core/constants/utils.dart';
 import '../../../../core/resource/connection_controller.dart';
 import '../../../../core/resource/data_state.dart';
-import '../../data/model/hardware_scenario_message.dart';
-import '../../domain/entity/hardware_message_entity.dart';
+import '../../data/model/hardware/hardware_scenario_message.dart';
+import '../../domain/entity/hardware/hardware_message_entity.dart';
 import 'base_scenario_controller.dart';
 
 class HardwareScenarioController extends BaseScenarioController {
@@ -81,16 +81,16 @@ class HardwareScenarioController extends BaseScenarioController {
     }
   }
 
-  Future<DataState<String>> deleteHardwareScenario(int id) async {
+  Future<DataState<String>> deleteHardwareScenario(String type) async {
     isDeleteLoading.value = true;
     if (Get.find<ConnectionController>().isConnected.value) {
-      DataState dataState = await _useCase.deleteHardwareScenario(id);
+      DataState dataState = await _useCase.deleteHardwareScenario(projectId, type);
       if (dataState is DataSuccess) {
-        getHardwareScenario(panelType!);
         isDeleteLoading.value = false;
         return const DataSuccess('سناریو با موفقیت حذف شد');
       } else {
         isDeleteLoading.value = false;
+        print(dataState.error);
         return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
       }
     } else {

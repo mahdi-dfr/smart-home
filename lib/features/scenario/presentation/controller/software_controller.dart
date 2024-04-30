@@ -1,12 +1,13 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:turkeysh_smart_home/features/scenario/domain/entity/software_entity.dart';
-import 'package:turkeysh_smart_home/features/scenario/domain/entity/software_message_entity.dart';
+import 'package:turkeysh_smart_home/features/scenario/domain/entity/software/software_entity.dart';
+import 'package:turkeysh_smart_home/features/scenario/domain/entity/software/software_message_entity.dart';
 
 import '../../../../core/constants/utils.dart';
 import '../../../../core/resource/connection_controller.dart';
 import '../../../../core/resource/data_state.dart';
 import '../../domain/entity/relay.dart';
+import '../../domain/entity/software/create_software_entity.dart';
 import '../../domain/usecase/scenario_usecase.dart';
 import 'base_scenario_controller.dart';
 
@@ -66,7 +67,7 @@ class SoftwareScenarioController extends BaseScenarioController{
     }
   }
 
-  Future<DataState<String>> setNewSoftwareScenario() async {
+  Future<DataState<CreateSoftwareScenarioEntity>> setNewSoftwareScenario() async {
     isLoading.value = true;
     if (!Get.find<ConnectionController>().isConnected.value) {
       isLoading.value = false;

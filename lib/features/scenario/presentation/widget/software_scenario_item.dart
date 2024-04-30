@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:turkeysh_smart_home/features/scenario/presentation/controller/software_controller.dart';
 
 import '../../../../core/constants/dimens.dart';
+import '../../../../core/constants/utils.dart';
 import '../../../../core/resource/ask_dialog.dart';
 import '../../../../core/resource/data_state.dart';
+import '../../../../mqtt_service.dart';
 import '../controller/hardware_scenario_controller.dart';
 
 class SoftwareScenarioItem extends StatelessWidget {
@@ -15,6 +18,7 @@ class SoftwareScenarioItem extends StatelessWidget {
   final int index;
   final Function() onItemClicked;
   final _softwareController = Get.find<SoftwareScenarioController>();
+  final _mqttController = Get.find<MqttService>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +35,20 @@ class SoftwareScenarioItem extends StatelessWidget {
                   .scenarioList[index]
                   .id!)
               .then((value) {
+
+            _mqttController.publishMessage(
+                {
+                  'type': 'dell_software_scenario',
+                  'scenario_id': Get.find<SoftwareScenarioController>()
+                      .scenarioList[index]
+                      .id!,
+                },
+                _softwareController.projectName +
+                    '/' +
+                    GetStorage().read(AppUtils.username) +
+                    '/' +
+                    'add_software_scenario');
+
             if (value is DataSuccess) {
               showTopSnackBar(
                 Overlay.of(context),

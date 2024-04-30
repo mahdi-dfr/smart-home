@@ -5,13 +5,14 @@ import 'aip_interseptor.dart';
 class ScenarioApiProvider {
   final Dio _dio = Dio();
 
-  Future<dynamic> deleteHardwareScenarioById(
-    int id,
+  Future<dynamic> deleteHardwareScenario(
+      int projectId, String type
   ) async {
     _dio.interceptors.add(ScenarioApiInterceptor());
     try {
       var response = await _dio.delete(
-        '${UrlConstant.baseUrl}${UrlConstant.hardwareScenario}$id/',
+        '${UrlConstant.baseUrl}${UrlConstant.hardwareScenario}''delete_hardware_scenario/',
+        queryParameters: {'project_id': projectId, 'type': type},
         options: Options(responseType: ResponseType.json, method: 'DELETE'),
       );
       return response;

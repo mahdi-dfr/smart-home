@@ -1,4 +1,4 @@
-import '../../domain/entity/hardware_message_entity.dart';
+import '../../../domain/entity/hardware/hardware_message_entity.dart';
 
 class HardwareScenarioMessage extends HardwareScenarioMessageEntity {
   String? type;

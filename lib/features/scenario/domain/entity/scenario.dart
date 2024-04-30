@@ -1,4 +1,4 @@
-import '../../data/model/hardware_scenario_model.dart';
+import '../../data/model/hardware/hardware_scenario_model.dart';
 
 class HardwareScenarioEntity {
   int? id;

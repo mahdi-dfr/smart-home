@@ -26,6 +26,7 @@ class PanelScreen extends StatelessWidget {
   final _softwareController = Get.find<SoftwareScenarioController>();
   final _mqttController = Get.find<MqttService>();
 
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.sizeOf(context).width;
@@ -60,8 +61,7 @@ class PanelScreen extends StatelessWidget {
         child: Obx(() {
           return Get.find<SoftwareScenarioController>().isScenarioLoading.value
               ? Center(
-                  child: LoadingAnimationWidget.beat(
-                      color: CustomColors.foregroundColor, size: 35),
+                  child: LoadingAnimationWidget.beat(color: CustomColors.foregroundColor, size: 35),
                 )
               : CustomScrollView(
                   slivers: [
@@ -73,48 +73,41 @@ class PanelScreen extends StatelessWidget {
                         style: AppStyles.style6,
                       ),
                     )),
-                    _softwareController.scenarioList.value.isNotEmpty ?
-                    SliverList.builder(
-                      itemBuilder: (context, index) {
-                        return SoftwareScenarioItem(
-                          index: index,
-                          onItemClicked: () {
-                            askDialog('فعال کردن سناریو', 'آیا مطمئن هستید؟', (){
-                              Get.back();
-                              _softwareController.getSoftwareScenarioMessage(
-                                  _softwareController.scenarioList[index].id!).then((value) {
-                                print(value.data);
-                                if(value is DataSuccess){
-                                  _mqttController.publishMessage(value.data!,_softwareController.projectName +'/'+ GetStorage().read(AppUtils.username) +
-                                      '/' +
-                                      'add_software_scenario');
-                                  showTopSnackBar(
-                                    Overlay.of(context),
-                                    const CustomSnackBar.success(
-                                      message: 'سناریو با موفقیت فعال شد',
-                                    ),
-                                  );
-                                } else {
-                                  showTopSnackBar(
-                                    Overlay.of(context),
-                                    CustomSnackBar.error(
-                                      message: value.error ?? 'خطا در ارسال اطلاعات',
-                                    ),
-                                  );
-                                }
-                              });
-                            });
-                          },
-                        );
-                      },
-                      itemCount: _softwareController.scenarioList.length,
-                    )
+                    _softwareController.scenarioList.value.isNotEmpty
+                        ? SliverList.builder(
+                            itemBuilder: (context, index) {
+                              return SoftwareScenarioItem(
+                                index: index,
+                                onItemClicked: () {
+                                  askDialog('فعال کردن سناریو', 'آیا مطمئن هستید؟', () {
+                                    Get.back();
+                                    _mqttController.publishMessage(
+                                        {
+                                          'type':'run_software_scenario',
+                                          'scenario_id': _softwareController.scenarioList.value[index].id,
+                                        },
+                                        _softwareController.projectName +
+                                            '/' +
+                                            GetStorage().read(AppUtils.username) +
+                                            '/' +
+                                            'add_software_scenario');
+                                    showTopSnackBar(
+                                      Overlay.of(context),
+                                      const CustomSnackBar.success(
+                                        message: 'سناریو با موفقیت فعال شد',
+                                      ),
+                                    );
+                                  });
+                                },
+                              );
+                            },
+                            itemCount: _softwareController.scenarioList.length,
+                          )
                         : SliverToBoxAdapter(
-                      child: Center(
-                        child: Lottie.asset(Images.empty,
-                            width: MediaQuery.sizeOf(context).width / 2),
-                      ),
-                    )
+                            child: Center(
+                              child: Lottie.asset(Images.empty, width: MediaQuery.sizeOf(context).width / 2),
+                            ),
+                          )
                   ],
                 );
         }),

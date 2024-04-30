@@ -163,6 +163,7 @@ class ChooseScenarioScreen extends StatelessWidget {
         showTopSnackBar(
           Overlay.of(context),
           CustomSnackBar.error(
+
             message: value.error ?? 'خطا در ارسال اطلاعات',
           ),
         );
@@ -174,6 +175,38 @@ class ChooseScenarioScreen extends StatelessWidget {
     _softwareController.setNewSoftwareScenario().then((value) {
       if (value is DataSuccess) {
         Get.back();
+
+
+        _softwareController
+            .getSoftwareScenarioMessage(value.data!.id!)
+            .then((value) {
+          print(value.data);
+          if (value is DataSuccess) {
+            _mqttController.publishMessage(
+                value.data!,
+                _softwareController.projectName +
+                    '/' +
+                    GetStorage().read(AppUtils.username) +
+                    '/' +
+                    'add_software_scenario');
+            showTopSnackBar(
+              Overlay.of(context),
+              const CustomSnackBar.success(
+                message: 'سناریو با موفقیت فعال شد',
+              ),
+            );
+          } else {
+            showTopSnackBar(
+              Overlay.of(context),
+              CustomSnackBar.error(
+                message: value.error ?? 'خطا در ارسال اطلاعات',
+              ),
+            );
+          }
+        });
+
+
+
         showTopSnackBar(
           Overlay.of(context),
           const CustomSnackBar.success(
