@@ -1,46 +1,36 @@
-import '../../domain/entity/device_node_entity.dart';
+import 'package:turkeysh_smart_home/features/home/data/model/device.dart';
+import 'package:turkeysh_smart_home/features/home/domain/entity/device_node_entity.dart';
 
-class DeviceNodeModel extends DeviceNodeEntity {
+class DeviceNodeModel extends DeviceNodeEntity{
   int? id;
+  int? boardProject;
   int? uniqueId;
   bool? isActive;
   int? nodeType;
-  int? boardProject;
   int? project;
 
-  DeviceNodeModel(
-      {this.id,
-      this.uniqueId,
-      this.isActive,
-      this.nodeType,
-      this.boardProject,
-      this.project})
-      : super(
-          id: id,
-          uniqueId: uniqueId,
-          isActive: isActive,
-          nodeType: nodeType,
-          boardProject: boardProject,
-          project: project,
-        );
+  DeviceNodeModel({this.id,
+    this.boardProject,
+    this.uniqueId,
+    this.isActive,
+    this.nodeType,
+    this.project}) :super(
+    id: id,
+    boardProject: boardProject,
+    uniqueId: uniqueId,
+    isActive: isActive,
+    nodeType: nodeType,
+    project: project,
+  );
 
   DeviceNodeModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    boardProject = json['board_project'];
     uniqueId = json['unique_id'];
     isActive = json['is_active'];
     nodeType = json['node_type'];
-    boardProject = json['board_project'];
     project = json['project'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['unique_id'] = uniqueId;
-    data['is_active'] = isActive;
-    data['node_type'] = nodeType;
-    data['board_project'] = boardProject;
-    data['project'] = project;
-    return data;
-  }
 }
+

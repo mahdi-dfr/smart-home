@@ -41,7 +41,7 @@ class SoftwareScenarioItem extends StatelessWidget {
                   'type': 'dell_software_scenario',
                   'scenario_id': Get.find<SoftwareScenarioController>()
                       .scenarioList[index]
-                      .id!,
+                      .uniqueId!,
                 },
                 _softwareController.projectName +
                     '/' +

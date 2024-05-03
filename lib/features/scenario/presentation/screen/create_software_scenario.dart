@@ -21,8 +21,8 @@ import '../../../../core/widget/drop_box.dart';
 import '../../../../mqtt_service.dart';
 import '../controller/base_scenario_controller.dart';
 
-class ChooseScenarioScreen extends StatelessWidget {
-  ChooseScenarioScreen({Key? key}) : super(key: key);
+class ChooseSoftwareScenarioScreen extends StatelessWidget {
+  ChooseSoftwareScenarioScreen({Key? key}) : super(key: key);
 
   final _hardwareController = Get.find<HardwareScenarioController>();
   final _softwareController = Get.find<SoftwareScenarioController>();
@@ -34,14 +34,13 @@ class ChooseScenarioScreen extends StatelessWidget {
     var height = MediaQuery.sizeOf(context).height;
 
     _softwareController.getAllRelays();
-    print(_hardwareController.isHardwareScenario.value);
 
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
       appBar: CustomAppBar(
         height: 150,
         titleWidget: const Text(
-          'سناریو ها',
+          'سناریوی نرم افزاری',
           style: AppStyles.appbarTitleStyle,
         ),
       ),
@@ -61,8 +60,7 @@ class ChooseScenarioScreen extends StatelessWidget {
                                 TextFieldBox(
                                   title: 'نام سناریو',
                                   height: height / 12,
-                                  controller: _hardwareController
-                                          .isHardwareScenario.value
+                                  controller: _hardwareController.isHardwareScenario.value
                                       ? _hardwareController.scenarioName
                                       : _softwareController.scenarioName,
                                 ),
@@ -73,22 +71,16 @@ class ChooseScenarioScreen extends StatelessWidget {
                                     height: height / 12,
                                     onPressed: (value) {
                                       if (value == 'روشن') {
-                                        if (_hardwareController
-                                            .isHardwareScenario.value) {
-                                          _hardwareController.scenarioOnOff =
-                                              '1';
+                                        if (_hardwareController.isHardwareScenario.value) {
+                                          _hardwareController.scenarioOnOff = '1';
                                         } else {
-                                          _softwareController.scenarioOnOff =
-                                              '1';
+                                          _softwareController.scenarioOnOff = '1';
                                         }
                                       } else {
-                                        if (_hardwareController
-                                            .isHardwareScenario.value) {
-                                          _hardwareController.scenarioOnOff =
-                                              '0';
+                                        if (_hardwareController.isHardwareScenario.value) {
+                                          _hardwareController.scenarioOnOff = '0';
                                         } else {
-                                          _softwareController.scenarioOnOff =
-                                              '0';
+                                          _softwareController.scenarioOnOff = '0';
                                         }
                                       }
                                     }),
@@ -97,9 +89,7 @@ class ChooseScenarioScreen extends StatelessWidget {
                     _softwareController.isRelayLoading.value
                         ? SliverToBoxAdapter(
                             child: Center(
-                              child: LoadingAnimationWidget.beat(
-                                  color: CustomColors.foregroundColor,
-                                  size: 35),
+                              child: LoadingAnimationWidget.beat(color: CustomColors.foregroundColor, size: 35),
                             ),
                           )
                         : SliverList.builder(
@@ -122,11 +112,7 @@ class ChooseScenarioScreen extends StatelessWidget {
                   return CustomButton(
                     loading: _hardwareController.isLoading.value,
                     onClick: () {
-                      if (_hardwareController.isHardwareScenario.value) {
-                        onHardwareScenarioCreated(context);
-                      } else {
-                        onSoftwareScenarioCreated(context);
-                      }
+                      onSoftwareScenarioCreated(context);
                     },
                   );
                 }),
@@ -138,48 +124,12 @@ class ChooseScenarioScreen extends StatelessWidget {
     );
   }
 
-  onHardwareScenarioCreated(BuildContext context) {
-    _hardwareController.setNewHardwareScenario().then((value) {
-      if (value is DataSuccess) {
-        _hardwareController
-            .getHardwareScenarioMessage(value.data!.id!)
-            .then((value) {
-          print(value.data!);
-          _mqttController.publishMessage(
-              value.data!,
-              _hardwareController.projectName +
-                  '/' +
-                  GetStorage().read(AppUtils.username) +
-                  '/' +
-                  'add_hardware_scenario');
-        });
-        showTopSnackBar(
-          Overlay.of(context),
-          const CustomSnackBar.success(
-            message: 'اطلاعات با موفقیت ذخیره شد',
-          ),
-        );
-      } else {
-        showTopSnackBar(
-          Overlay.of(context),
-          CustomSnackBar.error(
-
-            message: value.error ?? 'خطا در ارسال اطلاعات',
-          ),
-        );
-      }
-    });
-  }
-
   onSoftwareScenarioCreated(BuildContext context) {
     _softwareController.setNewSoftwareScenario().then((value) {
       if (value is DataSuccess) {
         Get.back();
 
-
-        _softwareController
-            .getSoftwareScenarioMessage(value.data!.id!)
-            .then((value) {
+        _softwareController.getSoftwareScenarioMessage(value.data!.id!).then((value) {
           print(value.data);
           if (value is DataSuccess) {
             _mqttController.publishMessage(
@@ -204,8 +154,6 @@ class ChooseScenarioScreen extends StatelessWidget {
             );
           }
         });
-
-
 
         showTopSnackBar(
           Overlay.of(context),

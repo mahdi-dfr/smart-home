@@ -63,7 +63,7 @@ class NodeProject {
   int? uniqueId;
   bool? isActive;
   int? nodeType;
-  int? boardProject;
+  ProjectBoard? boardProject;
   int? project;
 
   NodeProject(
@@ -79,15 +79,17 @@ class NodeProject {
     uniqueId = json['unique_id'];
     isActive = json['is_active'];
     nodeType = json['node_type'];
-    boardProject = json['board_project'];
+    boardProject = json['project_board'] != null
+        ? ProjectBoard.fromJson(json['project_board'])
+        : null;
     project = json['project'];
   }
 }
 
 class ProjectBoard {
   int? id;
-  Null? controlSmsBoard;
-  Null? controlWifiBoard;
+  int? controlSmsBoard;
+  int? controlWifiBoard;
   String? name;
   int? uniqueId;
   String? createdAt;

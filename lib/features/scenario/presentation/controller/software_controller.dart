@@ -115,7 +115,7 @@ class SoftwareScenarioController extends BaseScenarioController{
 
         scenarioMessage = {
           "type": scenarioMessageData.type,
-          "scenario_id": scenarioId,
+          "scenario_id": scenarioMessageData.scenarioId,
           "total_board_ids_used": scenarioMessageData.totalBoardIdsUsed,
           "node_ids": scenarioMessageData.nodeIds,
           "status": scenarioMessageData.status

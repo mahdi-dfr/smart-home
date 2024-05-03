@@ -45,7 +45,7 @@ class PanelScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.toNamed(PagesRoutes.chooseScenario);
+          Get.toNamed(PagesRoutes.chooseSoftwareScenario);
         },
         backgroundColor: CustomColors.foregroundColor,
         child: const Icon(
@@ -84,7 +84,7 @@ class PanelScreen extends StatelessWidget {
                                     _mqttController.publishMessage(
                                         {
                                           'type':'run_software_scenario',
-                                          'scenario_id': _softwareController.scenarioList.value[index].id,
+                                          'scenario_id': _softwareController.scenarioList.value[index].uniqueId,
                                         },
                                         _softwareController.projectName +
                                             '/' +

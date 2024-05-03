@@ -2,7 +2,7 @@ import '../../../domain/entity/software/software_message_entity.dart';
 
 class SoftwareMessageModel extends SoftwareMessageEntity {
   String? type;
-  String? scenarioId;
+  int? scenarioId;
   int? totalBoardIdsUsed;
   String? nodeIds;
   bool? status;

@@ -47,7 +47,7 @@ class HardwareScenarioWidget extends StatelessWidget {
                     title: pannelScenarioNumberList[index],
                     onClick: () {
                       _controller.changePanelType((index + 1).toString());
-                      Get.toNamed(PagesRoutes.chooseScenario);
+                      Get.toNamed(PagesRoutes.chooseHardwareScenario);
                     },
                     onLongClick: () {
                       askDialog('حذف سناریو', 'آیا میخواهید سناریو را حذف کنید؟', () {

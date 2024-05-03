@@ -3,7 +3,8 @@ import 'package:turkeysh_smart_home/core/resource/app_bindings.dart';
 import 'package:turkeysh_smart_home/features/base_page.dart';
 import 'package:turkeysh_smart_home/features/home/presentation/screen/create_device.dart';
 import 'package:turkeysh_smart_home/features/project/presentation/screen/project_screen.dart';
-import 'package:turkeysh_smart_home/features/scenario/presentation/screen/choose_scenario.dart';
+import 'package:turkeysh_smart_home/features/scenario/presentation/screen/create_hardware_scenario.dart';
+import 'package:turkeysh_smart_home/features/scenario/presentation/screen/create_software_scenario.dart';
 import 'package:turkeysh_smart_home/features/scenario/presentation/screen/panel_screen.dart';
 import '../../features/auth/presentation/screen/login.dart';
 import '../../features/auth/presentation/screen/register.dart';
@@ -25,7 +26,8 @@ class PagesRoutes {
   static const String _createBoard = '/create_board';
   static const String _createDevice = '/create_device';
   static const String _panelScreen = '/panel_screen';
-  static const String _chooseScenario = '/choose_scenario';
+  static const String _chooseHardwareScenario = '/choose_hardware_scenario';
+  static const String _chooseSoftwareScenario = '/choose_software_scenario';
 
   static String get boardSetting => _boardSetting;
 
@@ -49,7 +51,10 @@ class PagesRoutes {
 
   static String get panelScreen => _panelScreen;
 
-  static String get chooseScenario => _chooseScenario;
+  static String get chooseHardwareScenario => _chooseHardwareScenario;
+
+  static String get chooseSoftwareScenario => _chooseSoftwareScenario;
+
 
   static List<GetPage<dynamic>> pages = [
     GetPage(
@@ -94,8 +99,13 @@ class PagesRoutes {
     ),
 
     GetPage(
-      name: _chooseScenario,
-      page: () => ChooseScenarioScreen(),
+      name: _chooseHardwareScenario,
+      page: () => ChooseHardwareScenarioScreen(),
+    ),
+
+    GetPage(
+      name: _chooseSoftwareScenario,
+      page: () => ChooseSoftwareScenarioScreen(),
     ),
   ];
 }

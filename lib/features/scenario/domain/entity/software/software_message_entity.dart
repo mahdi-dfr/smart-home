@@ -1,6 +1,6 @@
 class SoftwareMessageEntity {
   String? type;
-  String? scenarioId;
+  int? scenarioId;
   int? totalBoardIdsUsed;
   String? nodeIds;
   bool? status;

@@ -98,6 +98,8 @@ class HomeApiProvider {
         queryParameters: {'project': projectId, 'node': node},
         options: Options(responseType: ResponseType.json, method: 'GET'),
       );
+      print(node);
+      print(response);
       return response;
     } catch (err) {
       if (err is DioException) {
