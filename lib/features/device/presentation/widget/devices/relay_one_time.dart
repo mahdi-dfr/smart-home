@@ -6,7 +6,7 @@ import 'package:turkeysh_smart_home/core/constants/colors.dart';
 import 'package:turkeysh_smart_home/core/constants/dimens.dart';
 import 'package:turkeysh_smart_home/core/constants/styles.dart';
 import 'package:turkeysh_smart_home/core/constants/utils.dart';
-import 'package:turkeysh_smart_home/features/home/presentation/widget/devices/take_time_part.dart';
+import 'package:turkeysh_smart_home/features/device/presentation/widget/devices/take_time_part.dart';
 
 import '../../../../../core/constants/images.dart';
 import '../../../../../mqtt_service.dart';
@@ -30,7 +30,6 @@ class RelayOneTimeWidget extends StatelessWidget {
 
   setRelaySwitchValue() {
     for (var element in _controller.relayDataList) {
-      print(element.boardId);
       if (element.boardId == boardUniqueId) {
         switch (nodeId) {
           case 1:
@@ -65,6 +64,9 @@ class RelayOneTimeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // setRelaySwitchValue();
+
     var width = MediaQuery.sizeOf(context).width;
     return Column(
       children: [

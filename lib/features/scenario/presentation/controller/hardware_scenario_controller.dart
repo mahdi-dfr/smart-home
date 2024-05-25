@@ -54,10 +54,8 @@ class HardwareScenarioController extends BaseScenarioController {
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
     }
     addNewData();
-    print(scenarioData);
 
     if (scenarioData == {} ||
-        scenarioName.text.isEmpty ||
         deviceList.isEmpty ||
         scenarioOnOff == null) {
       isLoading.value = false;

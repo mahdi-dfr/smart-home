@@ -27,10 +27,10 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       initialBinding: AppBindings(),
-      initialRoute: GetStorage().read(AppUtils.userTokenAccess) != null
-          ? PagesRoutes.project
-          : PagesRoutes.login,
-      //home: const TestWidget(),
+      initialRoute: PagesRoutes.splash,
+      // initialRoute: GetStorage().read(AppUtils.userTokenAccess) != null
+      //     ? PagesRoutes.project
+      //     : PagesRoutes.login,
       locale: const Locale('fa'),
       getPages: PagesRoutes.pages,
       defaultTransition: Transition.topLevel,

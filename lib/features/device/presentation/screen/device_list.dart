@@ -5,8 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:turkeysh_smart_home/core/resource/data_state.dart';
 import 'package:turkeysh_smart_home/core/widget/question_dialog.dart';
-import 'package:turkeysh_smart_home/features/home/presentation/controller/device_controller.dart';
-import 'package:turkeysh_smart_home/features/home/presentation/widget/devices/relay_one_time.dart';
+import 'package:turkeysh_smart_home/features/device/presentation/controller/device_controller.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/images.dart';
@@ -14,7 +13,8 @@ import '../../../../core/constants/routes.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/widget/custom_app_bar.dart';
 import '../../../device/presentation/screen/one_time_devices.dart';
-import '../../data/model/room_response.dart';
+import '../../../home/data/model/room_response.dart';
+import '../widget/devices/relay_one_time.dart';
 import '../widget/devices/sensors_widget.dart';
 
 class DeviceListScreen extends StatelessWidget {

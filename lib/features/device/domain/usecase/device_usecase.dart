@@ -1,4 +1,4 @@
-import 'package:turkeysh_smart_home/features/home/domain/repository/home_repository.dart';
+import 'package:turkeysh_smart_home/features/device/domain/repository/device_repository.dart';
 
 import '../../../../core/resource/data_state.dart';
 import '../entity/device_entity.dart';
@@ -6,7 +6,7 @@ import '../entity/device_entity_response.dart';
 import '../entity/device_node_entity.dart';
 
 class DeviceUseCae {
-  final HomeRepository _repository;
+  final DeviceRepository _repository;
 
   DeviceUseCae(this._repository);
 

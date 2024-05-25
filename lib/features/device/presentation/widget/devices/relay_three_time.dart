@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:roundcheckbox/roundcheckbox.dart';
 import 'package:turkeysh_smart_home/core/constants/colors.dart';
 import 'package:turkeysh_smart_home/core/constants/dimens.dart';
 import 'package:turkeysh_smart_home/core/constants/styles.dart';
-import 'package:turkeysh_smart_home/core/widget/custom_button.dart';
-import 'package:turkeysh_smart_home/features/home/presentation/controller/device_helper_controller.dart';
-import 'package:turkeysh_smart_home/features/home/presentation/widget/devices/take_time_part.dart';
+import 'package:turkeysh_smart_home/features/device/presentation/widget/devices/take_time_part.dart';
+import 'package:turkeysh_smart_home/features/device/presentation/controller/device_helper_controller.dart';
 
 import '../../../../../core/constants/images.dart';
 import 'bottom_sheet.dart';

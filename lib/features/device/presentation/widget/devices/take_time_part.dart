@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:turkeysh_smart_home/features/home/presentation/controller/device_helper_controller.dart';
+import 'package:turkeysh_smart_home/features/device/presentation/controller/device_helper_controller.dart';
 
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/constants/styles.dart';

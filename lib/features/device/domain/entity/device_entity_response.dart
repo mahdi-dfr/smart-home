@@ -1,4 +1,4 @@
-import '../../data/model/device.dart';
+import '../../../device/data/model/device.dart';
 
 class DeviceResponseEntity {
   int? id;

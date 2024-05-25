@@ -1,4 +1,4 @@
-import 'package:turkeysh_smart_home/features/home/data/model/device.dart';
+import 'package:turkeysh_smart_home/features/device/data/model/device.dart';
 
 class DeviceNodeEntity {
   int? id;

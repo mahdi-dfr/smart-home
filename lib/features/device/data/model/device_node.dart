@@ -1,5 +1,6 @@
-import 'package:turkeysh_smart_home/features/home/data/model/device.dart';
-import 'package:turkeysh_smart_home/features/home/domain/entity/device_node_entity.dart';
+import 'package:turkeysh_smart_home/features/device/data/model/device.dart';
+
+import '../../domain/entity/device_node_entity.dart';
 
 class DeviceNodeModel extends DeviceNodeEntity{
   int? id;

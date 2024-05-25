@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lottie/lottie.dart';
 import 'package:turkeysh_smart_home/features/device/presentation/widget/one_time_widget.dart';
-import 'package:turkeysh_smart_home/features/home/presentation/controller/device_controller.dart';
+import 'package:turkeysh_smart_home/features/device/presentation/controller/device_controller.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/images.dart';

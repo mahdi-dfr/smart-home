@@ -7,7 +7,7 @@ import '../../../../core/constants/dimens.dart';
 import '../../../../core/constants/images.dart';
 import '../../../../core/constants/utils.dart';
 import '../../../../mqtt_service.dart';
-import '../../../home/presentation/controller/device_controller.dart';
+import '../controller/device_controller.dart';
 
 class OneTimeWidget extends StatelessWidget {
   OneTimeWidget(

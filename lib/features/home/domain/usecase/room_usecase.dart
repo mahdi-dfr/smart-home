@@ -1,5 +1,4 @@
-import 'package:turkeysh_smart_home/features/home/domain/entity/device_entity.dart';
-import 'package:turkeysh_smart_home/features/home/domain/entity/device_node_entity.dart';
+
 import 'package:turkeysh_smart_home/features/home/domain/entity/room_entity.dart';
 import 'package:turkeysh_smart_home/features/home/domain/entity/room_response_entity.dart';
 import 'package:turkeysh_smart_home/features/home/domain/repository/home_repository.dart';

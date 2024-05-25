@@ -8,6 +8,7 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 
 import 'core/constants/utils.dart';
 import 'features/device/presentation/controller/relay_data.dart';
+import 'features/home/presentation/controller/relay_controller.dart';
 
 class MqttService extends GetxController{
   late MqttServerClient client;
@@ -161,6 +162,8 @@ class MqttService extends GetxController{
     );
 
     relayDataList.add(relayData);
+
+    // Get.find<RelayController>().setRelaySwitchValue();
 
     update();
   }

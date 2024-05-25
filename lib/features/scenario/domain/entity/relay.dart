@@ -1,4 +1,4 @@
-import '../../../home/data/model/device.dart';
+import '../../../device/data/model/device.dart';
 
 class RelayEntity {
   int? id;

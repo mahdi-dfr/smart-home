@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:turkeysh_smart_home/core/constants/utils.dart';
-import 'package:turkeysh_smart_home/features/home/domain/entity/device_entity.dart';
-import 'package:turkeysh_smart_home/features/home/domain/usecase/device_usecase.dart';
+import 'package:turkeysh_smart_home/features/device/domain/entity/device_entity.dart';
+import 'package:turkeysh_smart_home/features/device/domain/usecase/device_usecase.dart';
 
 import '../../../../core/resource/connection_controller.dart';
 import '../../../../core/resource/data_state.dart';
