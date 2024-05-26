@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/dimens.dart';
@@ -10,8 +11,7 @@ import '../../../../mqtt_service.dart';
 import '../controller/device_controller.dart';
 
 class OneTimeWidget extends StatelessWidget {
-  OneTimeWidget(
-      {required this.title, required this.boardId, required this.nodeId, required this.onPressed, Key? key})
+  OneTimeWidget({required this.title, required this.boardId, required this.nodeId, required this.onPressed, Key? key})
       : super(key: key);
 
   final _controller = Get.find<MqttService>();
@@ -23,6 +23,7 @@ class OneTimeWidget extends StatelessWidget {
 
   late String projectName;
   late String username;
+  var isSwitchLoading = false.obs;
 
   setRelayOneTimeValue() {
     for (var element in _controller.relayDataList) {
@@ -55,12 +56,7 @@ class OneTimeWidget extends StatelessWidget {
         }
       }
     }
-
   }
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -86,47 +82,53 @@ class OneTimeWidget extends StatelessWidget {
 
             Expanded(
               flex: 2,
-              child: GetBuilder<MqttService>(builder: (logic) {
-                setRelayOneTimeValue();
-                return IconButton(
-                  onPressed: () {
-                    logic.update();
-                    projectName = GetStorage().read(
-                        AppUtils.projectNameConst);
-                    username = GetStorage().read(
-                        AppUtils.username);
+              child: Obx(() {
+                return !isSwitchLoading.value ? GetBuilder<MqttService>(builder: (logic) {
+                  setRelayOneTimeValue();
+                  return IconButton(
+                    onPressed: () async {
+                      logic.update();
+                      projectName = GetStorage().read(
+                          AppUtils.projectNameConst);
+                      username = GetStorage().read(
+                          AppUtils.username);
 
-                    if (!isOneTimeButtonEnabled.value) {
-                      ///////////// _controller را به logic تغییر دادم:
-                      logic.publishMessage(
-                          {
-                            'type':'relay',
-                            'board_id': boardId,
-                            'node_id': nodeId,
-                            'node_status': true
-                          },
-                          '$projectName/$username/relay');
-                    } else {
-                      logic.publishMessage(
-                          {
-                            'type':'relay',
-                            'board_id': boardId,
-                            'node_id': nodeId,
-                            'node_status': false
-                          },
-                          '$projectName/$username/relay');
-                    }
-                  },
-                  icon: Icon(
-                      Icons
-                          .power_settings_new_rounded,
-                      color: isOneTimeButtonEnabled
-                          .value ? Colors.orange : CustomColors
-                          .foregroundColor,
-                      size: Get.width > 600
-                          ? Get.width / 8
-                          : Get.width / 6),
-                );
+                      if (!isOneTimeButtonEnabled.value) {
+                        ///////////// _controller را به logic تغییر دادم:
+                        logic.publishMessage(
+                            {
+                              'type': 'relay',
+                              'board_id': boardId,
+                              'node_id': nodeId,
+                              'node_status': true
+                            },
+                            '$projectName/$username/relay');
+                      } else {
+                        logic.publishMessage(
+                            {
+                              'type': 'relay',
+                              'board_id': boardId,
+                              'node_id': nodeId,
+                              'node_status': false
+                            },
+                            '$projectName/$username/relay');
+                      }
+
+                      isSwitchLoading.value = true;
+                      await Future.delayed(const Duration(seconds: 2));
+                      isSwitchLoading.value = false;
+                    },
+                    icon: Icon(
+                        Icons
+                            .power_settings_new_rounded,
+                        color: isOneTimeButtonEnabled
+                            .value ? Colors.green : CustomColors
+                            .foregroundColor,
+                        size: Get.width > 600
+                            ? Get.width / 8
+                            : Get.width / 6),
+                  );
+                }) : LoadingAnimationWidget.inkDrop(color: CustomColors.foregroundColor, size: 35);
               }),
             ),
             Expanded(
@@ -148,6 +150,5 @@ class OneTimeWidget extends StatelessWidget {
 
       ),
     );
-
   }
 }

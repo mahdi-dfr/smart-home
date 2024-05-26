@@ -22,7 +22,7 @@ class HardwareScenarioController extends BaseScenarioController {
 
   String? panelType;
   RxList<HardwareScenarioEntity> scenarioList = RxList();
-  var isHardwareScenario = true.obs;
+  var isHardwareScenario = false.obs;
   Map<String, dynamic>? scenarioMessage = {};
 
 

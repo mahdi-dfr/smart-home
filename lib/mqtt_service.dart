@@ -163,8 +163,6 @@ class MqttService extends GetxController{
 
     relayDataList.add(relayData);
 
-    // Get.find<RelayController>().setRelaySwitchValue();
-
     update();
   }
 

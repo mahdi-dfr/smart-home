@@ -18,12 +18,19 @@ class SoftwareScenarioController extends BaseScenarioController{
 
 
   final projectId = GetStorage().read(AppUtils.projectIdConst);
-  RxList<SoftwareScenarioEntity> scenarioList = RxList();
-
-  RxList<RelayEntity> relayList = RxList();
-  var isRelayLoading = false.obs;
-  Map<String, dynamic>? scenarioMessage = {};
   final projectName = GetStorage().read(AppUtils.projectNameConst);
+
+  RxList<SoftwareScenarioEntity> scenarioList = RxList();
+  RxList<RelayEntity> relayList = RxList();
+  Map<String, dynamic>? scenarioMessage = {};
+  var isRelayLoading = false.obs;
+
+  @override
+  onInit(){
+    getSoftwareScenario();
+    super.onInit();
+  }
+
 
 
   Future<DataState<List<RelayEntity>>> getAllRelays() async {

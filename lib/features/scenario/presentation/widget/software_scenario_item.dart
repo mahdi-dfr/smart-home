@@ -6,6 +6,7 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:turkeysh_smart_home/features/scenario/presentation/controller/software_controller.dart';
 
 import '../../../../core/constants/dimens.dart';
+import '../../../../core/constants/images.dart';
 import '../../../../core/constants/utils.dart';
 import '../../../../core/resource/ask_dialog.dart';
 import '../../../../core/resource/data_state.dart';
@@ -74,14 +75,21 @@ class SoftwareScenarioItem extends StatelessWidget {
           width: width,
           height: height / 12,
           margin: const EdgeInsets.symmetric(
-            vertical: 8,
+            vertical: 4,
           ),
           decoration: BoxDecoration(
             color: Colors.white,
-            border:
-            Border.all(color: Colors.black, width: 0.5),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  offset: const Offset(0, 0),
+                  spreadRadius: 1,
+                  blurRadius: 5)
+            ],
             borderRadius: BorderRadius.circular(
                 AppDimensions.borderRadius),
+            image: const DecorationImage(
+                image: AssetImage(Images.logo), fit: BoxFit.cover, opacity: 0.05),
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(

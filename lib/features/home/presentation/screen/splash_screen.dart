@@ -25,16 +25,17 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-    Future.delayed(const Duration(seconds: 10)).then((value) {
+    Future.delayed(const Duration(seconds: 3)).then((value) {
       if (_isUserLogin) {
+        print('loggggin');
         Get.offAllNamed(PagesRoutes.project);
       } else {
+        print('not loggggin');
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) {
           return LoginScreen();
         }));
       }
     });
-
     super.initState();
   }
 

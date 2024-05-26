@@ -32,7 +32,6 @@ class PanelScreen extends StatelessWidget {
     var width = MediaQuery.sizeOf(context).width;
     var height = MediaQuery.sizeOf(context).height;
 
-    _softwareController.getSoftwareScenario();
 
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
