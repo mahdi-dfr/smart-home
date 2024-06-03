@@ -11,11 +11,10 @@ import '../../domain/entity/software/create_software_entity.dart';
 import '../../domain/usecase/scenario_usecase.dart';
 import 'base_scenario_controller.dart';
 
-class SoftwareScenarioController extends BaseScenarioController{
-
+class SoftwareScenarioController extends BaseScenarioController {
   final ScenarioUseCase _useCase;
-  SoftwareScenarioController(this._useCase);
 
+  SoftwareScenarioController(this._useCase);
 
   final projectId = GetStorage().read(AppUtils.projectIdConst);
   final projectName = GetStorage().read(AppUtils.projectNameConst);
@@ -24,14 +23,15 @@ class SoftwareScenarioController extends BaseScenarioController{
   RxList<RelayEntity> relayList = RxList();
   Map<String, dynamic>? scenarioMessage = {};
   var isRelayLoading = false.obs;
+  var checkboxStates = <bool>[].obs;
 
   @override
-  onInit(){
+  onInit() async {
     getSoftwareScenario();
+    await getAllRelays();
+    initializeCheckboxStates(relayList.length, false);
     super.onInit();
   }
-
-
 
   Future<DataState<List<RelayEntity>>> getAllRelays() async {
     isRelayLoading.value = true;
@@ -39,8 +39,8 @@ class SoftwareScenarioController extends BaseScenarioController{
       isRelayLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید!');
     }
-    DataState<List<RelayEntity>> dataState = await _useCase.getAllRelays(
-        GetStorage().read(AppUtils.projectIdConst), '0');
+    DataState<List<RelayEntity>> dataState =
+        await _useCase.getAllRelays(GetStorage().read(AppUtils.projectIdConst), '0');
     if (dataState is DataSuccess) {
       if (dataState.data != null) {
         relayList.value = dataState.data ?? [];
@@ -53,15 +53,13 @@ class SoftwareScenarioController extends BaseScenarioController{
     }
   }
 
-
   Future<DataState<List<SoftwareScenarioEntity>>> getSoftwareScenario() async {
     isScenarioLoading.value = true;
     if (!Get.find<ConnectionController>().isConnected.value) {
       isScenarioLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید!');
     }
-    DataState<List<SoftwareScenarioEntity>> dataState = await _useCase
-        .getSoftwareScenario(projectId);
+    DataState<List<SoftwareScenarioEntity>> dataState = await _useCase.getSoftwareScenario(projectId);
     if (dataState is DataSuccess) {
       if (dataState.data != null) {
         scenarioList.value = dataState.data ?? [];
@@ -82,10 +80,7 @@ class SoftwareScenarioController extends BaseScenarioController{
     }
     addNewData();
     print(scenarioData);
-    if (scenarioData == {} ||
-        scenarioName.text.isEmpty ||
-        deviceList.isEmpty ||
-        scenarioOnOff == null) {
+    if (scenarioData == {} || scenarioName.text.isEmpty || deviceList.isEmpty || scenarioOnOff == null) {
       isLoading.value = false;
       return const DataFailed('لطفا تمام اطلاعات را وارد نمایید');
     }
@@ -107,14 +102,12 @@ class SoftwareScenarioController extends BaseScenarioController{
     }
   }
 
-  Future<DataState<Map<String, dynamic>>> getSoftwareScenarioMessage(
-      int scenarioId) async {
+  Future<DataState<Map<String, dynamic>>> getSoftwareScenarioMessage(int scenarioId) async {
     if (!Get.find<ConnectionController>().isConnected.value) {
       isLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
     }
-    DataState<SoftwareMessageEntity> dataState =
-    await _useCase.getSoftwareScenarioMessage(scenarioId);
+    DataState<SoftwareMessageEntity> dataState = await _useCase.getSoftwareScenarioMessage(scenarioId);
     if (dataState is DataSuccess) {
       if (dataState.data != null) {
         isScenarioLoading.value = false;
@@ -156,14 +149,10 @@ class SoftwareScenarioController extends BaseScenarioController{
   }
 
   void addNewData() {
-    scenarioData = {
-      'name': scenarioName.text,
-      'device': deviceList,
-      'status': scenarioOnOff,
-      'project': projectId
-    };
+    scenarioData = {'name': scenarioName.text, 'device': deviceList, 'status': scenarioOnOff, 'project': projectId};
   }
 
-
-
+  void initializeCheckboxStates(int length, bool value) {
+    checkboxStates = List<bool>.filled(length, value).obs;
+  }
 }

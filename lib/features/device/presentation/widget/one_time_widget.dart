@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:marquee/marquee.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/dimens.dart';
@@ -60,95 +61,90 @@ class OneTimeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          image: const DecorationImage(
-              image: AssetImage(Images.logo),
-              fit: BoxFit.cover,
-              opacity: 0.05),
-          borderRadius: BorderRadius.circular(
-              AppDimensions.borderRadius),
-          border: Border.all(
-              color: CustomColors.foregroundColor,
-              width: 1),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+    final textWidth = _calculateTextWidth(title ?? '', const TextStyle(fontSize: 15));
 
-            Expanded(
-              flex: 2,
-              child: Obx(() {
-                return !isSwitchLoading.value ? GetBuilder<MqttService>(builder: (logic) {
-                  setRelayOneTimeValue();
-                  return IconButton(
-                    onPressed: () async {
-                      logic.update();
-                      projectName = GetStorage().read(
-                          AppUtils.projectNameConst);
-                      username = GetStorage().read(
-                          AppUtils.username);
+    return LayoutBuilder(builder: (context, constraint) {
+      return AspectRatio(
+        aspectRatio: 1,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            image: const DecorationImage(image: AssetImage(Images.logo), fit: BoxFit.cover, opacity: 0.05),
+            borderRadius: BorderRadius.circular(AppDimensions.borderRadius),
+            border: Border.all(color: CustomColors.foregroundColor, width: 1),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 2,
+                child: Obx(() {
+                  return !isSwitchLoading.value
+                      ? GetBuilder<MqttService>(builder: (logic) {
+                    setRelayOneTimeValue();
+                    return IconButton(
+                      onPressed: () async {
+                        logic.update();
+                        projectName = GetStorage().read(AppUtils.projectNameConst);
+                        username = GetStorage().read(AppUtils.username);
 
-                      if (!isOneTimeButtonEnabled.value) {
-                        ///////////// _controller را به logic تغییر دادم:
-                        logic.publishMessage(
-                            {
-                              'type': 'relay',
-                              'board_id': boardId,
-                              'node_id': nodeId,
-                              'node_status': true
-                            },
-                            '$projectName/$username/relay');
-                      } else {
-                        logic.publishMessage(
-                            {
-                              'type': 'relay',
-                              'board_id': boardId,
-                              'node_id': nodeId,
-                              'node_status': false
-                            },
-                            '$projectName/$username/relay');
-                      }
+                        if (!isOneTimeButtonEnabled.value) {
+                          ///////////// _controller را به logic تغییر دادم:
+                          logic.publishMessage(
+                              {'type': 'relay', 'board_id': boardId, 'node_id': nodeId, 'node_status': true},
+                              '$projectName/$username/relay');
+                        } else {
+                          logic.publishMessage(
+                              {'type': 'relay', 'board_id': boardId, 'node_id': nodeId, 'node_status': false},
+                              '$projectName/$username/relay');
+                        }
 
-                      isSwitchLoading.value = true;
-                      await Future.delayed(const Duration(seconds: 2));
-                      isSwitchLoading.value = false;
-                    },
-                    icon: Icon(
-                        Icons
-                            .power_settings_new_rounded,
-                        color: isOneTimeButtonEnabled
-                            .value ? Colors.green : CustomColors
-                            .foregroundColor,
-                        size: Get.width > 600
-                            ? Get.width / 8
-                            : Get.width / 6),
-                  );
-                }) : LoadingAnimationWidget.inkDrop(color: CustomColors.foregroundColor, size: 35);
-              }),
-            ),
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 8),
-                child: Text(
-                  title ??
-                      '',
-                  style:
-                  const TextStyle(fontSize: 16),
-                  textAlign: TextAlign.center,
+                        isSwitchLoading.value = true;
+                        await Future.delayed(const Duration(seconds: 2));
+                        isSwitchLoading.value = false;
+                      },
+                      icon: Icon(Icons.power_settings_new_rounded,
+                          color: isOneTimeButtonEnabled.value ? Colors.green : CustomColors.foregroundColor,
+                          size: Get.width > 600 ? Get.width / 8 : Get.width / 6),
+                    );
+                  })
+                      : LoadingAnimationWidget.inkDrop(color: CustomColors.foregroundColor, size: 35);
+                }),
+              ),
+              Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: textWidth+20 > constraint.maxWidth ? Marquee(text: title ?? '',
+                    style: const TextStyle(fontSize: 15),
+                    scrollAxis: Axis.horizontal,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    blankSpace: 20.0,
+                    velocity: 60.0,
+                    pauseAfterRound: const Duration(seconds: 1),
+                    startPadding: 10.0,
+                    accelerationDuration: const Duration(seconds: 1),
+                    accelerationCurve: Curves.linear,
+                    decelerationDuration: const Duration(milliseconds: 500),
+                    decelerationCurve: Curves.easeOut,) : Text(
+                    title ?? '', style: const TextStyle(fontSize: 15),),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+      );
+    });
+  }
 
-      ),
-    );
+  double _calculateTextWidth(String text, TextStyle style) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: 1,
+      textDirection: TextDirection.rtl,
+    )
+      ..layout(minWidth: 0, maxWidth: double.infinity);
+    return textPainter.size.width;
   }
 }

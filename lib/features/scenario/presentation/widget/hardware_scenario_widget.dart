@@ -46,18 +46,18 @@ class HardwareScenarioWidget extends StatelessWidget {
                   return HardwarePannelItem(
                     title: pannelScenarioNumberList[index],
                     onClick: () {
-                      _controller.changePanelType((index + 1).toString());
+                      _controller.changePanelType((pannelScenarioNumberList[index]).toString());
                       Get.toNamed(PagesRoutes.chooseHardwareScenario);
                     },
                     onLongClick: () {
                       askDialog('حذف سناریو', 'آیا میخواهید سناریو را حذف کنید؟', () {
-                        _controller.deleteHardwareScenario((index+1).toString()).then((value) {
+                        _controller.deleteHardwareScenario((pannelScenarioNumberList[index]).toString()).then((value) {
                           if (value is DataSuccess) {
 
                             _mqttController.publishMessage(
                                 {
                                   'type': 'dell_hardware_scenario',
-                                  'key_num': _controller.scenarioList[index].type!,
+                                  'key_num': pannelScenarioNumberList[index],
                                 },
                                 _controller.projectName +
                                     '/' +

@@ -33,7 +33,7 @@ class ChooseSoftwareScenarioScreen extends StatelessWidget {
     var width = MediaQuery.sizeOf(context).width;
     var height = MediaQuery.sizeOf(context).height;
 
-    _softwareController.getAllRelays();
+    // _softwareController.getAllRelays();
 
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
@@ -170,5 +170,6 @@ class ChooseSoftwareScenarioScreen extends StatelessWidget {
         );
       }
     });
+    _softwareController.initializeCheckboxStates(_softwareController.relayList.value.length, false);
   }
 }

@@ -142,5 +142,6 @@ class ChooseHardwareScenarioScreen extends StatelessWidget {
         );
       }
     });
+    _softwareController.initializeCheckboxStates(_softwareController.relayList.value.length, false);
   }
 }

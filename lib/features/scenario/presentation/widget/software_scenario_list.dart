@@ -25,66 +25,79 @@ class SoftwareScenarioListWidget extends StatelessWidget {
     var width = MediaQuery.sizeOf(context).width;
     var height = MediaQuery.sizeOf(context).height;
 
-    return SizedBox(
-      height: height,
-      width: width,
-      child: _softwareController.scenarioList.value.isNotEmpty
-          ? Column(
-        children: [
-          Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'لیست سناریو های پنل',
-                    style: AppStyles.style6,
-                  ),
-                  TextButton(onPressed: (){
-                    Get.toNamed(PagesRoutes.chooseSoftwareScenario);
-                  }, child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return Obx(() {
+      return SizedBox(
+          height: height,
+          width: width,
+          child: Column(
+            children: [
+              Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('افزودن', style: TextStyle(fontWeight: FontWeight.bold),),
-                      SizedBox(width: 8,),
-                      Icon(Icons.add)
+                      const Text(
+                        'لیست سناریو های نرم افزاری',
+                        style: AppStyles.style6,
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Get.toNamed(PagesRoutes.chooseSoftwareScenario);
+                        },
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              'افزودن',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Icon(Icons.add)
+                          ],
+                        ),
+                      )
                     ],
-                  ),)
+                  )),
+              const SizedBox(
+                height: 16,
+              ),
+              _softwareController.scenarioList.value.isNotEmpty
+                  ?  Expanded(
+                child: ListView.builder(
+                        itemBuilder: (context, index) {
+                          return SoftwareScenarioItem(
+                            index: index,
+                            onItemClicked: () {
+                              askDialog('فعال کردن سناریو', 'آیا مطمئن هستید؟', () {
+                                Get.back();
+                                _mqttController.publishMessage(
+                                    {
+                                      'type': 'run_software_scenario',
+                                      'scenario_id': _softwareController.scenarioList.value[index].uniqueId,
+                                    },
+                                    _softwareController.projectName +
+                                        '/' +
+                                        GetStorage().read(AppUtils.username) +
+                                        '/' +
+                                        'add_software_scenario');
+                                showTopSnackBar(
+                                  Overlay.of(context),
+                                  const CustomSnackBar.success(
+                                    message: 'سناریو با موفقیت فعال شد',
+                                  ),
+                                );
+                              });
+                            },
+                          );
+                        },
+                        itemCount: _softwareController.scenarioList.length,
+                      )
 
-                ],
-              )
-          ),
-          const SizedBox(height: 16,),
-          Expanded(child: ListView.builder(itemBuilder: (context, index){
-            return SoftwareScenarioItem(
-              index: index,
-              onItemClicked: () {
-                askDialog('فعال کردن سناریو', 'آیا مطمئن هستید؟', () {
-                  Get.back();
-                  _mqttController.publishMessage(
-                      {
-                        'type':'run_software_scenario',
-                        'scenario_id': _softwareController.scenarioList.value[index].uniqueId,
-                      },
-                      _softwareController.projectName +
-                          '/' +
-                          GetStorage().read(AppUtils.username) +
-                          '/' +
-                          'add_software_scenario');
-                  showTopSnackBar(
-                    Overlay.of(context),
-                    const CustomSnackBar.success(
-                      message: 'سناریو با موفقیت فعال شد',
-                    ),
-                  );
-                });
-              },
-            );
-          }, itemCount: _softwareController.scenarioList.length,),  )
-        ],
-      ) : Lottie.asset(Images.empty, width: MediaQuery.sizeOf(context).width / 2),
-
-
-    );
+              ) : Lottie.asset(Images.empty, width: MediaQuery.sizeOf(context).width / 2)
+            ],
+          ));
+    });
   }
 }

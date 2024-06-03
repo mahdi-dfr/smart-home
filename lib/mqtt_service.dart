@@ -30,7 +30,7 @@ class MqttService extends GetxController{
       return uuid.v4();
     }
     String uniqueClientId = generateUniqueClientId();
-    client = MqttServerClient.withPort('remote-asiatech.runflare.com',uniqueClientId, 31951);
+    client = MqttServerClient.withPort('iot.perkyiot.com',uniqueClientId, 31951);
     client.logging(on: true);
     client.onConnected = onConnected;
     client.onDisconnected = onDisconnected;

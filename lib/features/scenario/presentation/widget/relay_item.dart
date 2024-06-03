@@ -11,18 +11,23 @@ import '../controller/hardware_scenario_controller.dart';
 import '../controller/software_controller.dart';
 
 class RelayItemScenario extends StatelessWidget {
-  RelayItemScenario({Key? key, required this.index,}) : super(key: key);
+  RelayItemScenario({required this.index, super.key});
 
-  final int index;
+  final index;
+
+
   final _hardwareController = Get.find<HardwareScenarioController>();
   final _softwareController = Get.find<SoftwareScenarioController>();
 
-  
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.sizeOf(context).width;
-    var height = MediaQuery.sizeOf(context).height;
-    
+    var width = MediaQuery
+        .sizeOf(context)
+        .width;
+    var height = MediaQuery
+        .sizeOf(context)
+        .height;
+
     return Container(
         width: width,
         height: height / 12,
@@ -42,21 +47,25 @@ class RelayItemScenario extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              RoundCheckBox(
-                size: 30,
-                checkedColor: CustomColors.foregroundColor,
-                onTap: (value) {
-                  if (value!) {
-                    if(_hardwareController.isHardwareScenario.value){
-                      _hardwareController.deviceList.value.add(
-                          _softwareController.relayList[index].id!);
-                    }else{
-                      _softwareController.deviceList.value.add(
-                          _softwareController.relayList[index].id!);
-                    }
-                  } else {}
-                },
-              ),
+              Obx(() {
+                return RoundCheckBox(
+                  size: 30,
+                  isChecked: _softwareController.checkboxStates[index],
+                  checkedColor: CustomColors.foregroundColor,
+                  onTap: (value) {
+                    if (value!) {
+                      _softwareController.checkboxStates[index] = value;
+                      if (_hardwareController.isHardwareScenario.value) {
+                        _hardwareController.deviceList.add(
+                            _softwareController.relayList[index].id!);
+                      } else {
+                        _softwareController.deviceList.add(
+                            _softwareController.relayList[index].id!);
+                      }
+                    } else {}
+                  },
+                );
+              }),
               const SizedBox(
                 width: 12,
               ),
@@ -70,3 +79,4 @@ class RelayItemScenario extends StatelessWidget {
         ));
   }
 }
+

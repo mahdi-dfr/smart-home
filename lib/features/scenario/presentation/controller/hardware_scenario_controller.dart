@@ -14,8 +14,8 @@ import 'base_scenario_controller.dart';
 
 class HardwareScenarioController extends BaseScenarioController {
   final ScenarioUseCase _useCase;
-  HardwareScenarioController(this._useCase);
 
+  HardwareScenarioController(this._useCase);
 
   final projectId = GetStorage().read(AppUtils.projectIdConst);
   final projectName = GetStorage().read(AppUtils.projectNameConst);
@@ -25,16 +25,13 @@ class HardwareScenarioController extends BaseScenarioController {
   var isHardwareScenario = false.obs;
   Map<String, dynamic>? scenarioMessage = {};
 
-
-  Future<DataState<List<HardwareScenarioEntity>>> getHardwareScenario(
-      String type) async {
+  Future<DataState<List<HardwareScenarioEntity>>> getHardwareScenario(String type) async {
     isScenarioLoading.value = true;
     if (!Get.find<ConnectionController>().isConnected.value) {
       isScenarioLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید!');
     }
-    DataState<List<HardwareScenarioEntity>> dataState = await _useCase
-        .getHardwareScenario(projectId, type);
+    DataState<List<HardwareScenarioEntity>> dataState = await _useCase.getHardwareScenario(projectId, type);
     if (dataState is DataSuccess) {
       if (dataState.data != null) {
         scenarioList.value = dataState.data ?? [];
@@ -55,9 +52,7 @@ class HardwareScenarioController extends BaseScenarioController {
     }
     addNewData();
 
-    if (scenarioData == {} ||
-        deviceList.isEmpty ||
-        scenarioOnOff == null) {
+    if (scenarioData == {} || deviceList.isEmpty || scenarioOnOff == null) {
       isLoading.value = false;
       return const DataFailed('لطفا تمام اطلاعات را وارد نمایید');
     }
@@ -97,12 +92,12 @@ class HardwareScenarioController extends BaseScenarioController {
     }
   }
 
-  Future<DataState<Map<String, dynamic>>> getHardwareScenarioMessage(
-      int scenarioId) async {
+  Future<DataState<Map<String, dynamic>>> getHardwareScenarioMessage(int scenarioId) async {
     if (!Get.find<ConnectionController>().isConnected.value) {
       isLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
     }
+
     DataState<HardwareScenarioMessageEntity> dataState =
         await _useCase.getHardwareScenarioMessage(projectId, scenarioId);
     if (dataState is DataSuccess) {
@@ -112,7 +107,7 @@ class HardwareScenarioController extends BaseScenarioController {
 
         scenarioMessage = {
           "type": scenarioMessageData.type,
-          "key_num": scenarioMessageData.keyNum,
+          "key_num": int.parse(scenarioMessageData.keyNum!),
           "total_board_ids": scenarioMessageData.totalBoardIds,
           "total_board_ids_used": scenarioMessageData.totalBoardIdsUsed,
           "node_ids": scenarioMessageData.nodeIds,
@@ -131,12 +126,10 @@ class HardwareScenarioController extends BaseScenarioController {
       'name': scenarioName.text,
       'device': deviceList,
       'status': scenarioOnOff,
-      'type': panelType,
+      'type': int.parse(panelType!),
       'project': projectId
     };
   }
-
-
 
   // removeData(int relayId){
   //   scenarioData?.removeWhere((element) => element.);
