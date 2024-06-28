@@ -90,8 +90,8 @@ class DeviceController extends GetxController {
         print(deviceNodeList);
         deviceNodeList.value.forEach((element) {
           if (element.nodeType != null) {
-            deviceNodeNames['برد شماره: ${element.boardProject} - نود شماره: ${element.uniqueId}'] =
-                {'id': element.id, 'boardId': element.boardProject};
+            deviceNodeNames['${element.boardProject?[0]['text']} - نود شماره: ${element.uniqueId}'] =
+                {'id': element.id, 'boardId': element.boardProject?[0]['value']};
           }
         });
 

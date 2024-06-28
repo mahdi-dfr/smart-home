@@ -42,7 +42,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           Align(
               alignment: const Alignment(0.0, 0.8),
               child: Container(
-                  height: Get.width < 600 ? Get.height / 14 : Get.height / 10,
+                  height: Get.width < 600 ? Get.height / 14 : Get.height / 8,
                   width: Get.width*0.8,
                   padding: const EdgeInsets.only(left: 30, right: 30),
                   child: Container(
@@ -75,7 +75,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               elevation: 0,
               automaticallyImplyLeading: false,
               actions: [
-                MediaQuery.sizeOf(context).width<600 ? haveBackButton ? Padding(
+                 haveBackButton ? Padding(
                   padding:const EdgeInsets.symmetric(horizontal: 12),
                   child: IconButton(onPressed: (){
                     Get.back();
@@ -90,7 +90,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       Get.offAllNamed(PagesRoutes.login);
                     });
                   }, icon: const Icon(Icons.power_settings_new_rounded, color: Colors.white,)),
-                ) : const SizedBox(),
+                ),
               ],
             ),
           )

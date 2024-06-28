@@ -2,7 +2,8 @@ import 'package:turkeysh_smart_home/features/device/data/model/device.dart';
 
 class DeviceNodeEntity {
   int? id;
-  int? boardProject;
+  // int? boardProject;
+  List<dynamic>? boardProject;
   int? uniqueId;
   bool? isActive;
   int? nodeType;

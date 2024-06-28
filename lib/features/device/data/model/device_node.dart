@@ -4,7 +4,8 @@ import '../../domain/entity/device_node_entity.dart';
 
 class DeviceNodeModel extends DeviceNodeEntity{
   int? id;
-  int? boardProject;
+  // int? boardProject;
+  List<dynamic>? boardProject;
   int? uniqueId;
   bool? isActive;
   int? nodeType;

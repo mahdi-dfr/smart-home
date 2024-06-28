@@ -8,7 +8,7 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:turkeysh_smart_home/core/resource/data_state.dart';
 import 'package:turkeysh_smart_home/features/scenario/presentation/controller/hardware_scenario_controller.dart';
 import 'package:turkeysh_smart_home/features/scenario/presentation/controller/software_controller.dart';
-import 'package:turkeysh_smart_home/mqtt_service.dart';
+import 'package:turkeysh_smart_home/core/resource/mqtt_service.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/dimens.dart';

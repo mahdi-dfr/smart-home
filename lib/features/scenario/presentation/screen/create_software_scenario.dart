@@ -18,7 +18,7 @@ import '../../../../core/constants/dimens.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/widget/custom_app_bar.dart';
 import '../../../../core/widget/drop_box.dart';
-import '../../../../mqtt_service.dart';
+import '../../../../core/resource/mqtt_service.dart';
 import '../controller/base_scenario_controller.dart';
 
 class ChooseSoftwareScenarioScreen extends StatelessWidget {

@@ -4,7 +4,7 @@ import 'package:turkeysh_smart_home/features/scenario/presentation/screen/scenar
 import 'package:turkeysh_smart_home/features/special_condition/presentation/screen/special_screen.dart';
 
 import '../../features/home/presentation/screen/home_page.dart';
-import '../../mqtt_service.dart';
+import '../resource/mqtt_service.dart';
 
 class AppUtils{
   static const String userTokenAccess = 'UserTokenAccess';

@@ -23,7 +23,7 @@ class CreateDeviceScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: CustomColors.backgroundColor,
         appBar: CustomAppBar(
-          height: width > 600 ? 100 : 150,
+          height: width > 600 ? 150 : 150,
         ),
         body: SafeArea(
             child: Padding(

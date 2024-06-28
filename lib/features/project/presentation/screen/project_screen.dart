@@ -25,7 +25,7 @@ class ProjectScreen extends StatelessWidget {
     var width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: CustomAppBar(
-        height: width > 600 ? 100 : 150,
+        height: width > 600 ? 150 : 150,
         haveBackButton: false,
       ),
       backgroundColor: CustomColors.backgroundColor,
@@ -80,7 +80,7 @@ class ProjectScreen extends StatelessWidget {
                           color: CustomColors.foregroundColor, size: 35))
                   : GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: width > 600 ? 3 : 2,
+                        crossAxisCount: width > 600 ? 4 : 2,
                         mainAxisSpacing: 4,
                         crossAxisSpacing: 4,
                       ),

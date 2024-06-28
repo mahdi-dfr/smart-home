@@ -5,7 +5,7 @@ import 'package:turkeysh_smart_home/core/constants/utils.dart';
 import '../../features/settings/domain/entity/project_board_entity.dart';
 import '../../features/settings/domain/entity/project_board_resault.dart';
 import '../../features/settings/domain/usecase/project_board_usecase.dart';
-import '../../mqtt_service.dart';
+import 'mqtt_service.dart';
 import 'connection_controller.dart';
 import 'data_state.dart';
 

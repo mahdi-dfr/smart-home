@@ -41,7 +41,7 @@ class DeviceListScreen extends StatelessWidget {
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: CustomAppBar(
-        height: width > 600 ? 100 : 150,
+        height: width > 600 ? 150 : 150,
         titleWidget: Text(
           room.name ?? '',
           style: AppStyles.appbarTitleStyle,

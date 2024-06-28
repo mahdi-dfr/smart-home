@@ -144,9 +144,6 @@ class RegisterScreen extends StatelessWidget {
             const SizedBox(
               height: 8,
             ),
-            const SizedBox(
-              height: 20,
-            ),
             Obx(() {
               return SizedBox(
                 child: _controller.isRegisterLoading.value
@@ -176,15 +173,15 @@ class RegisterScreen extends StatelessWidget {
               );
             }),
             const SizedBox(
-              height: 20,
+              height: 12,
             ),
             TextButton(
                 onPressed: () {
                   Get.offAllNamed(PagesRoutes.login);
                 },
-                child: const Text('قبلا ثبت نام کرده اید؟ | ورود')),
+                child: const Text('قبلا ثبت نام کرده اید؟ | ورود', style: TextStyle(fontSize: 14))),
             const SizedBox(
-              height: 20,
+              height: 60,
             ),
           ],
         ),

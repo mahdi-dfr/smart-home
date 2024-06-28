@@ -58,8 +58,8 @@ class SliverCustomAppBar extends SliverPersistentHeaderDelegate {
                   clipBehavior: Clip.antiAliasWithSaveLayer,
                   child: Stack(
                     children: [
-                      Image.file(
-                        File(imageAssetSrc ?? ''),
+                      Image.asset(
+                        imageAssetSrc ?? '',
                         width: Get.width,
                         fit: BoxFit.fitWidth,
                       ),

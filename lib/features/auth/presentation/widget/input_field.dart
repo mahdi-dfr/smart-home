@@ -30,8 +30,8 @@ class _LoginEditTextState extends State<LoginEditText> {
     var height = MediaQuery.sizeOf(context).height;
     return Container(
       margin: const EdgeInsets.fromLTRB(30, 0, 30, 8),
-      width: MediaQuery.of(context).size.width,
-      height: width > 600 ? height/7 : height / 15,
+      width: width > 600 ? width/2 : MediaQuery.of(context).size.width,
+      height: height / 17,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(13),

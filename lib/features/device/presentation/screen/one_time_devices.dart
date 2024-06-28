@@ -26,7 +26,7 @@ class OneTimeDeviceScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
       appBar: CustomAppBar(
-        height: width > 600 ? 100 : 150,
+        height: width > 600 ? 150 : 150,
         titleWidget: const Text(
           'کلید ها',
           style: AppStyles.appbarTitleStyle,
@@ -73,8 +73,8 @@ class OneTimeDeviceScreen extends StatelessWidget {
               ),
               SliverGrid.builder(
                   gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
+                  SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: width > 600 ? 5 : 3,
                     mainAxisSpacing: 12,
                     crossAxisSpacing: 12,
                   ),

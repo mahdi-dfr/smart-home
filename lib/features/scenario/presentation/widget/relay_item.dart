@@ -29,7 +29,7 @@ class RelayItemScenario extends StatelessWidget {
         .height;
 
     return Container(
-        width: width,
+        width: width > 600 ? width/2 : width,
         height: height / 12,
         margin: const EdgeInsets.symmetric(
           vertical: 4,

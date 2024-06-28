@@ -10,7 +10,7 @@ import '../../../../core/constants/images.dart';
 import '../../../../core/constants/utils.dart';
 import '../../../../core/resource/ask_dialog.dart';
 import '../../../../core/resource/data_state.dart';
-import '../../../../mqtt_service.dart';
+import '../../../../core/resource/mqtt_service.dart';
 import '../controller/hardware_scenario_controller.dart';
 
 class SoftwareScenarioItem extends StatelessWidget {
@@ -72,7 +72,7 @@ class SoftwareScenarioItem extends StatelessWidget {
         });
       },
       child: Container(
-          width: width,
+          width: width > 600 ? width/2 : width,
           height: height / 12,
           margin: const EdgeInsets.symmetric(
             vertical: 4,

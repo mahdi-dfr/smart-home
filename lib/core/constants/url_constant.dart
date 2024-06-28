@@ -2,7 +2,7 @@ class UrlConstant {
   UrlConstant._();
 
   /// base url:
-  // static const String baseUrl = 'http://192.168.66.141:8000/api/';
+  // static const String baseUrl = 'http://192.168.252.141:8000/api/';
   // static const String baseUrl = 'https://abzarsanat.runflare.run/api/';
   static const String baseUrl = 'https://iot.perkyiot.com/api/';
 

@@ -10,7 +10,7 @@ import '../../../../core/constants/routes.dart';
 import '../../../../core/constants/utils.dart';
 import '../../../../core/resource/ask_dialog.dart';
 import '../../../../core/resource/data_state.dart';
-import '../../../../mqtt_service.dart';
+import '../../../../core/resource/mqtt_service.dart';
 import '../controller/hardware_scenario_controller.dart';
 import 'hardware_pannel_item.dart';
 
@@ -30,7 +30,7 @@ class HardwareScenarioWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(top: 50, left: 50, right: 50),
       height: height * 0.45,
-      width: width,
+      width: width > 600 ? width / 2 :  width,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15), border: Border.all(width: 2, color: CustomColors.foregroundColor)),
       child: Center(

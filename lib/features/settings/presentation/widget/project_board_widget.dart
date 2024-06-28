@@ -25,6 +25,9 @@ class CustomListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.sizeOf(context).width;
+    var height = MediaQuery.sizeOf(context).height;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: ExpansionTileCard(
@@ -41,7 +44,7 @@ class CustomListWidget extends StatelessWidget {
         leading: Icon(
           Icons.developer_board_outlined,
           color: CustomColors.foregroundColor,
-          size: MediaQuery.sizeOf(context).width / 12,
+          size: width > 600 ? width / 23 : width / 12,
         ),
         borderRadius: BorderRadius.circular(15),
         baseColor: Colors.white,
@@ -51,7 +54,7 @@ class CustomListWidget extends StatelessWidget {
             height: 1.0,
           ),
           SizedBox(
-            width: MediaQuery.sizeOf(context).width,
+            width:  width > 600 ? width / 2 : width,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(

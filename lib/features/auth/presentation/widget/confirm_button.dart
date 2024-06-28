@@ -17,8 +17,8 @@ class LoginButton extends StatelessWidget {
     var width = MediaQuery.sizeOf(context).width;
     var height = MediaQuery.sizeOf(context).height;
     return Container(
-        width: MediaQuery.of(context).size.width,
-        height: width > 600 ? height/8 : height / 20,
+        width: width > 600 ? width/2 : MediaQuery.of(context).size.width,
+        height: height / 17,
         margin: const EdgeInsets.fromLTRB(50, 16, 50, 0),
         child: ElevatedButton(
           onPressed: () {

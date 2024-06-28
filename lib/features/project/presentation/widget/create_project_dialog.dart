@@ -27,6 +27,7 @@ class CreateProjectDialog extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppDimensions.mediumPadding),
       //height: height * 0.5,
+      width: width > 600 ? width/2 : width,
       decoration: BoxDecoration(
           border: Border.all(width: 3, color: CustomColors.foregroundColor),
           borderRadius: BorderRadius.circular(AppDimensions.borderRadius)),

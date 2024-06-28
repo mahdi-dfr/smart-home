@@ -95,9 +95,9 @@ class _CustomDropDownState extends State<CustomDropDown> {
                   },
                   buttonStyleData: ButtonStyleData(
                     height: width > 600
-                        ? MediaQuery.sizeOf(context).height / 6
+                        ? MediaQuery.sizeOf(context).height / 10
                         : widget.height,
-                    width: widget.width,
+                    width: width > 600 ? width / 2 : widget.width,
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(14),
@@ -119,7 +119,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
                   dropdownStyleData: DropdownStyleData(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     maxHeight: MediaQuery.sizeOf(context).height / 2,
-                    width: widget.width! * 0.8,
+                    width: width > 600 ? width/2 : widget.width! * 0.8,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(14),
                       color: widget.color,

@@ -29,6 +29,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(Get.width);
     var width = MediaQuery.sizeOf(context).width;
     var height = MediaQuery.sizeOf(context).height;
     return Scaffold(
@@ -38,7 +39,7 @@ class HomePage extends StatelessWidget {
             pinned: true,
             delegate: SliverCustomAppBar(
                 lottieAssetSrc: Images.lottieHome2,
-                maxHeight: width > 600 ? 150 : 250,
+                maxHeight: width > 600 ? 220 : 250,
                 minHeight: width > 600 ? 0 : 150,
                 onOpenDrawer: () {
                   Scaffold.of(context).openDrawer();
@@ -70,8 +71,8 @@ class HomePage extends StatelessWidget {
                         child: Container(
                           margin: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 12),
-                          width: width > 600 ? width*0.3 : width * 0.8,
-                          height: width > 600 ? height * 0.5 : height * 0.4,
+                          width: width > 600 ? width * 0.3 : width * 0.8,
+                          height: width > 600 ? height * 0.45 : height * 0.4,
                           decoration: BoxDecoration(
                               image: const DecorationImage(
                                   image: AssetImage(Images.logo),
@@ -118,7 +119,7 @@ class HomePage extends StatelessWidget {
                           margin: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 12),
                           width: width > 600 ? width*0.3 : width * 0.8,
-                          height: width > 600 ? height * 0.5 : height * 0.4,
+                          height: width > 600 ? height * 0.45 : height * 0.4,
                           decoration: BoxDecoration(
                               boxShadow: const [
                                 BoxShadow(

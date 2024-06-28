@@ -59,17 +59,17 @@ class LoginScreen extends StatelessWidget {
                   Align(alignment: Alignment.topCenter, child:  SizedBox(
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
-                      child: SvgPicture.asset(
+                      child: width < 600 ? SvgPicture.asset(
                         Images.login,
                         width: width * 0.9,
-                      ),
+                      ) : const SizedBox(),
                     ),
                   ),),
                 ],
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 12,
             ),
             const Text(
               'ورود به برنامه',
@@ -97,14 +97,9 @@ class LoginScreen extends StatelessWidget {
               isPass: true,
               showPass: true,
             ),
+
             const SizedBox(
-              height: 8,
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            const SizedBox(
-              height: 20,
+              height: 12,
             ),
             Obx(() {
               return SizedBox(
@@ -135,15 +130,15 @@ class LoginScreen extends StatelessWidget {
               );
             }),
             const SizedBox(
-              height: 20,
+              height: 8,
             ),
 
             TextButton(onPressed: () {
               Get.offAllNamed(PagesRoutes.register);
-            }, child: const Text('حساب کاربری ندارید؟ | ثبت نام')),
+            }, child: const Text('حساب کاربری ندارید؟ | ثبت نام', style: TextStyle(fontSize: 14),)),
 
             const SizedBox(
-              height: 20,
+              height: 60,
             ),
           ],
         ),

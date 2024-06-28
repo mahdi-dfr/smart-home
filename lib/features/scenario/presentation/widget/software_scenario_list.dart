@@ -11,7 +11,7 @@ import '../../../../core/constants/routes.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/utils.dart';
 import '../../../../core/resource/ask_dialog.dart';
-import '../../../../mqtt_service.dart';
+import '../../../../core/resource/mqtt_service.dart';
 import '../controller/software_controller.dart';
 
 class SoftwareScenarioListWidget extends StatelessWidget {
@@ -65,35 +65,38 @@ class SoftwareScenarioListWidget extends StatelessWidget {
               ),
               _softwareController.scenarioList.value.isNotEmpty
                   ?  Expanded(
-                child: ListView.builder(
-                        itemBuilder: (context, index) {
-                          return SoftwareScenarioItem(
-                            index: index,
-                            onItemClicked: () {
-                              askDialog('فعال کردن سناریو', 'آیا مطمئن هستید؟', () {
-                                Get.back();
-                                _mqttController.publishMessage(
-                                    {
-                                      'type': 'run_software_scenario',
-                                      'scenario_id': _softwareController.scenarioList.value[index].uniqueId,
-                                    },
-                                    _softwareController.projectName +
-                                        '/' +
-                                        GetStorage().read(AppUtils.username) +
-                                        '/' +
-                                        'add_software_scenario');
-                                showTopSnackBar(
-                                  Overlay.of(context),
-                                  const CustomSnackBar.success(
-                                    message: 'سناریو با موفقیت فعال شد',
-                                  ),
-                                );
-                              });
-                            },
-                          );
+                child: SizedBox(
+                  width: width > 600 ? width / 2 : width,
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return SoftwareScenarioItem(
+                        index: index,
+                        onItemClicked: () {
+                          askDialog('فعال کردن سناریو', 'آیا مطمئن هستید؟', () {
+                            Get.back();
+                            _mqttController.publishMessage(
+                                {
+                                  'type': 'run_software_scenario',
+                                  'scenario_id': _softwareController.scenarioList.value[index].uniqueId,
+                                },
+                                _softwareController.projectName +
+                                    '/' +
+                                    GetStorage().read(AppUtils.username) +
+                                    '/' +
+                                    'add_software_scenario');
+                            showTopSnackBar(
+                              Overlay.of(context),
+                              const CustomSnackBar.success(
+                                message: 'سناریو با موفقیت فعال شد',
+                              ),
+                            );
+                          });
                         },
-                        itemCount: _softwareController.scenarioList.length,
-                      )
+                      );
+                    },
+                    itemCount: _softwareController.scenarioList.length,
+                  ),
+                )
 
               ) : Lottie.asset(Images.empty, width: MediaQuery.sizeOf(context).width / 2)
             ],

@@ -32,6 +32,9 @@ class TextFieldBox extends StatefulWidget {
 class _TextFieldBoxState extends State<TextFieldBox> {
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.sizeOf(context).width;
+    var height = MediaQuery.sizeOf(context).height;
+
     return Column(
       children: [
         Row(
@@ -55,7 +58,7 @@ class _TextFieldBoxState extends State<TextFieldBox> {
           height: 8,
         ),
         SizedBox(
-          width: MediaQuery.sizeOf(context).width,
+          width:  width > 600 ? width/2 : width,
           height: widget.height,
           child: TextField(
             readOnly: widget.disable,
@@ -80,8 +83,8 @@ class _TextFieldBoxState extends State<TextFieldBox> {
             ),
           ),
         ),
-        const SizedBox(
-          height: 16,
+        SizedBox(
+          height: width > 600 ? 0 : 16,
         )
       ],
     );

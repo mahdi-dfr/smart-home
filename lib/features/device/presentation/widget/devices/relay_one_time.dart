@@ -10,7 +10,7 @@ import 'package:turkeysh_smart_home/core/constants/utils.dart';
 import 'package:turkeysh_smart_home/features/device/presentation/widget/devices/take_time_part.dart';
 
 import '../../../../../core/constants/images.dart';
-import '../../../../../mqtt_service.dart';
+import '../../../../../core/resource/mqtt_service.dart';
 
 class RelayOneTimeWidget extends StatelessWidget {
   RelayOneTimeWidget(

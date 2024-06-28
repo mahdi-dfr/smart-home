@@ -39,7 +39,7 @@ class _BasePageState extends State<BasePage> {
         notchSmoothness: NotchSmoothness.verySmoothEdge,
         leftCornerRadius: 20,
         blurEffect: true,
-        height: width > 600 ? MediaQuery.sizeOf(context).height / 6 : MediaQuery.sizeOf(context).height / 12,
+        height: width > 600 ? MediaQuery.sizeOf(context).height / 9 : MediaQuery.sizeOf(context).height / 12,
         rightCornerRadius: 20,
         elevation: 10,
         splashColor: CustomColors.foregroundColor,

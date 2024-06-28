@@ -34,7 +34,7 @@ class BoardItem extends StatelessWidget {
         .height;
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      width: double.infinity,
+      width: width > 600 ? width / 2 : double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppDimensions.borderRadius),
         boxShadow: [

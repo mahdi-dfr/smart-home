@@ -21,8 +21,8 @@ class CustomButton extends StatelessWidget {
     var height = MediaQuery.sizeOf(context).height;
 
     return Container(
-        width: width,
-        height: width > 600 ? height / 8 : height / 20,
+        width: width > 600 ? width/2 : width,
+        height: width > 600 ? height / 15 : height / 20,
         margin: const EdgeInsets.fromLTRB(10, 16, 10, 10),
         child: ElevatedButton(
           onPressed: () {

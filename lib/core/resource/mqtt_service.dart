@@ -6,9 +6,9 @@ import 'package:get_storage/get_storage.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
-import 'core/constants/utils.dart';
-import 'features/device/presentation/controller/relay_data.dart';
-import 'features/home/presentation/controller/relay_controller.dart';
+import '../constants/utils.dart';
+import '../../features/device/presentation/controller/relay_data.dart';
+import '../../features/home/presentation/controller/relay_controller.dart';
 
 class MqttService extends GetxController{
   late MqttServerClient client;
@@ -30,7 +30,7 @@ class MqttService extends GetxController{
       return uuid.v4();
     }
     String uniqueClientId = generateUniqueClientId();
-    client = MqttServerClient.withPort('iot.perkyiot.com',uniqueClientId, 31951);
+    client = MqttServerClient.withPort('iot.perkyiot.com',uniqueClientId, 30320);
     client.logging(on: true);
     client.onConnected = onConnected;
     client.onDisconnected = onDisconnected;
@@ -43,7 +43,7 @@ class MqttService extends GetxController{
     client.setProtocolV311();
 
     final connMessage = MqttConnectMessage()
-        .authenticateAs('mosquitto', 'nK8bftR8dW5%WYkSguCu')
+        .authenticateAs('mosquitto2', 'gjEZPS71fj2WqwinXIpl')
         .keepAliveFor(60)
         .withWillTopic('willtopic')
         .withWillMessage('Will message')
