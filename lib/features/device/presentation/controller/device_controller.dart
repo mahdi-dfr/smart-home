@@ -72,7 +72,7 @@ class DeviceController extends GetxController {
       }
     } else {
       isLoading.value = false;
-      return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید.');
+      return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
     }
   }
 
