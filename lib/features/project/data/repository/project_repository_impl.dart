@@ -8,7 +8,7 @@ import '../data_source/api_provider.dart';
 
 class ProjectRepositoryImpl extends ProjectRepository{
 
-  ProjectApiProvider _apiProvider;
+  final ProjectApiProvider _apiProvider;
 
   ProjectRepositoryImpl(this._apiProvider);
 

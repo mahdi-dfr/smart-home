@@ -23,7 +23,7 @@ class MyDrawerWidget extends StatelessWidget {
       child: Drawer(
         child: Container(
           padding: const EdgeInsets.only(left: 16.0),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
           ),
           width: 300,
@@ -92,74 +92,50 @@ class MyDrawerWidget extends StatelessWidget {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Divider(),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            drawerItemList(
+
+                            DrawerItemOption(
+                                icon: const Icon(Icons.signal_wifi_connected_no_internet_4),
+                                title: 'حالت آفلاین',
+                                onTap: () {
+                                  // Get.toNamed(
+                                  // RouteHelper.getLanguageRoute('menu'));
+                                }),
+                            DrawerItem(
                                 icon: const Icon(Icons.language),
                                 title: 'زبان',
                                 onTap: () {
                                   // Get.toNamed(
                                   // RouteHelper.getLanguageRoute('menu'));
                                 }),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            const Divider(),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            drawerItemList(
+
+                            DrawerItem(
                                 icon: const Icon(Icons.settings),
                                 title: 'تنظیمات',
                                 onTap: () {
                                   //Get.toNamed(RouteHelper.getSettingRoute());
                                 }),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            const Divider(),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            drawerItemList(
+                            DrawerItem(
                                 icon: const Icon(Icons.developer_board),
                                 title: 'تنظیمات بردها',
                                 onTap: () {
                                   Get.back();
                                   Get.toNamed(PagesRoutes.boardSetting);
                                 }),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            const Divider(),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            drawerItemList(
+
+                            DrawerItem(
                                 icon: const Icon(Icons.info),
                                 title: 'در مورد ما',
                                 onTap: () {
                                   //Todo Page about us...
                                 }),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            const Divider(),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            drawerItemList(
+
+                            DrawerItem(
                                 icon: const Icon(Icons.shopping_bag),
                                 title: 'فروشگاه',
                                 onTap: () {
                                   //Todo Page store WebView
                                 }),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            const Divider(),
+
                           ],
                         ),
                       ).paddingSymmetric(horizontal: 40),
