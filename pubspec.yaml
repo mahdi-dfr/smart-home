@@ -35,7 +35,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  get: ^4.6.5
+  get: ^4.6.6
   dio: ^5.3.1
   flutter_expandable_fab: ^2.0.0
   flutter_svg: ^2.0.7
@@ -58,7 +58,6 @@ dependencies:
   isar_flutter_libs: ^3.1.0+1
   path_provider: ^2.1.1
   uuid: ^4.2.1
-  marquee: ^2.2.3
 
 
 
@@ -117,7 +116,7 @@ flutter:
   fonts:
     - family: IranSans
       fonts:
-        - asset: assets/fonts/IRANSansWeb.woff
+        - asset: assets/fonts/IRANSansWeb.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
