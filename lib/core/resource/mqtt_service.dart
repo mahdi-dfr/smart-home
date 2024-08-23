@@ -25,59 +25,84 @@ class MqttService extends GetxController{
     super.onInit();
   }
 
-  initializeMqtt() async {
-    if(Get.find<ConnectionController>().isConnected.value){
-      String generateUniqueClientId() {
-        const Uuid uuid = Uuid();
-        return uuid.v4();
-      }
-      String uniqueClientId = generateUniqueClientId();
-      client = MqttServerClient.withPort('iot.perkyiot.com',uniqueClientId, 30320);
-      client.logging(on: true);
-      client.onConnected = onConnected;
-      client.onDisconnected = onDisconnected;
-      //client.onUnsubscribed = onUnsubscribed;
-      client.onSubscribed = onSubscribed;
-      client.onSubscribeFail = onSubscribeFail;
-      client.pongCallback = pong;
-      client.keepAlivePeriod = 60;
-      client.logging(on: true);
-      client.setProtocolV311();
+  Future<void> initializeMqtt() async {
+    final connectionController = Get.find<ConnectionController>();
 
-      final connMessage = MqttConnectMessage()
-          .authenticateAs('mosquitto2', 'gjEZPS71fj2WqwinXIpl')
-          .keepAliveFor(60)
-          .withWillTopic('willtopic')
-          .withWillMessage('Will message')
-          .startClean()
-          .withWillQos(MqttQos.atLeastOnce);
-      client.connectionMessage = connMessage;
+    if (connectionController.isConnected.value) {
+      final uniqueClientId = _generateUniqueClientId();
+      client = _createMqttClient(uniqueClientId);
+
+      _configureClient();
 
       try {
         await client.connect();
+        _handleConnection();
+        _subscribeToTopic('test/1');
+        _listenToMessages();
       } catch (e) {
-        print('Exception: $e');
-        client.disconnect();
-      }
-      const topic = 'test/1';
-      print('Subscribing to the $topic topic');
-      client.subscribe(topic, MqttQos.atLeastOnce);
-      client.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
-        final recMess = c![0].payload as MqttPublishMessage;
-        final pt =
-        MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-        print('Received message: topic is ${c[0].topic}, payload is $pt');
-      });
-
-      if (client.connectionStatus!.state == MqttConnectionState.connected) {
-        print('client connected');
-      } else {
-        print(
-            'client connection failed - disconnecting, status is ${client.connectionStatus}');
-        client.disconnect();
+        _handleConnectionError(e);
       }
     }
   }
+
+  String _generateUniqueClientId() {
+    const Uuid uuid = Uuid();
+    return uuid.v4();
+  }
+
+  MqttServerClient _createMqttClient(String clientId) {
+    final MqttServerClient mqttClient = MqttServerClient.withPort('iot.perkyiot.com', clientId, 30320);
+    mqttClient.logging(on: true);
+    return mqttClient;
+  }
+
+  void _configureClient() {
+    client.onConnected = onConnected;
+    client.onDisconnected = onDisconnected;
+    client.onSubscribed = onSubscribed;
+    client.onSubscribeFail = onSubscribeFail;
+    client.pongCallback = pong;
+    client.keepAlivePeriod = 60;
+    client.setProtocolV311();
+
+    final connMessage = MqttConnectMessage()
+        .authenticateAs('mosquitto2', 'gjEZPS71fj2WqwinXIpl')
+        .keepAliveFor(60)
+        .withWillTopic('willtopic')
+        .withWillMessage('Will message')
+        .startClean()
+        .withWillQos(MqttQos.atLeastOnce);
+
+    client.connectionMessage = connMessage;
+  }
+
+  void _handleConnection() {
+    if (client.connectionStatus!.state == MqttConnectionState.connected) {
+      print('Client connected');
+    } else {
+      print('Client connection failed - status is ${client.connectionStatus}');
+      client.disconnect();
+    }
+  }
+
+  void _subscribeToTopic(String topic) {
+    print('Subscribing to the $topic topic');
+    client.subscribe(topic, MqttQos.atLeastOnce);
+  }
+
+  void _listenToMessages() {
+    client.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? messages) {
+      final recMess = messages![0].payload as MqttPublishMessage;
+      final payload = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+      print('Received message: topic is ${messages[0].topic}, payload is $payload');
+    });
+  }
+
+  void _handleConnectionError(Object error) {
+    print('Exception: $error');
+    client.disconnect();
+  }
+
 
   subscribeMessage(String topic) {
     if(Get.find<ConnectionController>().isConnected.value){
