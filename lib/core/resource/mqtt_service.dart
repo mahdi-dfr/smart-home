@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'package:turkeysh_smart_home/core/resource/connection_controller.dart';
 import 'package:uuid/uuid.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -25,77 +26,80 @@ class MqttService extends GetxController{
   }
 
   initializeMqtt() async {
-    String generateUniqueClientId() {
-      const Uuid uuid = Uuid();
-      return uuid.v4();
-    }
-    String uniqueClientId = generateUniqueClientId();
-    client = MqttServerClient.withPort('iot.perkyiot.com',uniqueClientId, 30320);
-    client.logging(on: true);
-    client.onConnected = onConnected;
-    client.onDisconnected = onDisconnected;
-    //client.onUnsubscribed = onUnsubscribed;
-    client.onSubscribed = onSubscribed;
-    client.onSubscribeFail = onSubscribeFail;
-    client.pongCallback = pong;
-    client.keepAlivePeriod = 60;
-    client.logging(on: true);
-    client.setProtocolV311();
+    if(Get.find<ConnectionController>().isConnected.value){
+      String generateUniqueClientId() {
+        const Uuid uuid = Uuid();
+        return uuid.v4();
+      }
+      String uniqueClientId = generateUniqueClientId();
+      client = MqttServerClient.withPort('iot.perkyiot.com',uniqueClientId, 30320);
+      client.logging(on: true);
+      client.onConnected = onConnected;
+      client.onDisconnected = onDisconnected;
+      //client.onUnsubscribed = onUnsubscribed;
+      client.onSubscribed = onSubscribed;
+      client.onSubscribeFail = onSubscribeFail;
+      client.pongCallback = pong;
+      client.keepAlivePeriod = 60;
+      client.logging(on: true);
+      client.setProtocolV311();
 
-    final connMessage = MqttConnectMessage()
-        .authenticateAs('mosquitto2', 'gjEZPS71fj2WqwinXIpl')
-        .keepAliveFor(60)
-        .withWillTopic('willtopic')
-        .withWillMessage('Will message')
-        .startClean()
-        .withWillQos(MqttQos.atLeastOnce);
-    client.connectionMessage = connMessage;
+      final connMessage = MqttConnectMessage()
+          .authenticateAs('mosquitto2', 'gjEZPS71fj2WqwinXIpl')
+          .keepAliveFor(60)
+          .withWillTopic('willtopic')
+          .withWillMessage('Will message')
+          .startClean()
+          .withWillQos(MqttQos.atLeastOnce);
+      client.connectionMessage = connMessage;
 
-    try {
-      await client.connect();
-    } catch (e) {
-      print('Exception: $e');
-      client.disconnect();
-    }
-    const topic = 'test/1';
-    print('Subscribing to the $topic topic');
-    client.subscribe(topic, MqttQos.atLeastOnce);
-    client.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
-      final recMess = c![0].payload as MqttPublishMessage;
-      final pt =
-          MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-      print('Received message: topic is ${c[0].topic}, payload is $pt');
-    });
+      try {
+        await client.connect();
+      } catch (e) {
+        print('Exception: $e');
+        client.disconnect();
+      }
+      const topic = 'test/1';
+      print('Subscribing to the $topic topic');
+      client.subscribe(topic, MqttQos.atLeastOnce);
+      client.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
+        final recMess = c![0].payload as MqttPublishMessage;
+        final pt =
+        MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+        print('Received message: topic is ${c[0].topic}, payload is $pt');
+      });
 
-    if (client.connectionStatus!.state == MqttConnectionState.connected) {
-      print('client connected');
-    } else {
-      print(
-          'client connection failed - disconnecting, status is ${client.connectionStatus}');
-      client.disconnect();
+      if (client.connectionStatus!.state == MqttConnectionState.connected) {
+        print('client connected');
+      } else {
+        print(
+            'client connection failed - disconnecting, status is ${client.connectionStatus}');
+        client.disconnect();
+      }
     }
   }
 
   subscribeMessage(String topic) {
+    if(Get.find<ConnectionController>().isConnected.value){
+      print('MQTT_LOGS::Subscribing to the test/lol topic');
+      client.subscribe(topic, MqttQos.atMostOnce);
 
-    print('MQTT_LOGS::Subscribing to the test/lol topic');
-    client.subscribe(topic, MqttQos.atMostOnce);
+      client.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
+        final recMess = c![0].payload as MqttPublishMessage;
+        final payload =
+        MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
 
-    client.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
-      final recMess = c![0].payload as MqttPublishMessage;
-      final payload =
-          MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-
-      print(
-          'MQTT_LOGS:: New data arrived: topic is <${c[0].topic}>, payload is $payload');
+        print(
+            'MQTT_LOGS:: New data arrived: topic is <${c[0].topic}>, payload is $payload');
 
 
-      if(topic.contains('relay')){
-        print('///////..');
-        setRelayList(payload);
-      }
+        if(topic.contains('relay')){
+          print('///////..');
+          setRelayList(payload);
+        }
 
-    });
+      });
+    }
 
   }
 

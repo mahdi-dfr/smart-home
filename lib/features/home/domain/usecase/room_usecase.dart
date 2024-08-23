@@ -5,7 +5,7 @@ import 'package:turkeysh_smart_home/features/home/domain/repository/home_reposit
 import '../../../../core/resource/data_state.dart';
 
 class RoomUseCase{
-  HomeRepository _repository;
+  final HomeRepository _repository;
 
   RoomUseCase(this._repository);
 
@@ -27,6 +27,18 @@ class RoomUseCase{
 
   Future<DataState<RoomEntity>> getOneRoom(int projectId, int roomId){
     return _repository.getOneRoom(projectId, roomId);
+  }
+
+  Future<DataState<String>> saveRoomToLocal(List<RoomEntity> rooms){
+    return _repository.saveRoomToLocal(rooms);
+  }
+
+  Future<DataState<List<RoomEntity>>> getLocalRoom(){
+    return _repository.getLocalRoom();
+  }
+
+  Future<DataState<String>> deleteRoomFromLocal(){
+    return _repository.deleteRoomFromLocal();
   }
 
 

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:lottie/lottie.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:turkeysh_smart_home/core/constants/colors.dart';
 import 'package:turkeysh_smart_home/features/device/presentation/controller/device_controller.dart';
-import 'package:turkeysh_smart_home/features/home/presentation/controller/room_controller.dart';
 import 'package:turkeysh_smart_home/features/device/presentation/screen/spetial_device.dart';
+import 'package:turkeysh_smart_home/features/home/presentation/controller/room_controller.dart';
 import 'package:turkeysh_smart_home/features/project/presentation/controller/project_controller.dart';
+
 import '../../../../core/constants/dimens.dart';
 import '../../../../core/constants/images.dart';
 import '../../../../core/constants/routes.dart';
@@ -29,21 +28,20 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(Get.width);
     var width = MediaQuery.sizeOf(context).width;
     var height = MediaQuery.sizeOf(context).height;
     return Scaffold(
         body: CustomScrollView(slivers: [
-        SliverPersistentHeader(
-            floating: true,
-            pinned: true,
-            delegate: SliverCustomAppBar(
-                lottieAssetSrc: Images.lottieHome2,
-                maxHeight: width > 600 ? 220 : 250,
-                minHeight: width > 600 ? 0 : 150,
-                onOpenDrawer: () {
-                  Scaffold.of(context).openDrawer();
-                })),
+      SliverPersistentHeader(
+          floating: true,
+          pinned: true,
+          delegate: SliverCustomAppBar(
+              lottieAssetSrc: Images.lottieHome2,
+              maxHeight: width > 600 ? 220 : 250,
+              minHeight: width > 600 ? 0 : 150,
+              onOpenDrawer: () {
+                Scaffold.of(context).openDrawer();
+              })),
       SliverList(
           delegate: SliverChildListDelegate([
         const Padding(
@@ -55,8 +53,7 @@ class HomePage extends StatelessWidget {
                 style: AppStyles.style2,
               )),
         ),
-        GetBuilder<RoomController>(
-            builder: (logic) {
+        GetBuilder<RoomController>(builder: (logic) {
           if (!logic.isLoading.value) {
             return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -69,20 +66,14 @@ class HomePage extends StatelessWidget {
                           Get.toNamed(PagesRoutes.createRoom);
                         },
                         child: Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 12),
+                          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                           width: width > 600 ? width * 0.3 : width * 0.8,
                           height: width > 600 ? height * 0.45 : height * 0.4,
                           decoration: BoxDecoration(
                               image: const DecorationImage(
-                                  image: AssetImage(Images.logo),
-                                  fit: BoxFit.cover,
-                                  opacity: 0.05),
-                              borderRadius: BorderRadius.circular(
-                                  AppDimensions.borderRadius),
-                              border: Border.all(
-                                  width: 2,
-                                  color: CustomColors.foregroundColor)),
+                                  image: AssetImage(Images.logo), fit: BoxFit.cover, opacity: 0.05),
+                              borderRadius: BorderRadius.circular(AppDimensions.borderRadius),
+                              border: Border.all(width: 2, color: CustomColors.foregroundColor)),
                           child: Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -108,45 +99,34 @@ class HomePage extends StatelessWidget {
                       return InkWell(
                         onTap: () {
                           if (logic.roomsList[index].id != null) {
-                            Get.find<DeviceController>().roomId =
-                                logic.roomsList[index].id;
+                            Get.find<DeviceController>().roomId = logic.roomsList[index].id;
                             Get.find<DeviceController>().getAllDevises();
-                            Get.to(() =>
-                                DeviceListScreen(room: logic.roomsList[index]));
+                            Get.to(() => DeviceListScreen(room: logic.roomsList[index]));
                           }
                         },
                         child: Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 12),
-                          width: width > 600 ? width*0.3 : width * 0.8,
+                          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                          width: width > 600 ? width * 0.3 : width * 0.8,
                           height: width > 600 ? height * 0.45 : height * 0.4,
                           decoration: BoxDecoration(
                               boxShadow: const [
-                                BoxShadow(
-                                    color: Colors.grey,
-                                    offset: Offset(0, 0),
-                                    spreadRadius: 2,
-                                    blurRadius: 5)
+                                BoxShadow(color: Colors.grey, offset: Offset(0, 0), spreadRadius: 2, blurRadius: 5)
                               ],
-                              borderRadius: BorderRadius.circular(
-                                  AppDimensions.borderRadius),
+                              borderRadius: BorderRadius.circular(AppDimensions.borderRadius),
                               color: CustomColors.foregroundColor),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                padding: const EdgeInsets.all(12),
-                                width: width > 600 ? width*0.2 :  width * 0.7,
-                                height: width > 600 ? height*0.3 : height * 0.3,
-                                decoration: BoxDecoration(
-                                    color: CustomColors.backgroundColor,
-                                    borderRadius: const BorderRadius.only(
-                                        bottomRight: Radius.circular(
-                                            AppDimensions.borderRadius),
-                                        bottomLeft: Radius.circular(
-                                            AppDimensions.borderRadius))),
-                                child: SvgPicture.asset(Images.room)
-                              ),
+                                  padding: const EdgeInsets.all(12),
+                                  width: width > 600 ? width * 0.2 : width * 0.7,
+                                  height: width > 600 ? height * 0.3 : height * 0.3,
+                                  decoration: BoxDecoration(
+                                      color: CustomColors.backgroundColor,
+                                      borderRadius: const BorderRadius.only(
+                                          bottomRight: Radius.circular(AppDimensions.borderRadius),
+                                          bottomLeft: Radius.circular(AppDimensions.borderRadius))),
+                                  child: SvgPicture.asset(Images.room)),
                               Text(
                                 logic.roomsList[index].name ?? '',
                                 style: AppStyles.style3,
@@ -156,20 +136,12 @@ class HomePage extends StatelessWidget {
                                     Get.defaultDialog(
                                         title: 'انتخاب کنید',
                                         content: Container(
-                                          padding: const EdgeInsets.all(
-                                              AppDimensions.mediumPadding),
+                                          padding: const EdgeInsets.all(AppDimensions.mediumPadding),
                                           decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  width: 3,
-                                                  color: CustomColors
-                                                      .foregroundColor),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      AppDimensions
-                                                          .borderRadius)),
+                                              border: Border.all(width: 3, color: CustomColors.foregroundColor),
+                                              borderRadius: BorderRadius.circular(AppDimensions.borderRadius)),
                                           child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: [
                                               Column(
                                                 children: [
@@ -177,42 +149,23 @@ class HomePage extends StatelessWidget {
                                                       onPressed: () {
                                                         Get.back();
                                                         askDialog('حذف اتاق', 'آیا مطمئن هستید؟', () {
-                                                          if (_controller
-                                                                  .roomsList[
-                                                                      index]
-                                                                  .id !=
-                                                              null) {
+                                                          if (_controller.roomsList[index].id != null) {
                                                             _controller
-                                                                .deleteRoom(
-                                                                    _controller
-                                                                        .roomsList[
-                                                                            index]
-                                                                        .id!,
-                                                                    Get.find<ProjectController>()
-                                                                            .projectId ??
-                                                                        0)
+                                                                .deleteRoom(_controller.roomsList[index].id!,
+                                                                    Get.find<ProjectController>().projectId ?? 0)
                                                                 .then((value) {
-                                                              if (value
-                                                                  is DataSuccess) {
+                                                              if (value is DataSuccess) {
                                                                 showTopSnackBar(
-                                                                  Overlay.of(
-                                                                      context),
-                                                                  CustomSnackBar
-                                                                      .success(
-                                                                    message: value
-                                                                            .data ??
-                                                                        'اطلاعات با موفقیت حذف شد',
+                                                                  Overlay.of(context),
+                                                                  CustomSnackBar.success(
+                                                                    message: value.data ?? 'اطلاعات با موفقیت حذف شد',
                                                                   ),
                                                                 );
                                                               } else {
                                                                 showTopSnackBar(
-                                                                  Overlay.of(
-                                                                      context),
-                                                                  CustomSnackBar
-                                                                      .error(
-                                                                    message: value
-                                                                            .error ??
-                                                                        'خطا در ارسال اطلاعات',
+                                                                  Overlay.of(context),
+                                                                  CustomSnackBar.error(
+                                                                    message: value.error ?? 'خطا در ارسال اطلاعات',
                                                                   ),
                                                                 );
                                                               }
@@ -223,8 +176,7 @@ class HomePage extends StatelessWidget {
                                                       },
                                                       icon: Icon(
                                                         Icons.delete,
-                                                        color: CustomColors
-                                                            .foregroundColor,
+                                                        color: CustomColors.foregroundColor,
                                                       )),
                                                   const Text(
                                                     'حذف',
@@ -239,21 +191,13 @@ class HomePage extends StatelessWidget {
                                                   IconButton(
                                                       onPressed: () {
                                                         Get.back();
-                                                        _controller.roomId =
-                                                            _controller
-                                                                .roomsList[
-                                                                    index]
-                                                                .id;
-                                                        _controller
-                                                                .isRoomUpdateMode =
-                                                            true;
-                                                        Get.toNamed(PagesRoutes
-                                                            .createRoom);
+                                                        _controller.roomId = _controller.roomsList[index].id;
+                                                        _controller.isRoomUpdateMode = true;
+                                                        Get.toNamed(PagesRoutes.createRoom);
                                                       },
                                                       icon: Icon(
                                                         Icons.edit,
-                                                        color: CustomColors
-                                                            .foregroundColor,
+                                                        color: CustomColors.foregroundColor,
                                                       )),
                                                   const Text(
                                                     'ویرایش',
@@ -279,8 +223,7 @@ class HomePage extends StatelessWidget {
             return SizedBox(
               width: width,
               child: Center(
-                child: LoadingAnimationWidget.beat(
-                    color: CustomColors.foregroundColor, size: 35),
+                child: LoadingAnimationWidget.beat(color: CustomColors.foregroundColor, size: 35),
               ),
             );
           }
@@ -300,8 +243,7 @@ class HomePage extends StatelessWidget {
           itemBuilder: (context, index) {
             return InkWell(
                 onTap: () {
-                  Get.to(SpecialDeviceScreen(
-                      name: AppUtils.deviceInfo.keys.toList()[index]));
+                  Get.to(SpecialDeviceScreen(name: AppUtils.deviceInfo.keys.toList()[index]));
                 },
                 child: DeviceInfo(
                   index: index,

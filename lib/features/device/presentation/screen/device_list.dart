@@ -6,6 +6,7 @@ import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:turkeysh_smart_home/core/resource/data_state.dart';
 import 'package:turkeysh_smart_home/core/widget/question_dialog.dart';
 import 'package:turkeysh_smart_home/features/device/presentation/controller/device_controller.dart';
+import 'package:turkeysh_smart_home/features/home/domain/entity/room_entity.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/images.dart';
@@ -13,14 +14,13 @@ import '../../../../core/constants/routes.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/widget/custom_app_bar.dart';
 import '../../../device/presentation/screen/one_time_devices.dart';
-import '../../../home/data/model/room_response.dart';
 import '../widget/devices/relay_one_time.dart';
 import '../widget/devices/sensors_widget.dart';
 
 class DeviceListScreen extends StatelessWidget {
   DeviceListScreen({required this.room, Key? key}) : super(key: key);
 
-  RoomResults room;
+  final RoomEntity room;
   final _controller = Get.find<DeviceController>();
 
   @override
@@ -50,16 +50,13 @@ class DeviceListScreen extends StatelessWidget {
       body: SafeArea(child: Obx(() {
         return _controller.isDeviceLoading.value
             ? Center(
-                child: LoadingAnimationWidget.beat(
-                    color: CustomColors.foregroundColor, size: 35),
+                child: LoadingAnimationWidget.beat(color: CustomColors.foregroundColor, size: 35),
               )
             : Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 child: Center(
                   child: _controller.deviceList.isEmpty
-                      ? Lottie.asset(Images.empty,
-                          width: MediaQuery.sizeOf(context).width / 2)
+                      ? Lottie.asset(Images.empty, width: MediaQuery.sizeOf(context).width / 2)
                       : CustomScrollView(slivers: [
                           SliverToBoxAdapter(
                               child: Padding(
@@ -87,34 +84,22 @@ class DeviceListScreen extends StatelessWidget {
                           )),
                           SliverList.builder(
                               itemBuilder: (BuildContext context, int index) {
-                                if (_controller.deviceList[index].deviceType ==
-                                    '0') {
+                                if (_controller.deviceList[index].deviceType == '0') {
                                   return RelayOneTimeWidget(
-                                    nodeId: _controller.deviceList[index]
-                                        .nodeProject?.uniqueId,
-                                    boardUniqueId: _controller.deviceList[index]
-                                        .projectBoard?.uniqueId,
-                                    title: _controller
-                                        .deviceList.value[index].name,
+                                    nodeId: _controller.deviceList[index].nodeProject?.uniqueId,
+                                    boardUniqueId: _controller.deviceList[index].projectBoard?.uniqueId,
+                                    title: _controller.deviceList[index].name,
                                     onLongPress: () {
                                       questionDialog(
                                           title: 'حذف تجهیز',
-                                          question:
-                                              'آیا میخواهید این تجهز را حذف کنید؟',
+                                          question: 'آیا میخواهید این تجهز را حذف کنید؟',
                                           onYesClicked: () {
-                                            _controller
-                                                .deleteDevice(_controller
-                                                    .deviceList[index].id!)
-                                                .then((value) {
+                                            _controller.deleteDevice(_controller.deviceList[index].id!).then((value) {
                                               if (value is DataSuccess) {
                                                 Get.back();
-                                                const CustomSnackBar.success(
-                                                    message:
-                                                        'تجهیز با موفقیت حذف شد!');
+                                                const CustomSnackBar.success(message: 'تجهیز با موفقیت حذف شد!');
                                               } else {
-                                                const CustomSnackBar.error(
-                                                    message:
-                                                        'خطا در ارسال اطلاعات');
+                                                const CustomSnackBar.error(message: 'خطا در ارسال اطلاعات');
                                               }
                                             });
                                           });
@@ -123,28 +108,18 @@ class DeviceListScreen extends StatelessWidget {
                                 } else {
                                   return SensorWidget(
                                     title: _controller.deviceList[index].name,
-                                    type: _controller
-                                        .deviceList[index].deviceType
-                                        .toString(),
+                                    type: _controller.deviceList[index].deviceType.toString(),
                                     onLongPress: () {
                                       questionDialog(
                                           title: 'حذف تجهیز',
-                                          question:
-                                              'آیا میخواهید این تجهز را حذف کنید؟',
+                                          question: 'آیا میخواهید این تجهز را حذف کنید؟',
                                           onYesClicked: () {
-                                            _controller
-                                                .deleteDevice(_controller
-                                                    .deviceList[index].id!)
-                                                .then((value) {
+                                            _controller.deleteDevice(_controller.deviceList[index].id!).then((value) {
                                               if (value is DataSuccess) {
                                                 Get.back();
-                                                const CustomSnackBar.success(
-                                                    message:
-                                                        'تجهیز با موفقیت حذف شد!');
+                                                const CustomSnackBar.success(message: 'تجهیز با موفقیت حذف شد!');
                                               } else {
-                                                const CustomSnackBar.error(
-                                                    message:
-                                                        'خطا در ارسال اطلاعات');
+                                                const CustomSnackBar.error(message: 'خطا در ارسال اطلاعات');
                                               }
                                             });
                                           });

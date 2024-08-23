@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:isar/isar.dart';
 import 'package:turkeysh_smart_home/core/resource/data_state.dart';
 import 'package:turkeysh_smart_home/features/home/data/data_source/api_provider.dart';
 import 'package:turkeysh_smart_home/features/home/data/model/room_response.dart';
@@ -6,10 +7,13 @@ import 'package:turkeysh_smart_home/features/home/domain/entity/room_entity.dart
 import 'package:turkeysh_smart_home/features/home/domain/entity/room_response_entity.dart';
 import 'package:turkeysh_smart_home/features/home/domain/repository/home_repository.dart';
 
-class HomeRepositoryImpl extends HomeRepository {
-  HomeApiProvider _apiProvider;
+import '../../../../core/resource/isar_controller.dart';
 
-  HomeRepositoryImpl(this._apiProvider);
+class HomeRepositoryImpl extends HomeRepository {
+  final HomeApiProvider _apiProvider;
+  final IsarController _isarController;
+
+  HomeRepositoryImpl(this._apiProvider, this._isarController);
 
   @override
   Future<DataState<RoomEntity>> createRoom(Map<String, dynamic> data) async {
@@ -56,8 +60,7 @@ class HomeRepositoryImpl extends HomeRepository {
   }
 
   @override
-  Future<DataState<RoomEntity>> updateRoom(
-      Map<String, dynamic> data, int id, int projectId) async {
+  Future<DataState<RoomEntity>> updateRoom(Map<String, dynamic> data, int id, int projectId) async {
     var response = await _apiProvider.updateRoomById(data, id, projectId);
     if (response is! DioException) {
       if (response.statusCode == 200) {
@@ -71,7 +74,6 @@ class HomeRepositoryImpl extends HomeRepository {
     }
   }
 
-
   @override
   Future<DataState<RoomEntity>> getOneRoom(int projectId, int roomId) async {
     var response = await _apiProvider.getOneProjectRoom(projectId, roomId);
@@ -84,6 +86,40 @@ class HomeRepositoryImpl extends HomeRepository {
       }
     } else {
       return DataFailed(response.response.toString());
+    }
+  }
+
+  @override
+  Future<DataState<String>> deleteRoomFromLocal() async {
+    try {
+      await _isarController.isar.writeTxn(() async {
+        await _isarController.isar.roomEntitys.where().deleteAll();
+      });
+      return const DataSuccess('success');
+    } catch (err) {
+      return DataFailed(err.toString());
+    }
+  }
+
+  @override
+  Future<DataState<List<RoomEntity>>> getLocalRoom() async {
+    try {
+      List<RoomEntity> rooms = await _isarController.isar.roomEntitys.where().findAll();
+      return DataSuccess(rooms);
+    } catch (err) {
+      return const DataFailed('err');
+    }
+  }
+
+  @override
+  Future<DataState<String>> saveRoomToLocal(List<RoomEntity> rooms) async {
+    try {
+      await _isarController.isar.writeTxn(() async {
+        await _isarController.isar.roomEntitys.putAll(rooms);
+      });
+      return const DataSuccess('success');
+    } catch (err) {
+      return DataFailed(err.toString());
     }
   }
 }
