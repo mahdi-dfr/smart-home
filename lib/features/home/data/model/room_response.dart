@@ -26,17 +26,6 @@ class RoomResponseModel extends RoomResponseEntity {
       });
     }
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['count'] = count;
-    data['next'] = next;
-    data['previous'] = previous;
-    if (results != null) {
-      data['results'] = results!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
 }
 
 class RoomResults extends RoomEntity {
@@ -70,16 +59,5 @@ class RoomResults extends RoomEntity {
     deleteAt = json['delete_at'];
     updateAt = json['update_at'];
     project = json['project'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['created_at'] = createdAt;
-    data['delete_at'] = deleteAt;
-    data['update_at'] = updateAt;
-    data['project'] = project;
-    return data;
   }
 }
