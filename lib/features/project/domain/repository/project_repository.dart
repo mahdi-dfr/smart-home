@@ -12,5 +12,8 @@ abstract class ProjectRepository{
 
   Future<DataState<String>> deleteUserProjects(int id);
 
+  /// offline methods
+
+
 
 }
