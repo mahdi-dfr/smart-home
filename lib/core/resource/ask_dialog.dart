@@ -28,7 +28,7 @@ Future<void> askDialog(String title, String content, Function() onConfirm ){
       ElevatedButton(
         onPressed: onConfirm,
         style: ElevatedButton.styleFrom(
-          primary: CustomColors.foregroundColor,
+          backgroundColor: CustomColors.foregroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -52,7 +52,7 @@ Future<void> askDialog(String title, String content, Function() onConfirm ){
           Get.back(result: "No");
         },
         style: ElevatedButton.styleFrom(
-          primary: Colors.grey[400],
+          backgroundColor: Colors.grey[400],
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),

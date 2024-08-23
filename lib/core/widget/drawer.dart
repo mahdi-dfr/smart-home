@@ -11,7 +11,7 @@ import '../constants/images.dart';
 import 'drawer_item_list.dart';
 
 class MyDrawerWidget extends StatelessWidget {
-  MyDrawerWidget({ Key? key}) : super(key: key);
+  const MyDrawerWidget({ Key? key}) : super(key: key);
 
   //final GlobalKey<ScaffoldState> scaffoldKey;
 
@@ -25,7 +25,7 @@ class MyDrawerWidget extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.only(left: 16.0),
           decoration: BoxDecoration(
-            color: Get.theme.bottomAppBarColor,
+            color: Colors.white,
           ),
           width: 300,
           child: SafeArea(
