@@ -33,12 +33,15 @@ import '../../features/home/presentation/controller/relay_controller.dart';
 import '../../features/project/data/data_source/api_provider.dart';
 import '../../features/scenario/presentation/controller/software_controller.dart';
 import '../../features/settings/data/repository/project_board_repository_impl.dart';
+import 'isar_controller.dart';
 import 'mqtt_service.dart';
 import 'mqtt_receiver.dart';
 
 class AppBindings extends Bindings{
   @override
   void dependencies() {
+
+    Get.put<IsarController>(IsarController());
 
     /// api providers:
     Get.put<AuthApiProvider>(AuthApiProvider());
