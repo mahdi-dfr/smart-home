@@ -69,7 +69,7 @@ class ProjectBindings extends Bindings{
     Get.put<ProjectApiProvider>(ProjectApiProvider());
 
     /// repositories:
-    Get.put<ProjectRepository>(ProjectRepositoryImpl(Get.find<ProjectApiProvider>()));
+    Get.put<ProjectRepository>(ProjectRepositoryImpl(Get.find<ProjectApiProvider>(), Get.find<IsarController>()));
 
     ///useCase:
     Get.put<ProjectUseCase>(ProjectUseCase(Get.find<ProjectRepository>()));

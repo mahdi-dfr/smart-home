@@ -1,23 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:turkeysh_smart_home/core/constants/utils.dart';
 import 'package:turkeysh_smart_home/features/project/data/model/request/project_request.dart';
 import 'package:turkeysh_smart_home/features/project/domain/usecase/project_usecase.dart';
 
 import '../../../../core/resource/connection_controller.dart';
 import '../../../../core/resource/data_state.dart';
-import '../../../../core/resource/data_state.dart';
-import '../../data/model/response/project_model.dart';
 import '../../domain/entity/project_entity.dart';
+import '../../domain/entity/prooject_result_entity.dart';
 
-class ProjectController extends GetxController{
-  ProjectUseCase _useCase;
+class ProjectController extends GetxController {
+  final ProjectUseCase _useCase;
 
   ProjectController(this._useCase);
 
   late TextEditingController projectName;
   late TextEditingController projectAddress;
   late Map<String, dynamic> request;
-  RxList<ProjectResults> projectList = RxList();
+  RxList<ProjectResultsEntity> projectList = RxList();
 
   var isLoading = false.obs;
   var isGetProjectsLoading = false.obs;
@@ -37,82 +38,83 @@ class ProjectController extends GetxController{
     isLoading.value = true;
     request = ProjectRequest(projectName.text, projectAddress.text).toJson();
     if (Get.find<ConnectionController>().isConnected.value) {
-      if(projectName.text.isNotEmpty && projectAddress.text.isNotEmpty){
+      if (projectName.text.isNotEmpty && projectAddress.text.isNotEmpty) {
         DataState dataState = await _useCase.addProject(request);
-        if(dataState is DataSuccess){
-          if(dataState.data != null){
+        if (dataState is DataSuccess) {
+          if (dataState.data != null) {
             projectList.add(dataState.data);
             projectName.text = '';
             projectAddress.text = '';
             return const DataSuccess('اطلاعات با موفقیت ذخیره شد');
-          }else{
+          } else {
             isLoading.value = false;
             return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
           }
-        }else{
+        } else {
           isLoading.value = false;
           return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
         }
-      }else{
+      } else {
         isLoading.value = false;
         return const DataFailed('لطفا تمام اطلاعات را وارد نمایید');
       }
-    }else{
+    } else {
       isLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
     }
   }
 
-  Future<DataState<ProjectEntity>> getAllProjects() async {
+  Future<void> getAllProjects() async {
     isGetProjectsLoading.value = true;
-    // if (Get
-    //     .find<ConnectionController>()
-    //     .isConnected
-    //     .value) {
+    bool offlineMode = GetStorage().read(AppUtils.offlineMode) ?? false;
+
+    if (offlineMode) {
+      DataState<List<ProjectResultsEntity>> localData = await _useCase.getLocalProject();
+      if (localData is DataSuccess) {
+        isGetProjectsLoading.value = false;
+        projectList.value = localData.data ?? [];
+      }
+    } else {
       DataState<ProjectEntity> dataState = await _useCase.getAllProjects();
       if (dataState is DataSuccess) {
         if (dataState.data != null) {
           projectList.value = dataState.data?.results ?? [];
+          await _useCase.deleteLocal();
+          await _useCase.saveProjectToLocal(dataState.data!.results ?? []);
         }
         isGetProjectsLoading.value = false;
-        return DataSuccess(dataState.data);
       } else {
         print(dataState.error);
-        return const DataFailed('err');
       }
-
-    // } else {
-    //   return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید!');
-    //
-    // }
+    }
   }
 
   Future<DataState<String>> updateProject(int id) async {
     isLoading.value = true;
     request = ProjectRequest(projectName.text, projectAddress.text).toJson();
     if (Get.find<ConnectionController>().isConnected.value) {
-      if(projectName.text.isNotEmpty && projectAddress.text.isNotEmpty){
+      if (projectName.text.isNotEmpty && projectAddress.text.isNotEmpty) {
         DataState dataState = await _useCase.updateProject(request, id);
-        if(dataState is DataSuccess){
-          if(dataState.data != null){
+        if (dataState is DataSuccess) {
+          if (dataState.data != null) {
             getAllProjects();
             projectName.text = '';
             projectAddress.text = '';
             isLoading.value = false;
             return const DataSuccess('اطلاعات با موفقیت ذخیره شد');
-          }else{
+          } else {
             isLoading.value = false;
             return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
           }
-        }else{
+        } else {
           isLoading.value = false;
           return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
         }
-      }else{
+      } else {
         isLoading.value = false;
         return const DataFailed('لطفا تمام اطلاعات را وارد نمایید');
       }
-    }else{
+    } else {
       isLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
     }
@@ -121,21 +123,19 @@ class ProjectController extends GetxController{
   Future<DataState<String>> deleteProject(int id) async {
     isDeleteLoading.value = true;
     if (Get.find<ConnectionController>().isConnected.value) {
-        DataState dataState = await _useCase.deleteProjectById(id);
-        if(dataState is DataSuccess){
-          getAllProjects();
-            return const DataSuccess('پروژه با موفقیت حذف شد');
-        }else{
-          isDeleteLoading.value = false;
-          return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
-        }
-    }else{
+      DataState dataState = await _useCase.deleteProjectById(id);
+      if (dataState is DataSuccess) {
+        getAllProjects();
+        return const DataSuccess('پروژه با موفقیت حذف شد');
+      } else {
+        isDeleteLoading.value = false;
+        return DataFailed(dataState.error ?? 'خطا در ارسال اطلاعات');
+      }
+    } else {
       isDeleteLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
     }
   }
-
-
 
   @override
   void dispose() {

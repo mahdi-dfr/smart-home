@@ -87,15 +87,15 @@ class ProjectScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return ProjectItemWidget(
                           title:
-                              _controller.projectList.value[index].name ?? '',
+                              _controller.projectList[index].name ?? '',
                           onClick: () async {
                             _controller.projectId =
-                                _controller.projectList.value[index].id ?? 0;
+                                _controller.projectList[index].id ?? 0;
                             GetStorage().write(
                                 AppUtils.projectIdConst, _controller.projectId);
 
                             GetStorage().write(AppUtils.projectNameConst,
-                                _controller.projectList.value[index].name);
+                                _controller.projectList[index].name);
                             Get.toNamed(PagesRoutes.home);
                           },
                           onLongClick: () {

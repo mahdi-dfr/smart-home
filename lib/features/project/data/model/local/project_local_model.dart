@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+part 'project_local_model.g.dart';
 
 @collection
 class ProjectLocal{

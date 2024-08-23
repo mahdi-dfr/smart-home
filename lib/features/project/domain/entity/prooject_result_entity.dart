@@ -1,4 +1,9 @@
+import 'package:isar/isar.dart';
+part 'prooject_result_entity.g.dart';
+
+@collection
 class ProjectResultsEntity {
+  Id isarId = Isar.autoIncrement;
   int? id;
   String? name;
   String? address;
