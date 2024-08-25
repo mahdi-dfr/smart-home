@@ -60,7 +60,8 @@ class HomePage extends StatelessWidget {
                     if (index == logic.roomsList.length) {
                       return InkWell(
                         onTap: () {
-                          if (!GetStorage().read(AppUtils.offlineMode)) {
+                          final offlineMode = GetStorage().read(AppUtils.offlineMode) ?? false;
+                          if (!offlineMode) {
                             _controller.isRoomUpdateMode = false;
                             Get.toNamed(PagesRoutes.createRoom);
                           }
