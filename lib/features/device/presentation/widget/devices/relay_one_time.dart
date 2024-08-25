@@ -17,9 +17,9 @@ class RelayOneTimeWidget extends StatelessWidget {
       {required this.title, required this.nodeId, required this.onLongPress, required this.boardUniqueId, Key? key})
       : super(key: key);
 
-  String? title;
-  int? boardUniqueId;
-  int? nodeId;
+  final String? title;
+  final int? boardUniqueId;
+  final int? nodeId;
 
   final _controller = Get.find<MqttService>();
   Function() onLongPress;
@@ -65,6 +65,10 @@ class RelayOneTimeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // setRelaySwitchValue();
+
+    print('ppoo');
+    print(boardUniqueId);
+    print(nodeId);
 
     var width = MediaQuery.sizeOf(context).width;
     return Column(
