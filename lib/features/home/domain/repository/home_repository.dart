@@ -18,9 +18,9 @@ abstract class HomeRepository{
   /// offline methods
   Future<DataState<String>> saveRoomToLocal(List<RoomEntity> rooms);
 
-  Future<DataState<List<RoomEntity>>> getLocalRoom();
+  Future<DataState<List<RoomEntity>>> getLocalRoom(int projectId);
 
-  Future<DataState<String>> deleteRoomFromLocal();
+  Future<DataState<String>> deleteRoomFromLocal(int projectId);
 
 
 }

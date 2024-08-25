@@ -7,16 +7,16 @@ import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/images.dart';
 
 class ProjectItemWidget extends StatelessWidget {
-  ProjectItemWidget(
+  const ProjectItemWidget(
       {required this.title,
       required this.onClick,
       required this.onLongClick,
       Key? key})
       : super(key: key);
 
-  String title;
-  Function() onClick;
-  Function() onLongClick;
+  final String title;
+  final Function() onClick;
+  final Function() onLongClick;
 
   @override
   Widget build(BuildContext context) {

@@ -20,6 +20,7 @@ import '../../../../core/resource/data_state.dart';
 import '../../../device/presentation/screen/device_list.dart';
 import '../widget/custom_app_bar_delegate.dart';
 import '../widget/device_info_widget.dart';
+import '../widget/modification_dialog_content.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -135,78 +136,7 @@ class HomePage extends StatelessWidget {
                                   onPressed: () {
                                     Get.defaultDialog(
                                         title: 'انتخاب کنید',
-                                        content: Container(
-                                          padding: const EdgeInsets.all(AppDimensions.mediumPadding),
-                                          decoration: BoxDecoration(
-                                              border: Border.all(width: 3, color: CustomColors.foregroundColor),
-                                              borderRadius: BorderRadius.circular(AppDimensions.borderRadius)),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Column(
-                                                children: [
-                                                  IconButton(
-                                                      onPressed: () {
-                                                        Get.back();
-                                                        askDialog('حذف اتاق', 'آیا مطمئن هستید؟', () {
-                                                          if (_controller.roomsList[index].id != null) {
-                                                            _controller
-                                                                .deleteRoom(_controller.roomsList[index].id!,
-                                                                    Get.find<ProjectController>().projectId ?? 0)
-                                                                .then((value) {
-                                                              if (value is DataSuccess) {
-                                                                showTopSnackBar(
-                                                                  Overlay.of(context),
-                                                                  CustomSnackBar.success(
-                                                                    message: value.data ?? 'اطلاعات با موفقیت حذف شد',
-                                                                  ),
-                                                                );
-                                                              } else {
-                                                                showTopSnackBar(
-                                                                  Overlay.of(context),
-                                                                  CustomSnackBar.error(
-                                                                    message: value.error ?? 'خطا در ارسال اطلاعات',
-                                                                  ),
-                                                                );
-                                                              }
-                                                            });
-                                                          }
-                                                          Get.back();
-                                                        });
-                                                      },
-                                                      icon: Icon(
-                                                        Icons.delete,
-                                                        color: CustomColors.foregroundColor,
-                                                      )),
-                                                  const Text(
-                                                    'حذف',
-                                                  )
-                                                ],
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              Column(
-                                                children: [
-                                                  IconButton(
-                                                      onPressed: () {
-                                                        Get.back();
-                                                        _controller.roomId = _controller.roomsList[index].id;
-                                                        _controller.isRoomUpdateMode = true;
-                                                        Get.toNamed(PagesRoutes.createRoom);
-                                                      },
-                                                      icon: Icon(
-                                                        Icons.edit,
-                                                        color: CustomColors.foregroundColor,
-                                                      )),
-                                                  const Text(
-                                                    'ویرایش',
-                                                  )
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ));
+                                        content: ModificationDialogContent(index: index,));
                                   },
                                   icon: const Icon(
                                     Icons.menu,

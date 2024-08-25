@@ -33,12 +33,12 @@ class RoomUseCase{
     return _repository.saveRoomToLocal(rooms);
   }
 
-  Future<DataState<List<RoomEntity>>> getLocalRoom(){
-    return _repository.getLocalRoom();
+  Future<DataState<List<RoomEntity>>> getLocalRoom(int projectId){
+    return _repository.getLocalRoom(projectId);
   }
 
-  Future<DataState<String>> deleteRoomFromLocal(){
-    return _repository.deleteRoomFromLocal();
+  Future<DataState<String>> deleteRoomFromLocal(int projectId){
+    return _repository.deleteRoomFromLocal(projectId);
   }
 
 

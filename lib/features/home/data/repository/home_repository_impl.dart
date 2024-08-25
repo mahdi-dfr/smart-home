@@ -90,10 +90,10 @@ class HomeRepositoryImpl extends HomeRepository {
   }
 
   @override
-  Future<DataState<String>> deleteRoomFromLocal() async {
+  Future<DataState<String>> deleteRoomFromLocal(int projectId) async {
     try {
       await _isarController.isar.writeTxn(() async {
-        await _isarController.isar.roomEntitys.where().deleteAll();
+        await _isarController.isar.roomEntitys.filter().projectEqualTo(projectId).deleteAll();
       });
       return const DataSuccess('success');
     } catch (err) {
@@ -102,9 +102,9 @@ class HomeRepositoryImpl extends HomeRepository {
   }
 
   @override
-  Future<DataState<List<RoomEntity>>> getLocalRoom() async {
+  Future<DataState<List<RoomEntity>>> getLocalRoom(int projectId) async {
     try {
-      List<RoomEntity> rooms = await _isarController.isar.roomEntitys.where().findAll();
+      List<RoomEntity> rooms = await _isarController.isar.roomEntitys.filter().projectEqualTo(projectId).findAll();
       return DataSuccess(rooms);
     } catch (err) {
       return const DataFailed('err');

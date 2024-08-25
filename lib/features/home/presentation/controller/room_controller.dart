@@ -68,7 +68,7 @@ class RoomController extends GetxController {
     bool offlineMode = GetStorage().read(AppUtils.offlineMode) ?? false;
 
     if (offlineMode) {
-      DataState<List<RoomEntity>> localData = await _useCase.getLocalRoom();
+      DataState<List<RoomEntity>> localData = await _useCase.getLocalRoom(projectId);
       if (localData is DataSuccess) {
         isLoading.value = false;
         roomsList.value = localData.data ?? [];
@@ -79,7 +79,7 @@ class RoomController extends GetxController {
       if (dataState is DataSuccess) {
         if (dataState.data != null) {
           roomsList.value = dataState.data?.results ?? [];
-          await _useCase.deleteRoomFromLocal();
+          await _useCase.deleteRoomFromLocal(projectId);
           await _useCase.saveRoomToLocal(dataState.data!.results ?? []);
           isLoading.value = false;
           update();
