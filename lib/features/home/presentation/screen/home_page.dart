@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:turkeysh_smart_home/core/constants/colors.dart';
 import 'package:turkeysh_smart_home/features/device/presentation/controller/device_controller.dart';
@@ -21,6 +22,7 @@ class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
   final _controller = Get.find<RoomController>();
+  final offlineMode = GetStorage().read(AppUtils.offlineMode) ?? false;
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +60,10 @@ class HomePage extends StatelessWidget {
                     if (index == logic.roomsList.length) {
                       return InkWell(
                         onTap: () {
-                          _controller.isRoomUpdateMode = false;
-                          Get.toNamed(PagesRoutes.createRoom);
+                          if (!GetStorage().read(AppUtils.offlineMode)) {
+                            _controller.isRoomUpdateMode = false;
+                            Get.toNamed(PagesRoutes.createRoom);
+                          }
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),

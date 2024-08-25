@@ -115,25 +115,24 @@ class DeviceController extends GetxController {
       if (localData is DataSuccess) {
         isDeviceLoading.value = false;
         deviceList.value = localData.data ?? [];
-      } else {
-        if (Get.find<ConnectionController>().isConnected.value) {
-          DataState<List<DeviceEntity>> dataState =
-              await _useCase.getDevices(localProjectId, roomId!);
+      }
+    } else {
+      if (Get.find<ConnectionController>().isConnected.value) {
+        DataState<List<DeviceEntity>> dataState = await _useCase.getDevices(localProjectId, roomId!);
 
-          if (dataState is DataSuccess) {
-            if (dataState.data != null) {
-              deviceList.value = dataState.data ?? [];
-              await _useCase.deleteDevicesFromLocal(localProjectId, roomId!);
-              await _useCase.saveDevicesToLocal(dataState.data ?? []);
+        if (dataState is DataSuccess) {
+          if (dataState.data != null) {
+            deviceList.value = dataState.data ?? [];
+            await _useCase.deleteDevicesFromLocal(localProjectId, roomId!);
+            await _useCase.saveDevicesToLocal(dataState.data ?? []);
 
-              isDeviceLoading.value = false;
-            }
-          } else {
             isDeviceLoading.value = false;
           }
         } else {
           isDeviceLoading.value = false;
         }
+      } else {
+        isDeviceLoading.value = false;
       }
     }
   }

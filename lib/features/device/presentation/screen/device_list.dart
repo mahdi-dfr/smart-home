@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lottie/lottie.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -12,6 +13,7 @@ import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/images.dart';
 import '../../../../core/constants/routes.dart';
 import '../../../../core/constants/styles.dart';
+import '../../../../core/constants/utils.dart';
 import '../../../../core/widget/custom_app_bar.dart';
 import '../../../device/presentation/screen/one_time_devices.dart';
 import '../widget/devices/relay_one_time.dart';
@@ -22,13 +24,14 @@ class DeviceListScreen extends StatelessWidget {
 
   final RoomEntity room;
   final _controller = Get.find<DeviceController>();
+  final offlineMode = GetStorage().read(AppUtils.offlineMode) ?? false;
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       backgroundColor: CustomColors.backgroundColor,
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: !offlineMode ? FloatingActionButton(
         onPressed: () {
           Get.toNamed(PagesRoutes.createDevice);
         },
@@ -37,7 +40,7 @@ class DeviceListScreen extends StatelessWidget {
           Icons.add,
           color: Colors.white,
         ),
-      ),
+      ) : const SizedBox(),
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: CustomAppBar(

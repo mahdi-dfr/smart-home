@@ -7,7 +7,7 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:turkeysh_smart_home/core/constants/colors.dart';
 import 'package:turkeysh_smart_home/core/constants/utils.dart';
 import 'package:turkeysh_smart_home/core/widget/custom_app_bar.dart';
-import 'package:turkeysh_smart_home/features/home/presentation/controller/room_controller.dart';
+
 import '../../../../core/constants/dimens.dart';
 import '../../../../core/constants/routes.dart';
 import '../../../../core/resource/ask_dialog.dart';
@@ -20,9 +20,13 @@ class ProjectScreen extends StatelessWidget {
   ProjectScreen({Key? key}) : super(key: key);
 
   final _controller = Get.find<ProjectController>();
+  final offlineMode = GetStorage().read(AppUtils.offlineMode) ?? false;
+
 
   @override
   Widget build(BuildContext context) {
+    final overlay = Overlay.of(context);
+
     var width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: CustomAppBar(
@@ -30,45 +34,45 @@ class ProjectScreen extends StatelessWidget {
         haveBackButton: false,
       ),
       backgroundColor: CustomColors.backgroundColor,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _controller.projectEditMode = false;
-          Get.defaultDialog(
-              title: 'ایجاد پروژه',
-              content: Obx(() {
-                return CreateProjectDialog(
-                  onSaveClicked: () {
-                    Get.find<ProjectController>()
-                        .createNewProject()
-                        .then((value) {
-                      if (value is DataSuccess) {
-                        showTopSnackBar(
-                          Overlay.of(context),
-                          const CustomSnackBar.success(
-                            message: "اطلاعات ذخیره شد",
-                          ),
-                        );
-                        Get.back();
-                      } else {
-                        showTopSnackBar(
-                          Overlay.of(context),
-                          CustomSnackBar.error(
-                            message: value.error.toString(),
-                          ),
-                        );
-                      }
-                    });
-                  },
-                  loading: _controller.isLoading.value,
-                );
-              }));
-        },
-        backgroundColor: CustomColors.foregroundColor,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-      ),
+      floatingActionButton: !offlineMode
+          ? FloatingActionButton(
+              onPressed: () {
+                _controller.projectEditMode = false;
+                Get.defaultDialog(
+                    title: 'ایجاد پروژه',
+                    content: Obx(() {
+                      return CreateProjectDialog(
+                        onSaveClicked: () {
+                          Get.find<ProjectController>().createNewProject().then((value) {
+                            if (value is DataSuccess) {
+                              showTopSnackBar(
+                                overlay,
+                                const CustomSnackBar.success(
+                                  message: "اطلاعات ذخیره شد",
+                                ),
+                              );
+                              Get.back();
+                            } else {
+                              showTopSnackBar(
+                                overlay,
+                                CustomSnackBar.error(
+                                  message: value.error.toString(),
+                                ),
+                              );
+                            }
+                          });
+                        },
+                        loading: _controller.isLoading.value,
+                      );
+                    }));
+              },
+              backgroundColor: CustomColors.foregroundColor,
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+            )
+          : const SizedBox(),
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
@@ -76,9 +80,7 @@ class ProjectScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Obx(() {
               return _controller.isGetProjectsLoading.value
-                  ? Center(
-                      child: LoadingAnimationWidget.beat(
-                          color: CustomColors.foregroundColor, size: 35))
+                  ? Center(child: LoadingAnimationWidget.beat(color: CustomColors.foregroundColor, size: 35))
                   : GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: width > 600 ? 4 : 2,
@@ -87,60 +89,46 @@ class ProjectScreen extends StatelessWidget {
                       ),
                       itemBuilder: (context, index) {
                         return ProjectItemWidget(
-                          title:
-                              _controller.projectList[index].name ?? '',
+                          title: _controller.projectList[index].name ?? '',
                           onClick: () async {
-                            _controller.projectId =
-                                _controller.projectList[index].id ?? 0;
-                            GetStorage().write(
-                                AppUtils.projectIdConst, _controller.projectId);
+                            _controller.projectId = _controller.projectList[index].id ?? 0;
+                            GetStorage().write(AppUtils.projectIdConst, _controller.projectId);
 
-                            GetStorage().write(AppUtils.projectNameConst,
-                                _controller.projectList[index].name);
+                            GetStorage().write(AppUtils.projectNameConst, _controller.projectList[index].name);
                             Get.toNamed(PagesRoutes.home);
                           },
                           onLongClick: () {
                             Get.defaultDialog(
                                 title: 'انتخاب کنید',
                                 content: Container(
-                                  padding: const EdgeInsets.all(
-                                      AppDimensions.mediumPadding),
+                                  padding: const EdgeInsets.all(AppDimensions.mediumPadding),
                                   decoration: BoxDecoration(
-                                      border: Border.all(
-                                          width: 3,
-                                          color: CustomColors.foregroundColor),
-                                      borderRadius: BorderRadius.circular(
-                                          AppDimensions.borderRadius)),
+                                      border: Border.all(width: 3, color: CustomColors.foregroundColor),
+                                      borderRadius: BorderRadius.circular(AppDimensions.borderRadius)),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Column(
                                         children: [
                                           IconButton(
                                               onPressed: () {
                                                 Get.back();
-                                                askDialog('حذف پروژه', 'آیا مطمئن هستید؟',() {
+                                                askDialog('حذف پروژه', 'آیا مطمئن هستید؟', () {
                                                   _controller
-                                                      .deleteProject(_controller
-                                                          .projectList[index]
-                                                          .id!)
+                                                      .deleteProject(_controller.projectList[index].id!)
                                                       .then((value) {
                                                     if (value is DataSuccess) {
                                                       showTopSnackBar(
-                                                        Overlay.of(context),
+                                                        overlay,
                                                         CustomSnackBar.success(
-                                                          message: value.data ??
-                                                              'اطلاعات با موفقیت حذف شد',
+                                                          message: value.data ?? 'اطلاعات با موفقیت حذف شد',
                                                         ),
                                                       );
                                                     } else {
                                                       showTopSnackBar(
-                                                        Overlay.of(context),
+                                                        overlay,
                                                         CustomSnackBar.error(
-                                                          message: value
-                                                                  .error ??
-                                                              'خطا در ارسال اطلاعات',
+                                                          message: value.error ?? 'خطا در ارسال اطلاعات',
                                                         ),
                                                       );
                                                     }
@@ -150,8 +138,7 @@ class ProjectScreen extends StatelessWidget {
                                               },
                                               icon: Icon(
                                                 Icons.delete,
-                                                color: CustomColors
-                                                    .foregroundColor,
+                                                color: CustomColors.foregroundColor,
                                               )),
                                           const Text(
                                             'حذف',
@@ -165,8 +152,7 @@ class ProjectScreen extends StatelessWidget {
                                         children: [
                                           IconButton(
                                               onPressed: () {
-                                                _controller.projectEditMode =
-                                                    true;
+                                                _controller.projectEditMode = true;
                                                 Get.back();
                                                 Get.defaultDialog(
                                                     title: 'ویرایش پروژه',
@@ -174,48 +160,33 @@ class ProjectScreen extends StatelessWidget {
                                                       return CreateProjectDialog(
                                                         onSaveClicked: () {
                                                           _controller
-                                                              .updateProject(
-                                                                  _controller
-                                                                      .projectList
-                                                                      .value[
-                                                                          index]
-                                                                      .id!)
+                                                              .updateProject(_controller.projectList[index].id!)
                                                               .then((value) {
-                                                            if (value
-                                                                is DataSuccess) {
+                                                            if (value is DataSuccess) {
                                                               showTopSnackBar(
-                                                                Overlay.of(
-                                                                    context),
-                                                                const CustomSnackBar
-                                                                    .success(
-                                                                  message:
-                                                                      "اطلاعات ذخیره شد",
+                                                                overlay,
+                                                                const CustomSnackBar.success(
+                                                                  message: "اطلاعات ذخیره شد",
                                                                 ),
                                                               );
                                                               Get.back();
                                                             } else {
                                                               showTopSnackBar(
-                                                                Overlay.of(
-                                                                    context),
-                                                                CustomSnackBar
-                                                                    .error(
-                                                                  message: value
-                                                                      .error
-                                                                      .toString(),
+                                                                overlay,
+                                                                CustomSnackBar.error(
+                                                                  message: value.error.toString(),
                                                                 ),
                                                               );
                                                             }
                                                           });
                                                         },
-                                                        loading: _controller
-                                                            .isLoading.value,
+                                                        loading: _controller.isLoading.value,
                                                       );
                                                     }));
                                               },
                                               icon: Icon(
                                                 Icons.edit,
-                                                color: CustomColors
-                                                    .foregroundColor,
+                                                color: CustomColors.foregroundColor,
                                               )),
                                           const Text(
                                             'ویرایش',
@@ -228,7 +199,7 @@ class ProjectScreen extends StatelessWidget {
                           },
                         );
                       },
-                      itemCount: _controller.projectList.value.length,
+                      itemCount: _controller.projectList.length,
                     );
             })),
       ),
