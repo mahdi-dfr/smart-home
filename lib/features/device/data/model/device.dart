@@ -1,4 +1,6 @@
+import 'package:isar/isar.dart';
 import 'package:turkeysh_smart_home/features/device/domain/entity/device_entity.dart';
+part 'device.g.dart';
 
 class DeviceModel extends DeviceEntity {
   int? id;
@@ -58,6 +60,7 @@ class DeviceModel extends DeviceEntity {
   }
 }
 
+@embedded
 class NodeProject {
   int? id;
   int? uniqueId;
@@ -86,6 +89,7 @@ class NodeProject {
   }
 }
 
+@embedded
 class ProjectBoard {
   int? id;
   int? controlSmsBoard;

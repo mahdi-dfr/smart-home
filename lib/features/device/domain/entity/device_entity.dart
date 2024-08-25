@@ -1,7 +1,12 @@
-import '../../data/model/device.dart';
+import 'package:isar/isar.dart';
 
+import '../../data/model/device.dart';
+part 'device_entity.g.dart';
+
+@collection
 class DeviceEntity {
   int? id;
+  Id isarId = Isar.autoIncrement;
   NodeProject? nodeProject;
   ProjectBoard? projectBoard;
   String? name;

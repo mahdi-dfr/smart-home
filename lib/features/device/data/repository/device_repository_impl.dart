@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:isar/isar.dart';
+import 'package:turkeysh_smart_home/core/resource/isar_controller.dart';
 import 'package:turkeysh_smart_home/features/device/data/data_source/api_provider.dart';
 
 import '../../../../core/resource/data_state.dart';
@@ -12,9 +14,10 @@ import '../model/device_response.dart';
 
 class DeviceRepositoryImpl extends DeviceRepository{
 
-  DeviceApiProvider _apiProvider;
+  final DeviceApiProvider _apiProvider;
+  final IsarController _isarController;
 
-  DeviceRepositoryImpl(this._apiProvider);
+  DeviceRepositoryImpl(this._apiProvider, this._isarController);
 
   @override
   Future<DataState<DeviceResponseEntity>> createDevice(Map<String, dynamic> data) async {
@@ -81,6 +84,40 @@ class DeviceRepositoryImpl extends DeviceRepository{
       }
     } else {
       return DataFailed(response.response.toString());
+    }
+  }
+
+  @override
+  Future<DataState<String>> deleteDevicesFromLocal() async {
+    try {
+      await _isarController.isar.writeTxn(() async {
+        await _isarController.isar.deviceEntitys.where().deleteAll();
+      });
+      return const DataSuccess('success');
+    } catch (err) {
+      return DataFailed(err.toString());
+    }
+  }
+
+  @override
+  Future<DataState<List<DeviceEntity>>> getLocalDevices() async {
+    try {
+      List<DeviceEntity> projects = await _isarController.isar.deviceEntitys.where().findAll();
+      return DataSuccess(projects);
+    } catch (err) {
+      return const DataFailed('err');
+    }
+  }
+
+  @override
+  Future<DataState<String>> saveDevicesToLocal(List<DeviceEntity> devices) async {
+    try {
+      await _isarController.isar.writeTxn(() async {
+        await _isarController.isar.deviceEntitys.putAll(devices);
+      });
+      return const DataSuccess('success');
+    } catch (err) {
+      return DataFailed(err.toString());
     }
   }
 

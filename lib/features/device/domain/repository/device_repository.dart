@@ -12,4 +12,11 @@ abstract class DeviceRepository {
   Future<DataState<DeviceResponseEntity>> createDevice(Map<String, dynamic> data);
 
   Future<DataState<List<DeviceEntity>>> getDevice(int projectId, int room);
+
+  /// offline methods
+  Future<DataState<String>> saveDevicesToLocal(List<DeviceEntity> devices);
+
+  Future<DataState<List<DeviceEntity>>> getLocalDevices();
+
+  Future<DataState<String>> deleteDevicesFromLocal();
 }

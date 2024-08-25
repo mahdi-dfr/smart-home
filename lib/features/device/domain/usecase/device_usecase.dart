@@ -32,4 +32,16 @@ class DeviceUseCae {
       int projectId, String node) {
     return _repository.getDeviceNode(projectId, node);
   }
+
+  Future<DataState<String>> saveDevicesToLocal(List<DeviceEntity> devices){
+    return _repository.saveDevicesToLocal(devices);
+  }
+
+  Future<DataState<List<DeviceEntity>>> getLocalDevices(){
+    return _repository.getLocalDevices();
+  }
+
+  Future<DataState<String>> deleteDevicesFromLocal(){
+    return _repository.deleteDevicesFromLocal();
+  }
 }

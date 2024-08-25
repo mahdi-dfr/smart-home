@@ -92,7 +92,7 @@ class HomeBinding extends Bindings{
     /// repositories:
     Get.put<ProjectBoardRepository>(ProjectBoardRepositoryImpl(Get.find<ProjectBoardApiProvider>()));
     Get.put<HomeRepository>(HomeRepositoryImpl(Get.find<HomeApiProvider>(), Get.find<IsarController>()));
-    Get.put<DeviceRepository>(DeviceRepositoryImpl(Get.find<DeviceApiProvider>()));
+    Get.put<DeviceRepository>(DeviceRepositoryImpl(Get.find<DeviceApiProvider>(), Get.find<IsarController>()));
 
     ///useCase:
     Get.put<ProjectBoardUseCase>(ProjectBoardUseCase(Get.find<ProjectBoardRepository>()));

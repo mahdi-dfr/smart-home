@@ -10,7 +10,7 @@ import '../../../../core/resource/data_state.dart';
 import '../../domain/entity/device_node_entity.dart';
 
 class DeviceController extends GetxController {
-  DeviceUseCae _useCase;
+  final DeviceUseCae _useCase;
 
   DeviceController(this._useCase);
 
@@ -48,9 +48,7 @@ class DeviceController extends GetxController {
       'project_board': boardId
     };
     if (Get.find<ConnectionController>().isConnected.value) {
-      if (deviceName.text.isNotEmpty &&
-          deviceType != null &&
-          nodeProject != null) {
+      if (deviceName.text.isNotEmpty && deviceType != null && nodeProject != null) {
         DataState dataState = await _useCase.createDevice(data);
         if (dataState is DataSuccess) {
           if (dataState.data != null) {
@@ -79,21 +77,21 @@ class DeviceController extends GetxController {
   Future<DataState<List<DeviceNodeEntity>>> getDeviceNodes() async {
     isGetNodesLoading.value = true;
     int projectId = GetStorage().read(AppUtils.projectIdConst);
-    DataState<List<DeviceNodeEntity>> dataState =
-        await _useCase.getDeviceNodes(projectId, deviceType!);
+    DataState<List<DeviceNodeEntity>> dataState = await _useCase.getDeviceNodes(projectId, deviceType!);
     if (dataState is DataSuccess) {
       if (dataState.data != null) {
         deviceNodeList.clear();
         deviceNodeNames.clear();
 
         deviceNodeList.value = dataState.data!;
-        print(deviceNodeList);
-        deviceNodeList.value.forEach((element) {
+        for (var element in deviceNodeList) {
           if (element.nodeType != null) {
-            deviceNodeNames['${element.boardProject?[0]['text']} - نود شماره: ${element.uniqueId}'] =
-                {'id': element.id, 'boardId': element.boardProject?[0]['value']};
+            deviceNodeNames['${element.boardProject?[0]['text']} - نود شماره: ${element.uniqueId}'] = {
+              'id': element.id,
+              'boardId': element.boardProject?[0]['value']
+            };
           }
-        });
+        }
 
         isGetNodesLoading.value = false;
         return DataSuccess(deviceNodeList);
@@ -107,34 +105,42 @@ class DeviceController extends GetxController {
     }
   }
 
-  Future<DataState<List<DeviceEntity>>> getAllDevises() async {
+  Future<void> getAllDevises() async {
     isDeviceLoading.value = true;
-    if (Get.find<ConnectionController>().isConnected.value) {
-      DataState<List<DeviceEntity>> dataState = await _useCase.getDevices(
-          GetStorage().read(AppUtils.projectIdConst), roomId!);
+    bool offlineMode = GetStorage().read(AppUtils.offlineMode) ?? false;
 
-      if (dataState is DataSuccess) {
-        if (dataState.data != null) {
-          deviceList.value = dataState.data ?? [];
+    if (offlineMode) {
+      DataState<List<DeviceEntity>> localData = await _useCase.getLocalDevices();
+      if (localData is DataSuccess) {
+        isDeviceLoading.value = false;
+        deviceList.value = localData.data ?? [];
+      } else {
+        if (Get.find<ConnectionController>().isConnected.value) {
+          DataState<List<DeviceEntity>> dataState =
+              await _useCase.getDevices(GetStorage().read(AppUtils.projectIdConst), roomId!);
 
+          if (dataState is DataSuccess) {
+            if (dataState.data != null) {
+              deviceList.value = dataState.data ?? [];
+              await _useCase.deleteDevicesFromLocal();
+              await _useCase.saveDevicesToLocal(dataState.data ?? []);
+
+              isDeviceLoading.value = false;
+            }
+          } else {
+            isDeviceLoading.value = false;
+          }
+        } else {
           isDeviceLoading.value = false;
         }
-        return DataSuccess(dataState.data);
-      } else {
-        isDeviceLoading.value = false;
-        return const DataFailed('err');
       }
-    } else {
-      isDeviceLoading.value = false;
-      return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید!');
     }
   }
 
   Future<DataState<String>> deleteDevice(int id) async {
     isDeleteDeviceLoading.value = true;
     if (Get.find<ConnectionController>().isConnected.value) {
-      DataState dataState = await _useCase.deleteDevice(
-          id, GetStorage().read(AppUtils.projectIdConst), roomId!);
+      DataState dataState = await _useCase.deleteDevice(id, GetStorage().read(AppUtils.projectIdConst), roomId!);
       if (dataState is DataSuccess) {
         getAllDevises();
         return const DataSuccess('تجهیز با موفقیت حذف شد');
