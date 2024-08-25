@@ -37,11 +37,11 @@ class DeviceUseCae {
     return _repository.saveDevicesToLocal(devices);
   }
 
-  Future<DataState<List<DeviceEntity>>> getLocalDevices(){
-    return _repository.getLocalDevices();
+  Future<DataState<List<DeviceEntity>>> getLocalDevices(int projectId, int roomId){
+    return _repository.getLocalDevices(projectId, roomId);
   }
 
-  Future<DataState<String>> deleteDevicesFromLocal(){
-    return _repository.deleteDevicesFromLocal();
+  Future<DataState<String>> deleteDevicesFromLocal(int projectId, int roomId){
+    return _repository.deleteDevicesFromLocal(projectId, roomId);
   }
 }

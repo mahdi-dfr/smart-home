@@ -108,21 +108,22 @@ class DeviceController extends GetxController {
   Future<void> getAllDevises() async {
     isDeviceLoading.value = true;
     bool offlineMode = GetStorage().read(AppUtils.offlineMode) ?? false;
+    var localProjectId = GetStorage().read(AppUtils.projectIdConst);
 
     if (offlineMode) {
-      DataState<List<DeviceEntity>> localData = await _useCase.getLocalDevices();
+      DataState<List<DeviceEntity>> localData = await _useCase.getLocalDevices(localProjectId, roomId!);
       if (localData is DataSuccess) {
         isDeviceLoading.value = false;
         deviceList.value = localData.data ?? [];
       } else {
         if (Get.find<ConnectionController>().isConnected.value) {
           DataState<List<DeviceEntity>> dataState =
-              await _useCase.getDevices(GetStorage().read(AppUtils.projectIdConst), roomId!);
+              await _useCase.getDevices(localProjectId, roomId!);
 
           if (dataState is DataSuccess) {
             if (dataState.data != null) {
               deviceList.value = dataState.data ?? [];
-              await _useCase.deleteDevicesFromLocal();
+              await _useCase.deleteDevicesFromLocal(localProjectId, roomId!);
               await _useCase.saveDevicesToLocal(dataState.data ?? []);
 
               isDeviceLoading.value = false;

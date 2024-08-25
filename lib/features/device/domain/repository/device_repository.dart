@@ -16,7 +16,7 @@ abstract class DeviceRepository {
   /// offline methods
   Future<DataState<String>> saveDevicesToLocal(List<DeviceEntity> devices);
 
-  Future<DataState<List<DeviceEntity>>> getLocalDevices();
+  Future<DataState<List<DeviceEntity>>> getLocalDevices(int projectId, int roomId);
 
-  Future<DataState<String>> deleteDevicesFromLocal();
+  Future<DataState<String>> deleteDevicesFromLocal(int projectId, int roomId);
 }

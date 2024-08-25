@@ -88,7 +88,7 @@ class DeviceRepositoryImpl extends DeviceRepository{
   }
 
   @override
-  Future<DataState<String>> deleteDevicesFromLocal() async {
+  Future<DataState<String>> deleteDevicesFromLocal(int projectId, int roomId) async {
     try {
       await _isarController.isar.writeTxn(() async {
         await _isarController.isar.deviceEntitys.where().deleteAll();
@@ -100,7 +100,7 @@ class DeviceRepositoryImpl extends DeviceRepository{
   }
 
   @override
-  Future<DataState<List<DeviceEntity>>> getLocalDevices() async {
+  Future<DataState<List<DeviceEntity>>> getLocalDevices(int projectId, int roomId) async {
     try {
       List<DeviceEntity> projects = await _isarController.isar.deviceEntitys.where().findAll();
       return DataSuccess(projects);
