@@ -12,8 +12,7 @@ import '../model/device.dart';
 import '../model/device_node.dart';
 import '../model/device_response.dart';
 
-class DeviceRepositoryImpl extends DeviceRepository{
-
+class DeviceRepositoryImpl extends DeviceRepository {
   final DeviceApiProvider _apiProvider;
   final IsarController _isarController;
 
@@ -35,8 +34,7 @@ class DeviceRepositoryImpl extends DeviceRepository{
   }
 
   @override
-  Future<DataState<String>> deleteDevice(
-      int id, int projectId, int room) async {
+  Future<DataState<String>> deleteDevice(int id, int projectId, int room) async {
     var response = await _apiProvider.deleteDevice(id, projectId, room);
     if (response is! DioException) {
       if (response.statusCode == 204) {
@@ -50,8 +48,7 @@ class DeviceRepositoryImpl extends DeviceRepository{
   }
 
   @override
-  Future<DataState<List<DeviceNodeEntity>>> getDeviceNode(
-      int projectId, String node) async {
+  Future<DataState<List<DeviceNodeEntity>>> getDeviceNode(int projectId, String node) async {
     var response = await _apiProvider.getDeviceNode(projectId, node);
     if (response is! DioException) {
       if (response.statusCode == 200) {
@@ -69,8 +66,7 @@ class DeviceRepositoryImpl extends DeviceRepository{
   }
 
   @override
-  Future<DataState<List<DeviceEntity>>> getDevice(
-      int projectId, int room) async {
+  Future<DataState<List<DeviceEntity>>> getDevice(int projectId, int room) async {
     var response = await _apiProvider.getDevices(projectId, room);
     if (response is! DioException) {
       if (response.statusCode == 200) {
@@ -91,7 +87,12 @@ class DeviceRepositoryImpl extends DeviceRepository{
   Future<DataState<String>> deleteDevicesFromLocal(int projectId, int roomId) async {
     try {
       await _isarController.isar.writeTxn(() async {
-        await _isarController.isar.deviceEntitys.where().deleteAll();
+        await _isarController.isar.deviceEntitys
+            .filter()
+            .roomEqualTo(roomId)
+            .and()
+            .projectEqualTo(projectId)
+            .deleteAll();
       });
       return const DataSuccess('success');
     } catch (err) {
@@ -102,7 +103,12 @@ class DeviceRepositoryImpl extends DeviceRepository{
   @override
   Future<DataState<List<DeviceEntity>>> getLocalDevices(int projectId, int roomId) async {
     try {
-      List<DeviceEntity> projects = await _isarController.isar.deviceEntitys.where().findAll();
+      List<DeviceEntity> projects = await _isarController.isar.deviceEntitys
+          .filter()
+          .roomEqualTo(roomId)
+          .and()
+          .projectEqualTo(projectId)
+          .findAll();
       return DataSuccess(projects);
     } catch (err) {
       return const DataFailed('err');
@@ -120,5 +126,4 @@ class DeviceRepositoryImpl extends DeviceRepository{
       return DataFailed(err.toString());
     }
   }
-
 }
