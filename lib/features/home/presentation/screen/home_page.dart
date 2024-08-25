@@ -2,21 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:turkeysh_smart_home/core/constants/colors.dart';
 import 'package:turkeysh_smart_home/features/device/presentation/controller/device_controller.dart';
 import 'package:turkeysh_smart_home/features/device/presentation/screen/spetial_device.dart';
 import 'package:turkeysh_smart_home/features/home/presentation/controller/room_controller.dart';
-import 'package:turkeysh_smart_home/features/project/presentation/controller/project_controller.dart';
 
 import '../../../../core/constants/dimens.dart';
 import '../../../../core/constants/images.dart';
 import '../../../../core/constants/routes.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/utils.dart';
-import '../../../../core/resource/ask_dialog.dart';
-import '../../../../core/resource/data_state.dart';
 import '../../../device/presentation/screen/device_list.dart';
 import '../widget/custom_app_bar_delegate.dart';
 import '../widget/device_info_widget.dart';
@@ -136,7 +131,9 @@ class HomePage extends StatelessWidget {
                                   onPressed: () {
                                     Get.defaultDialog(
                                         title: 'انتخاب کنید',
-                                        content: ModificationDialogContent(index: index,));
+                                        content: ModificationDialogContent(
+                                          index: index,
+                                        ));
                                   },
                                   icon: const Icon(
                                     Icons.menu,
