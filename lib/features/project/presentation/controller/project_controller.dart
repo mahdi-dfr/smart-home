@@ -5,7 +5,7 @@ import 'package:turkeysh_smart_home/core/constants/utils.dart';
 import 'package:turkeysh_smart_home/features/project/data/model/request/project_request.dart';
 import 'package:turkeysh_smart_home/features/project/domain/usecase/project_usecase.dart';
 
-import '../../../../core/resource/connection_controller.dart';
+import '../../../../core/resource/internet_controller.dart';
 import '../../../../core/resource/data_state.dart';
 import '../../domain/entity/project_entity.dart';
 import '../../domain/entity/prooject_result_entity.dart';
@@ -37,7 +37,7 @@ class ProjectController extends GetxController {
   Future<DataState<String>> createNewProject() async {
     isLoading.value = true;
     request = ProjectRequest(projectName.text, projectAddress.text).toJson();
-    if (Get.find<ConnectionController>().isConnected.value) {
+    if (Get.find<InternetController>().isConnected.value) {
       if (projectName.text.isNotEmpty && projectAddress.text.isNotEmpty) {
         DataState dataState = await _useCase.addProject(request);
         if (dataState is DataSuccess) {
@@ -92,7 +92,7 @@ class ProjectController extends GetxController {
   Future<DataState<String>> updateProject(int id) async {
     isLoading.value = true;
     request = ProjectRequest(projectName.text, projectAddress.text).toJson();
-    if (Get.find<ConnectionController>().isConnected.value) {
+    if (Get.find<InternetController>().isConnected.value) {
       if (projectName.text.isNotEmpty && projectAddress.text.isNotEmpty) {
         DataState dataState = await _useCase.updateProject(request, id);
         if (dataState is DataSuccess) {
@@ -122,7 +122,7 @@ class ProjectController extends GetxController {
 
   Future<DataState<String>> deleteProject(int id) async {
     isDeleteLoading.value = true;
-    if (Get.find<ConnectionController>().isConnected.value) {
+    if (Get.find<InternetController>().isConnected.value) {
       DataState dataState = await _useCase.deleteProjectById(id);
       if (dataState is DataSuccess) {
         getAllProjects();

@@ -11,7 +11,7 @@ import '../../../../core/constants/routes.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/utils.dart';
 import '../../../../core/resource/ask_dialog.dart';
-import '../../../../core/resource/mqtt_service.dart';
+import '../../../../core/resource/connection/mqtt_service.dart';
 import '../controller/software_controller.dart';
 
 class SoftwareScenarioListWidget extends StatelessWidget {

@@ -6,7 +6,7 @@ import 'package:turkeysh_smart_home/features/settings/domain/entity/control_boar
 import 'package:turkeysh_smart_home/features/settings/domain/entity/project_board_entity.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import '../../../../core/resource/connection_controller.dart';
+import '../../../../core/resource/internet_controller.dart';
 import '../../../../core/resource/data_state.dart';
 import '../../domain/entity/project_board_resault.dart';
 import '../../domain/usecase/project_board_usecase.dart';
@@ -70,7 +70,7 @@ class ProjectBoardController extends GetxController {
         "parent_wifi_board": selectedWifiControlBoard
       };
       print(data);
-      if (Get.find<ConnectionController>().isConnected.value) {
+      if (Get.find<InternetController>().isConnected.value) {
         DataState dataState = await _useCase.addProjectBoard(data);
         if (dataState is DataSuccess) {
           if (dataState.data != null) {
@@ -100,7 +100,7 @@ class ProjectBoardController extends GetxController {
 
   Future<DataState<ProjectBoardEntity>> getAllProjectsBoards(
       String page, String projectId) async {
-    if (Get.find<ConnectionController>().isConnected.value) {
+    if (Get.find<InternetController>().isConnected.value) {
       DataState<ProjectBoardEntity> dataState =
           await _useCase.getAllProjectsBoard(page, projectId);
       if (dataState is DataSuccess) {
@@ -134,7 +134,7 @@ class ProjectBoardController extends GetxController {
         "parent_sms_board": selectedSmsControlBoard,
         "parent_wifi_board": selectedWifiControlBoard
       };
-      if (Get.find<ConnectionController>().isConnected.value) {
+      if (Get.find<InternetController>().isConnected.value) {
         DataState dataState =
             await _useCase.updateProjectBoard(data, projectId);
         if (dataState is DataSuccess) {
@@ -164,7 +164,7 @@ class ProjectBoardController extends GetxController {
 
   Future<DataState<String>> deleteProjectBoard(int id) async {
     isDeleteLoading.value = true;
-    if (Get.find<ConnectionController>().isConnected.value) {
+    if (Get.find<InternetController>().isConnected.value) {
       DataState dataState = await _useCase.deleteProjectBoardById(id);
       if (dataState is DataSuccess) {
         pagingController.refresh();
@@ -181,7 +181,7 @@ class ProjectBoardController extends GetxController {
 
   Future<DataState<ControlBoardEntity>> getControlBoard(
       String projectId) async {
-    if (Get.find<ConnectionController>().isConnected.value) {
+    if (Get.find<InternetController>().isConnected.value) {
       DataState<ControlBoardEntity> dataState =
           await _useCase.getControlBoards(projectId);
       if (dataState is DataSuccess) {

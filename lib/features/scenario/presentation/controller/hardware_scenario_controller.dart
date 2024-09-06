@@ -6,7 +6,7 @@ import 'package:turkeysh_smart_home/features/scenario/domain/entity/scenario.dar
 import 'package:turkeysh_smart_home/features/scenario/domain/usecase/scenario_usecase.dart';
 
 import '../../../../core/constants/utils.dart';
-import '../../../../core/resource/connection_controller.dart';
+import '../../../../core/resource/internet_controller.dart';
 import '../../../../core/resource/data_state.dart';
 import '../../data/model/hardware/hardware_scenario_message.dart';
 import '../../domain/entity/hardware/hardware_message_entity.dart';
@@ -27,7 +27,7 @@ class HardwareScenarioController extends BaseScenarioController {
 
   Future<DataState<List<HardwareScenarioEntity>>> getHardwareScenario(String type) async {
     isScenarioLoading.value = true;
-    if (!Get.find<ConnectionController>().isConnected.value) {
+    if (!Get.find<InternetController>().isConnected.value) {
       isScenarioLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید!');
     }
@@ -46,7 +46,7 @@ class HardwareScenarioController extends BaseScenarioController {
 
   Future<DataState<CreateHardwareScenarioModel>> setNewHardwareScenario() async {
     isLoading.value = true;
-    if (!Get.find<ConnectionController>().isConnected.value) {
+    if (!Get.find<InternetController>().isConnected.value) {
       isLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
     }
@@ -76,7 +76,7 @@ class HardwareScenarioController extends BaseScenarioController {
 
   Future<DataState<String>> deleteHardwareScenario(String type) async {
     isDeleteLoading.value = true;
-    if (Get.find<ConnectionController>().isConnected.value) {
+    if (Get.find<InternetController>().isConnected.value) {
       DataState dataState = await _useCase.deleteHardwareScenario(projectId, type);
       if (dataState is DataSuccess) {
         isDeleteLoading.value = false;
@@ -93,7 +93,7 @@ class HardwareScenarioController extends BaseScenarioController {
   }
 
   Future<DataState<Map<String, dynamic>>> getHardwareScenarioMessage(int scenarioId) async {
-    if (!Get.find<ConnectionController>().isConnected.value) {
+    if (!Get.find<InternetController>().isConnected.value) {
       isLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
     }

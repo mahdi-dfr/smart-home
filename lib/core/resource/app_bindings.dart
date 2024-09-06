@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:turkeysh_smart_home/core/resource/connection_controller.dart';
+import 'package:turkeysh_smart_home/core/resource/internet_controller.dart';
 import 'package:turkeysh_smart_home/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:turkeysh_smart_home/features/auth/presentation/controller/register_controller.dart';
 import 'package:turkeysh_smart_home/features/device/domain/repository/device_repository.dart';
@@ -34,8 +34,8 @@ import '../../features/project/data/data_source/api_provider.dart';
 import '../../features/scenario/presentation/controller/software_controller.dart';
 import '../../features/settings/data/repository/project_board_repository_impl.dart';
 import 'isar_controller.dart';
-import 'mqtt_service.dart';
-import 'mqtt_receiver.dart';
+import 'connection/mqtt_service.dart';
+import 'connection/mqtt_receiver.dart';
 
 class AppBindings extends Bindings{
   @override
@@ -53,7 +53,7 @@ class AppBindings extends Bindings{
     Get.put<AuthUseCase>(AuthUseCase(Get.find<AuthRepository>()));
     Get.lazyPut(() => ScenarioUseCase(Get.find<ScenarioRepositoryImpl>()), fenix: true);
     /// controllers:
-    Get.put(ConnectionController());
+    Get.put(InternetController());
     Get.put(RegisterController(Get.find<AuthUseCase>()));
     Get.lazyPut(() => HardwareScenarioController(Get.find<ScenarioUseCase>()), fenix: true);
     Get.lazyPut(() => SoftwareScenarioController(Get.find<ScenarioUseCase>()), fenix: true);

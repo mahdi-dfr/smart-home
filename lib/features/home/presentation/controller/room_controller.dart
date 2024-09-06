@@ -6,7 +6,7 @@ import 'package:turkeysh_smart_home/core/constants/utils.dart';
 import 'package:turkeysh_smart_home/features/home/data/model/room_request.dart';
 import 'package:turkeysh_smart_home/features/home/domain/entity/room_response_entity.dart';
 
-import '../../../../core/resource/connection_controller.dart';
+import '../../../../core/resource/internet_controller.dart';
 import '../../../../core/resource/data_state.dart';
 import '../../domain/entity/room_entity.dart';
 import '../../domain/usecase/room_usecase.dart';
@@ -35,7 +35,7 @@ class RoomController extends GetxController {
   Future<DataState<String>> createNewRoom(int projectId) async {
     isLoading.value = true;
     request = RoomRequestModel(name: roomName.text, project: projectId).toJson();
-    if (Get.find<ConnectionController>().isConnected.value) {
+    if (Get.find<InternetController>().isConnected.value) {
       if (roomName.text.isNotEmpty) {
         DataState dataState = await _useCase.addRoom(request);
         if (dataState is DataSuccess) {
@@ -95,7 +95,7 @@ class RoomController extends GetxController {
 
   Future<DataState<RoomResponseEntity>> getOneRooms(int projectId) async {
     isLoading.value = true;
-    if (Get.find<ConnectionController>().isConnected.value) {
+    if (Get.find<InternetController>().isConnected.value) {
       DataState<RoomResponseEntity> dataState = await _useCase.getAllRooms(projectId);
       if (dataState is DataSuccess) {
         if (dataState.data != null) {
@@ -114,7 +114,7 @@ class RoomController extends GetxController {
   Future<DataState<String>> updateRoom(int id, int projectId) async {
     isLoading.value = true;
     request = RoomRequestModel(name: roomName.text, project: projectId).toJson();
-    if (Get.find<ConnectionController>().isConnected.value) {
+    if (Get.find<InternetController>().isConnected.value) {
       if (roomName.text.isNotEmpty) {
         DataState dataState = await _useCase.updateRoom(request, id, projectId);
         if (dataState is DataSuccess) {
@@ -143,7 +143,7 @@ class RoomController extends GetxController {
 
   Future<DataState<String>> deleteRoom(int id, int projectId) async {
     isDeleteLoading.value = true;
-    if (Get.find<ConnectionController>().isConnected.value) {
+    if (Get.find<InternetController>().isConnected.value) {
       DataState dataState = await _useCase.deleteRoomById(id, projectId);
       if (dataState is DataSuccess) {
         getAllRooms(projectId);

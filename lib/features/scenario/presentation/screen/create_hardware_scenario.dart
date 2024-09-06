@@ -16,7 +16,7 @@ import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/widget/custom_app_bar.dart';
 import '../../../../core/widget/drop_box.dart';
-import '../../../../core/resource/mqtt_service.dart';
+import '../../../../core/resource/connection/mqtt_service.dart';
 
 class ChooseHardwareScenarioScreen extends StatelessWidget {
   ChooseHardwareScenarioScreen({Key? key}) : super(key: key);

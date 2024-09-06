@@ -18,7 +18,7 @@ import '../../../../core/constants/routes.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/resource/ask_dialog.dart';
 import '../../../../core/widget/custom_app_bar.dart';
-import '../../../../core/resource/mqtt_service.dart';
+import '../../../../core/resource/connection/mqtt_service.dart';
 import '../widget/hardware_scenario_widget.dart';
 import '../widget/panel_item.dart';
 import '../widget/software_scenario_item.dart';

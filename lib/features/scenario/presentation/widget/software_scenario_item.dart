@@ -10,7 +10,7 @@ import '../../../../core/constants/images.dart';
 import '../../../../core/constants/utils.dart';
 import '../../../../core/resource/ask_dialog.dart';
 import '../../../../core/resource/data_state.dart';
-import '../../../../core/resource/mqtt_service.dart';
+import '../../../../core/resource/connection/mqtt_service.dart';
 import '../controller/hardware_scenario_controller.dart';
 
 class SoftwareScenarioItem extends StatelessWidget {

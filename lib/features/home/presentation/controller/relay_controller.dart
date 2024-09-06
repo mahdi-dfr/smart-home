@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../../../core/resource/mqtt_service.dart';
+import '../../../../core/resource/connection/mqtt_service.dart';
 
 class RelayController extends GetxController{
 

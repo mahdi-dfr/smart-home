@@ -1,15 +1,15 @@
 
 import 'dart:convert';
-import 'package:turkeysh_smart_home/core/resource/connection_controller.dart';
+import 'package:turkeysh_smart_home/core/resource/internet_controller.dart';
 import 'package:uuid/uuid.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
-import '../constants/utils.dart';
-import '../../features/device/presentation/controller/relay_data.dart';
-import '../../features/home/presentation/controller/relay_controller.dart';
+import '../../constants/utils.dart';
+import '../../../features/device/presentation/controller/relay_data.dart';
+import '../../../features/home/presentation/controller/relay_controller.dart';
 
 class MqttService extends GetxController{
   late MqttServerClient client;
@@ -26,7 +26,7 @@ class MqttService extends GetxController{
   }
 
   Future<void> initializeMqtt() async {
-    final connectionController = Get.find<ConnectionController>();
+    final connectionController = Get.find<InternetController>();
 
     if (connectionController.isConnected.value) {
       final uniqueClientId = _generateUniqueClientId();
@@ -105,7 +105,7 @@ class MqttService extends GetxController{
 
 
   subscribeMessage(String topic) {
-    if(Get.find<ConnectionController>().isConnected.value){
+    if(Get.find<InternetController>().isConnected.value){
       print('MQTT_LOGS::Subscribing to the test/lol topic');
       client.subscribe(topic, MqttQos.atMostOnce);
 

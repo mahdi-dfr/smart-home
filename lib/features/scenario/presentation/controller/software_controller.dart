@@ -4,7 +4,7 @@ import 'package:turkeysh_smart_home/features/scenario/domain/entity/software/sof
 import 'package:turkeysh_smart_home/features/scenario/domain/entity/software/software_message_entity.dart';
 
 import '../../../../core/constants/utils.dart';
-import '../../../../core/resource/connection_controller.dart';
+import '../../../../core/resource/internet_controller.dart';
 import '../../../../core/resource/data_state.dart';
 import '../../domain/entity/relay.dart';
 import '../../domain/entity/software/create_software_entity.dart';
@@ -35,7 +35,7 @@ class SoftwareScenarioController extends BaseScenarioController {
 
   Future<DataState<List<RelayEntity>>> getAllRelays() async {
     isRelayLoading.value = true;
-    if (!Get.find<ConnectionController>().isConnected.value) {
+    if (!Get.find<InternetController>().isConnected.value) {
       isRelayLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید!');
     }
@@ -55,7 +55,7 @@ class SoftwareScenarioController extends BaseScenarioController {
 
   Future<DataState<List<SoftwareScenarioEntity>>> getSoftwareScenario() async {
     isScenarioLoading.value = true;
-    if (!Get.find<ConnectionController>().isConnected.value) {
+    if (!Get.find<InternetController>().isConnected.value) {
       isScenarioLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید!');
     }
@@ -74,7 +74,7 @@ class SoftwareScenarioController extends BaseScenarioController {
 
   Future<DataState<CreateSoftwareScenarioEntity>> setNewSoftwareScenario() async {
     isLoading.value = true;
-    if (!Get.find<ConnectionController>().isConnected.value) {
+    if (!Get.find<InternetController>().isConnected.value) {
       isLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
     }
@@ -103,7 +103,7 @@ class SoftwareScenarioController extends BaseScenarioController {
   }
 
   Future<DataState<Map<String, dynamic>>> getSoftwareScenarioMessage(int scenarioId) async {
-    if (!Get.find<ConnectionController>().isConnected.value) {
+    if (!Get.find<InternetController>().isConnected.value) {
       isLoading.value = false;
       return const DataFailed('لطفا از اتصال اینترنت خود اطمینان حاصل نمایید');
     }
@@ -132,7 +132,7 @@ class SoftwareScenarioController extends BaseScenarioController {
 
   Future<DataState<String>> deleteSoftwareScenario(int id) async {
     isDeleteLoading.value = true;
-    if (Get.find<ConnectionController>().isConnected.value) {
+    if (Get.find<InternetController>().isConnected.value) {
       DataState dataState = await _useCase.deleteSoftwareScenario(id);
       if (dataState is DataSuccess) {
         getSoftwareScenario();

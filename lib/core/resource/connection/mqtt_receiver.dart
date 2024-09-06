@@ -2,15 +2,15 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:turkeysh_smart_home/core/constants/utils.dart';
 
-import '../../features/settings/domain/entity/project_board_entity.dart';
-import '../../features/settings/domain/entity/project_board_resault.dart';
-import '../../features/settings/domain/usecase/project_board_usecase.dart';
+import '../../../features/settings/domain/entity/project_board_entity.dart';
+import '../../../features/settings/domain/entity/project_board_resault.dart';
+import '../../../features/settings/domain/usecase/project_board_usecase.dart';
 import 'mqtt_service.dart';
-import 'connection_controller.dart';
-import 'data_state.dart';
+import '../internet_controller.dart';
+import '../data_state.dart';
 
 class MqttReceiver extends GetxController {
-  ProjectBoardUseCase _useCase;
+  final ProjectBoardUseCase _useCase;
 
   MqttReceiver(this._useCase);
 
@@ -43,7 +43,7 @@ class MqttReceiver extends GetxController {
 
   Future<DataState<ProjectBoardEntity>> getAllProjectsBoardsForMessage(
       String page, String projectId) async {
-    if (Get.find<ConnectionController>().isConnected.value) {
+    if (Get.find<InternetController>().isConnected.value) {
       DataState<ProjectBoardEntity> dataState =
           await _useCase.getAllProjectsBoard(page, projectId);
       if (dataState is DataSuccess) {

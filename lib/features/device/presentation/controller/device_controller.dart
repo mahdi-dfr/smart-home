@@ -5,7 +5,7 @@ import 'package:turkeysh_smart_home/core/constants/utils.dart';
 import 'package:turkeysh_smart_home/features/device/domain/entity/device_entity.dart';
 import 'package:turkeysh_smart_home/features/device/domain/usecase/device_usecase.dart';
 
-import '../../../../core/resource/connection_controller.dart';
+import '../../../../core/resource/internet_controller.dart';
 import '../../../../core/resource/data_state.dart';
 import '../../domain/entity/device_node_entity.dart';
 
@@ -47,7 +47,7 @@ class DeviceController extends GetxController {
       'node_project': nodeProject,
       'project_board': boardId
     };
-    if (Get.find<ConnectionController>().isConnected.value) {
+    if (Get.find<InternetController>().isConnected.value) {
       if (deviceName.text.isNotEmpty && deviceType != null && nodeProject != null) {
         DataState dataState = await _useCase.createDevice(data);
         if (dataState is DataSuccess) {
@@ -117,7 +117,7 @@ class DeviceController extends GetxController {
         deviceList.value = localData.data ?? [];
       }
     } else {
-      if (Get.find<ConnectionController>().isConnected.value) {
+      if (Get.find<InternetController>().isConnected.value) {
         DataState<List<DeviceEntity>> dataState = await _useCase.getDevices(localProjectId, roomId!);
 
         if (dataState is DataSuccess) {
@@ -139,7 +139,7 @@ class DeviceController extends GetxController {
 
   Future<DataState<String>> deleteDevice(int id) async {
     isDeleteDeviceLoading.value = true;
-    if (Get.find<ConnectionController>().isConnected.value) {
+    if (Get.find<InternetController>().isConnected.value) {
       DataState dataState = await _useCase.deleteDevice(id, GetStorage().read(AppUtils.projectIdConst), roomId!);
       if (dataState is DataSuccess) {
         getAllDevises();

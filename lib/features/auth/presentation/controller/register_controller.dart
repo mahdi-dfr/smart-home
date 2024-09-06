@@ -4,7 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:turkeysh_smart_home/core/constants/routes.dart';
 import 'package:turkeysh_smart_home/core/resource/error_handler.dart';
 import '../../../../core/constants/utils.dart';
-import '../../../../core/resource/connection_controller.dart';
+import '../../../../core/resource/internet_controller.dart';
 import '../../../../core/resource/data_state.dart';
 import '../../domain/entity/user_entity.dart';
 import '../../domain/usecase/auth_usecase.dart';
@@ -41,7 +41,7 @@ class RegisterController extends GetxController {
 
   Future<DataState<String>> signUpUser() async {
     isRegisterLoading.value = true;
-    if (Get.find<ConnectionController>().isConnected.value) {
+    if (Get.find<InternetController>().isConnected.value) {
       if (username.text.isEmpty ||
           password.text.isEmpty ||
           confirmPassword.text.isEmpty ||
@@ -85,7 +85,7 @@ class RegisterController extends GetxController {
 
   Future<DataState<UserEntity>> loginUser() async {
     isLoading.value = true;
-    if (Get.find<ConnectionController>().isConnected.value) {
+    if (Get.find<InternetController>().isConnected.value) {
       if(loginUsername.text.isNotEmpty && loginPassword.text.isNotEmpty){
 
         DataState<UserEntity> dataState =
