@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../../../../core/resource/connection/board_connection_controller.dart';
 import '../../../../core/resource/connection/mqtt_service.dart';
 
 class RelayController extends GetxController{
@@ -11,11 +12,11 @@ class RelayController extends GetxController{
   int? boardUniqueId;
   int? nodeId;
 
-  final _controller = Get.find<MqttService>();
+  final _baseConnectionController = Get.find<BoardConnectionController>();
 
 
   setRelaySwitchValue() {
-    for (var element in _controller.relayDataList) {
+    for (var element in _baseConnectionController.relayDataList) {
       print(element.boardId);
       if (element.boardId == boardUniqueId) {
         switch (nodeId) {

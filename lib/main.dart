@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:turkeysh_smart_home/core/resource/app_bindings.dart';
-import 'package:turkeysh_smart_home/test_websocket.dart';
+import 'package:turkeysh_smart_home/core/resource/connection/websocket_service.dart';
 
 import 'core/constants/routes.dart';
 import 'core/constants/utils.dart';
@@ -28,8 +28,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       initialBinding: AppBindings(),
-      home: WebSocketClient(serverUri: 'ws://esp32-server.local:81',),
-      // initialRoute: PagesRoutes.splash,
+      initialRoute: PagesRoutes.splash,
       // initialRoute: GetStorage().read(AppUtils.userTokenAccess) != null
       //     ? PagesRoutes.project
       //     : PagesRoutes.login,

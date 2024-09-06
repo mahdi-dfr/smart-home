@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:turkeysh_smart_home/core/resource/connection/board_connection_controller.dart';
 
 
 import '../../../../core/constants/colors.dart';
@@ -15,19 +16,19 @@ class OneTimeWidget extends StatelessWidget {
   OneTimeWidget({required this.title, required this.boardId, required this.nodeId, required this.onPressed, Key? key})
       : super(key: key);
 
-  final _controller = Get.find<MqttService>();
+  final _baseConnectionController = Get.find<BoardConnectionController>();
   var isOneTimeButtonEnabled = false.obs;
-  String? title;
-  int? boardId;
-  int? nodeId;
-  Function() onPressed;
+  final String? title;
+  final int? boardId;
+  final int? nodeId;
+  final Function() onPressed;
 
   late String projectName;
   late String username;
   var isSwitchLoading = false.obs;
 
   setRelayOneTimeValue() {
-    for (var element in _controller.relayDataList) {
+    for (var element in _baseConnectionController.relayDataList) {
       if (element.boardId == boardId) {
         switch (nodeId) {
           case 1:

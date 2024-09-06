@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'package:turkeysh_smart_home/core/resource/connection/board_connection_controller.dart';
 import 'package:turkeysh_smart_home/core/resource/internet_controller.dart';
 import 'package:uuid/uuid.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
+import '../../constants/url_constant.dart';
 import '../../constants/utils.dart';
 import '../../../features/device/presentation/controller/relay_data.dart';
 import '../../../features/home/presentation/controller/relay_controller.dart';
@@ -16,7 +18,7 @@ class MqttService extends GetxController{
 
   String projectName = GetStorage().read(AppUtils.projectNameConst);
   String username = GetStorage().read(AppUtils.username);
-  List<RelayData> relayDataList = [];
+  final connectionController = Get.find<BoardConnectionController>();
 
   @override
   onInit() async {
@@ -51,7 +53,7 @@ class MqttService extends GetxController{
   }
 
   MqttServerClient _createMqttClient(String clientId) {
-    final MqttServerClient mqttClient = MqttServerClient.withPort('iot.perkyiot.com', clientId, 30320);
+    final MqttServerClient mqttClient = MqttServerClient.withPort(UrlConstant.mqttUrl, clientId, 30320);
     mqttClient.logging(on: true);
     return mqttClient;
   }
@@ -66,7 +68,7 @@ class MqttService extends GetxController{
     client.setProtocolV311();
 
     final connMessage = MqttConnectMessage()
-        .authenticateAs('mosquitto2', 'gjEZPS71fj2WqwinXIpl')
+        .authenticateAs(UrlConstant.mqttUsername, UrlConstant.mqttPassword)
         .keepAliveFor(60)
         .withWillTopic('willtopic')
         .withWillMessage('Will message')
@@ -120,7 +122,7 @@ class MqttService extends GetxController{
 
         if(topic.contains('relay')){
           print('///////..');
-          setRelayList(payload);
+          connectionController.setRelayList(payload);
         }
 
       });
@@ -164,48 +166,7 @@ class MqttService extends GetxController{
     print('Ping response client callback invoked');
   }
 
-  bool parseBinaryMessage(String data ,int index){
-    return data[index] == '1' ? true : false;
-  }
 
-  setRelayList(String payload){
-    final Map<String, dynamic> jsonMessage = json.decode(payload);
-    print('.....................');
-    print(jsonMessage);
-
-    removeSameMessages(jsonMessage);
-
-    RelayData relayData = RelayData(boardId: jsonMessage['board_id'],
-      key1: parseBinaryMessage(jsonMessage['node_status'], 0),
-      key2: parseBinaryMessage(jsonMessage['node_status'], 1),
-      key3: parseBinaryMessage(jsonMessage['node_status'], 2),
-      key4: parseBinaryMessage(jsonMessage['node_status'], 3),
-      key5: parseBinaryMessage(jsonMessage['node_status'], 4),
-      key6: parseBinaryMessage(jsonMessage['node_status'], 5),
-      key7: parseBinaryMessage(jsonMessage['node_status'], 6),
-      key8: parseBinaryMessage(jsonMessage['node_status'], 7),
-      key9: parseBinaryMessage(jsonMessage['node_status'], 8),
-      key10: parseBinaryMessage(jsonMessage['node_status'], 9),
-      key11: parseBinaryMessage(jsonMessage['node_status'], 10),
-      key12: parseBinaryMessage(jsonMessage['node_status'], 11),
-    );
-
-    relayDataList.add(relayData);
-
-    update();
-  }
-
-  removeSameMessages(Map<String, dynamic> jsonMessage){
-    int elementIndex = -1;
-    relayDataList.forEach((element) {
-      if(element.boardId == jsonMessage['board_id']){
-        elementIndex = relayDataList.indexOf(element);
-      }
-    });
-    if(elementIndex != -1){
-      relayDataList.removeAt(elementIndex);
-    }
-  }
 
   @override
   void onClose() {

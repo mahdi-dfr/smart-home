@@ -10,6 +10,7 @@ import 'package:turkeysh_smart_home/core/constants/utils.dart';
 import 'package:turkeysh_smart_home/features/device/presentation/widget/devices/take_time_part.dart';
 
 import '../../../../../core/constants/images.dart';
+import '../../../../../core/resource/connection/board_connection_controller.dart';
 import '../../../../../core/resource/connection/mqtt_service.dart';
 
 class RelayOneTimeWidget extends StatelessWidget {
@@ -21,7 +22,7 @@ class RelayOneTimeWidget extends StatelessWidget {
   final int? boardUniqueId;
   final int? nodeId;
 
-  final _controller = Get.find<MqttService>();
+  final _baseConnectionController = Get.find<BoardConnectionController>();
   Function() onLongPress;
   var isPowerButtonExpanded = false.obs;
   var isDeviceSwitchOn = false.obs;
@@ -30,7 +31,7 @@ class RelayOneTimeWidget extends StatelessWidget {
   var isSwitchLoading = false.obs;
 
   setRelaySwitchValue() {
-    for (var element in _controller.relayDataList) {
+    for (var element in _baseConnectionController.relayDataList) {
       if (element.boardId == boardUniqueId) {
         switch (nodeId) {
           case 1:

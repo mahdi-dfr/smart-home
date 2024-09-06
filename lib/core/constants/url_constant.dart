@@ -6,6 +6,15 @@ class UrlConstant {
   // static const String baseUrl = 'https://abzarsanat.runflare.run/api/';
   static const String baseUrl = 'https://iot.perkyiot.com/api/';
 
+  /// websocket
+  static const String websocketUrl = 'ws://esp32-server.local:81';
+
+
+  /// mqtt
+  static const String mqttUrl = 'iot.perkyiot.com';
+  static const String mqttUsername = 'mosquitto2';
+  static const String mqttPassword = 'gjEZPS71fj2WqwinXIpl';
+
   /// auth urls:
   static const String register = 'user/management/';
   static const String login = 'user/auth/token/';

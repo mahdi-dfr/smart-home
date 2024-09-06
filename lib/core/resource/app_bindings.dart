@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:turkeysh_smart_home/core/resource/connection/board_connection_controller.dart';
+import 'package:turkeysh_smart_home/core/resource/connection/websocket_service.dart';
 import 'package:turkeysh_smart_home/core/resource/internet_controller.dart';
 import 'package:turkeysh_smart_home/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:turkeysh_smart_home/features/auth/presentation/controller/register_controller.dart';
@@ -106,6 +108,8 @@ class HomeBinding extends Bindings{
     Get.lazyPut(() => RelayController(), fenix: true);
     Get.put(DeviceHelperController());
     Get.put(MqttService());
+    Get.put(WebsocketService());
+    Get.put(BoardConnectionController());
     Get.put(MqttReceiver(Get.find<ProjectBoardUseCase>()));
   }
 }
