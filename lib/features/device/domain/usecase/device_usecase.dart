@@ -4,6 +4,7 @@ import '../../../../core/resource/data_state.dart';
 import '../entity/device_entity.dart';
 import '../entity/device_entity_response.dart';
 import '../entity/device_node_entity.dart';
+import '../entity/sensor_config.dart';
 
 class DeviceUseCae {
   final DeviceRepository _repository;
@@ -43,5 +44,20 @@ class DeviceUseCae {
 
   Future<DataState<String>> deleteDevicesFromLocal(int projectId, int roomId){
     return _repository.deleteDevicesFromLocal(projectId, roomId);
+  }
+
+
+
+
+  Future<DataState<String>> saveSensorConfigsToLocal(SensorConfig configs) {
+    return _repository.saveSensorConfigsToLocal(configs);
+  }
+
+  Future<DataState<List<SensorConfig>>> getLocalSensorConfigs(){
+    return _repository.getLocalSensorConfigs();
+  }
+
+  Future<DataState<String>> deleteSensorConfigsFromLocal(int id){
+    return _repository.deleteSensorConfigsFromLocal(id);
   }
 }

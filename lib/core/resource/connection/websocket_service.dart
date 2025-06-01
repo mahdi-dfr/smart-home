@@ -17,16 +17,25 @@ class WebsocketService extends GetxController {
     super.onInit();
 
     _channel = IOWebSocketChannel.connect(UrlConstant.websocketUrl);
+    listenToMessage();
   }
 
   sendLocalMessage(Map<String, dynamic> message, String topic) {
-    Map<String, dynamic> messageData = {topic: message};
-    _channel.sink.add(json.encode(messageData));
+    Map<String, dynamic> wrappedMessage = {
+      "clientData": json.encode(message)
+    };
+    _channel.sink.add(json.encode(wrappedMessage));
   }
 
   listenToMessage() {
+    print('11111');
     _channel.stream.listen((message) {
-      _connectionController.setRelayList(message);
+print('22222');
+      if (message != null) {
+        print('333333');
+        print(message);
+        _connectionController.setRelayList(message);
+      }
     });
   }
 

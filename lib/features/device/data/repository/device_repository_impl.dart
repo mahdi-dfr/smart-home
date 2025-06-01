@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:isar/isar.dart';
 import 'package:turkeysh_smart_home/core/resource/isar_controller.dart';
 import 'package:turkeysh_smart_home/features/device/data/data_source/api_provider.dart';
+import 'package:turkeysh_smart_home/features/device/domain/entity/sensor_config.dart';
 
 import '../../../../core/resource/data_state.dart';
 import '../../domain/entity/device_entity.dart';
@@ -120,6 +121,43 @@ class DeviceRepositoryImpl extends DeviceRepository {
     try {
       await _isarController.isar.writeTxn(() async {
         await _isarController.isar.deviceEntitys.putAll(devices);
+      });
+      return const DataSuccess('success');
+    } catch (err) {
+      return DataFailed(err.toString());
+    }
+  }
+
+  @override
+  Future<DataState<String>> deleteSensorConfigsFromLocal(int id) async {
+    try {
+      await _isarController.isar.writeTxn(() async {
+        await _isarController.isar.sensorConfigs
+            .filter()
+            .isarIdEqualTo(id)
+            .deleteAll();
+      });
+      return const DataSuccess('success');
+    } catch (err) {
+      return DataFailed(err.toString());
+    }
+  }
+
+  @override
+  Future<DataState<List<SensorConfig>>> getLocalSensorConfigs() async {
+    try {
+      List<SensorConfig> configs = await _isarController.isar.sensorConfigs.where().findAll();
+      return DataSuccess(configs);
+    } catch (err) {
+      return const DataFailed('err');
+    }
+  }
+
+  @override
+  Future<DataState<String>> saveSensorConfigsToLocal(SensorConfig configs) async {
+    try {
+      await _isarController.isar.writeTxn(() async {
+        await _isarController.isar.sensorConfigs.put(configs);
       });
       return const DataSuccess('success');
     } catch (err) {

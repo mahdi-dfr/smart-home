@@ -86,30 +86,32 @@ class SliverCustomAppBar extends SliverPersistentHeaderDelegate {
               ),
             ).marginOnly(bottom: 27),
           ),
-          Visibility(
-            visible: lottieAssetSrc != null,
-            child: Opacity(
-              opacity: getOpacity(
-                  defaultOpacity: 0,
-                  maxHeight: maxHeight,
-                  minHeight: minHeight,
-                  shrinkOffset: shrinkOffset,
-                  minOpacity: 0.4),
-              child: Align(
-                alignment: const Alignment(0, 0),
-                child: Lottie.asset(
-                  lottieAssetSrc ?? '',
-                  fit: BoxFit.fitHeight,
-                  height: maxHeight,
-                ),
-              ),
-            ).marginOnly(bottom: 60),
-          ),
+          // Visibility(
+          //   visible: lottieAssetSrc != null,
+          //   child: Opacity(
+          //     opacity: getOpacity(
+          //         defaultOpacity: 0,
+          //         maxHeight: maxHeight,
+          //         minHeight: minHeight,
+          //         shrinkOffset: shrinkOffset,
+          //         minOpacity: 0.4),
+          //     child: Align(
+          //       alignment: const Alignment(0, 0),
+          //       child: Lottie.asset(
+          //         lottieAssetSrc ?? '',
+          //         fit: BoxFit.fitHeight,
+          //         height: maxHeight,
+          //       ),
+          //     ),
+          //   ).marginOnly(bottom: 60),
+          // ),
           Align(
               alignment: const Alignment(0.0, 0.8),
               child: Container(
-                  height: MediaQuery.of(context).size.height / 14,
-                  width: Get.width*0.8,
+                  // height: MediaQuery.of(context).size.height / 14,
+                  // width: Get.width*0.8,
+                  height: 70,
+                  width: 170,
                   padding: const EdgeInsets.only(left: 30, right: 30),
                   child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -131,7 +133,7 @@ class SliverCustomAppBar extends SliverPersistentHeaderDelegate {
                           )
                         ],
                       ),
-                      child: Image.asset(Images.logoWide, fit: BoxFit.cover,)))),
+                      child: Image.asset(Images.logoWide, fit: BoxFit.fill, width: 4,)))),
           Align(
             alignment: const Alignment(0, 0),
             child: AppBar(

@@ -1,3 +1,5 @@
+import 'package:turkeysh_smart_home/features/device/domain/entity/sensor_config.dart';
+
 import '../../../../core/resource/data_state.dart';
 import '../entity/device_entity.dart';
 import '../entity/device_entity_response.dart';
@@ -19,4 +21,11 @@ abstract class DeviceRepository {
   Future<DataState<List<DeviceEntity>>> getLocalDevices(int projectId, int roomId);
 
   Future<DataState<String>> deleteDevicesFromLocal(int projectId, int roomId);
+
+
+  Future<DataState<String>> saveSensorConfigsToLocal(SensorConfig config);
+
+  Future<DataState<List<SensorConfig>>> getLocalSensorConfigs();
+
+  Future<DataState<String>> deleteSensorConfigsFromLocal(int id,);
 }

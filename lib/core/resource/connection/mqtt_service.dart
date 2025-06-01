@@ -18,6 +18,7 @@ class MqttService extends GetxController{
 
   String projectName = GetStorage().read(AppUtils.projectNameConst);
   String username = GetStorage().read(AppUtils.username);
+  bool isOfflineMode = GetStorage().read(AppUtils.offlineMode);
   final connectionController = Get.find<BoardConnectionController>();
 
   @override
@@ -107,7 +108,7 @@ class MqttService extends GetxController{
 
 
   subscribeMessage(String topic) {
-    if(Get.find<InternetController>().isConnected.value){
+    if(Get.find<InternetController>().isConnected.value && !isOfflineMode){
       print('MQTT_LOGS::Subscribing to the test/lol topic');
       client.subscribe(topic, MqttQos.atMostOnce);
 

@@ -14,6 +14,7 @@ import '../../../../core/constants/routes.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/utils.dart';
 import '../../../device/presentation/screen/device_list.dart';
+import '../../../settings/presentation/controller/project_board_controller.dart';
 import '../widget/custom_app_bar_delegate.dart';
 import '../widget/device_info_widget.dart';
 import '../widget/modification_dialog_content.dart';

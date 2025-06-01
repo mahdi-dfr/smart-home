@@ -14,6 +14,7 @@ import '../../../../core/constants/images.dart';
 import '../../../../core/constants/routes.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/utils.dart';
+import '../../../../core/resource/connection/mqtt_service.dart';
 import '../../../../core/widget/custom_app_bar.dart';
 import '../../../device/presentation/screen/one_time_devices.dart';
 import '../widget/devices/relay_one_time.dart';
@@ -64,26 +65,60 @@ class DeviceListScreen extends StatelessWidget {
                           SliverToBoxAdapter(
                               child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: TextButton(
-                                onPressed: () {
-                                  _controller.filterDevicesBasedOnOneTime();
-                                  Get.to(OneTimeDeviceScreen());
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.grid_view_outlined,
-                                      color: CustomColors.foregroundColor,
-                                    ),
-                                    const SizedBox(
-                                      width: 8,
-                                    ),
-                                    const Text(
-                                      'مشاهده کلید ها',
-                                      style: TextStyle(fontSize: 16),
-                                    )
-                                  ],
-                                )),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TextButton(
+                                    onPressed: () {
+                                      _controller.filterDevicesBasedOnOneTime();
+                                      Get.to(OneTimeDeviceScreen());
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.grid_view_outlined,
+                                          color: CustomColors.foregroundColor,
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        const Text(
+                                          'مشاهده کلید ها',
+                                          style: TextStyle(fontSize: 16),
+                                        )
+                                      ],
+                                    )),
+                                TextButton(
+                                    onPressed: () async {
+                                      String projectName = GetStorage().read(AppUtils.projectNameConst);
+                                      String username = GetStorage().read(AppUtils.username);
+                                      String topic = '$projectName/$username/sensor';
+                                      for(int i = 0; i < _controller.sensorDeviceTypeList.length; i ++){
+                                        print({"type": "sensor", "sensor_id": _controller.sensorBoardList[i], "data_type": _controller.sensorDeviceTypeList[i]});
+                                        await Future.delayed(const Duration(seconds: 1));
+                                        Get.find<MqttService>().publishMessage(
+                                          {"type": "sensor", "sensor_id": _controller.sensorBoardList[i], "data_type": _controller.sensorDeviceTypeList[i]}
+                                          , topic);
+                                      }
+                                    },
+                                    child:  Row(
+                                      children: [
+                                        const Text(
+                                          'سنسورها',
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Icon(
+                                          Icons.refresh,
+                                          color: CustomColors.foregroundColor,
+                                        ),
+
+                                      ],
+                                    ),),
+                              ],
+                            ),
                           )),
                           SliverList.builder(
                               itemBuilder: (BuildContext context, int index) {
@@ -126,7 +161,7 @@ class DeviceListScreen extends StatelessWidget {
                                               }
                                             });
                                           });
-                                    },
+                                    }, boardId:  _controller.deviceList[index].projectBoard!.uniqueId,
                                   );
                                 }
                               },

@@ -48,18 +48,19 @@ class CreateDeviceScreen extends StatelessWidget {
                         _controller.deviceType = '0';
                       } else if (value.toString() == 'سنسور دما') {
                         _controller.deviceType = '1';
-                      } else if (value.toString() == 'سنسور رطوبت') {
+                      } else if (value.toString() == 'سنسور سختی آب') {
                         _controller.deviceType = '2';
-                      } else if (value.toString() == 'سنسور گاز') {
+                      } else if (value.toString() == 'سنسور PH') {
                         _controller.deviceType = '3';
                       } else if (value.toString() == 'سنسور خاک') {
                         _controller.deviceType = '4';
-                      } else if (value.toString() ==
-                          'چشمی ها و سنسور های تشخیص حرکت') {
-                        _controller.deviceType = '7';
-                      } else if (value.toString() == 'دیمر') {
-                        _controller.deviceType = '5';
                       }
+                      // else if (value.toString() ==
+                      //     'چشمی ها و سنسور های تشخیص حرکت') {
+                      //   _controller.deviceType = '7';
+                      // } else if (value.toString() == 'دیمر') {
+                      //   _controller.deviceType = '5';
+                      // }
 
                       _controller.getDeviceNodes();
                     }),

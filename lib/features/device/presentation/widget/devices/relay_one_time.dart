@@ -7,6 +7,7 @@ import 'package:turkeysh_smart_home/core/constants/colors.dart';
 import 'package:turkeysh_smart_home/core/constants/dimens.dart';
 import 'package:turkeysh_smart_home/core/constants/styles.dart';
 import 'package:turkeysh_smart_home/core/constants/utils.dart';
+import 'package:turkeysh_smart_home/core/resource/connection/websocket_service.dart';
 import 'package:turkeysh_smart_home/features/device/presentation/widget/devices/take_time_part.dart';
 
 import '../../../../../core/constants/images.dart';
@@ -29,6 +30,7 @@ class RelayOneTimeWidget extends StatelessWidget {
   var isPowerSwitchOn = false.obs;
   var isItemExpanded = false.obs;
   var isSwitchLoading = false.obs;
+  bool offlineMode = GetStorage().read(AppUtils.offlineMode) ?? false;
 
   setRelaySwitchValue() {
     for (var element in _baseConnectionController.relayDataList) {
@@ -65,12 +67,6 @@ class RelayOneTimeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // setRelaySwitchValue();
-
-    print('ppoo');
-    print(boardUniqueId);
-    print(nodeId);
-
     var width = MediaQuery.sizeOf(context).width;
     return Column(
       children: [
@@ -122,47 +118,25 @@ class RelayOneTimeWidget extends StatelessWidget {
                       style: AppStyles.style9,
                     ),
                     Obx(() {
-                      return !isSwitchLoading.value
-                          ? GetBuilder<MqttService>(builder: (logic) {
-                              setRelaySwitchValue();
-                              return Switch(
-                                  value: isPowerSwitchOn.value,
-                                  activeColor: CustomColors.backgroundColor,
-                                  activeTrackColor: CustomColors.foregroundColor,
-                                  inactiveThumbColor: Colors.grey,
-                                  onChanged: (value) async {
-                                    logic.update();
-                                    //isPowerSwitchOn.value = !isPowerSwitchOn.value;
-                                    String projectName = GetStorage().read(AppUtils.projectNameConst);
-                                    String username = GetStorage().read(AppUtils.username);
-                                    if (value) {
-                                      ///////////// _controller را به logic تغییر دادم:
-                                      logic.publishMessage({
-                                        'type': 'relay',
-                                        'board_id': boardUniqueId,
-                                        'node_id': nodeId,
-                                        'node_status': true
-                                      }, '$projectName/$username/relay');
-                                    } else {
-                                      logic.publishMessage({
-                                        'type': 'relay',
-                                        'board_id': boardUniqueId,
-                                        'node_id': nodeId,
-                                        'node_status': false
-                                      }, '$projectName/$username/relay');
-                                    }
-
-                                    isSwitchLoading.value = true;
-                                    await Future.delayed(const Duration(seconds: 2));
-                                    isSwitchLoading.value = false;
-                                  });
-                            })
-                          : Padding(
-                              padding: const EdgeInsets.only(left: 12),
-                              child:
-                                  LoadingAnimationWidget.stretchedDots(color: CustomColors.foregroundColor, size: 35),
-                            );
+                      if (isSwitchLoading.value) {
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 12),
+                          child: LoadingAnimationWidget.stretchedDots(
+                            color: CustomColors.foregroundColor,
+                            size: 35,
+                          ),
+                        );
+                      } else {
+                        return offlineMode
+                            ? GetBuilder<WebsocketService>(builder: (logic) {
+                          return _buildSwitch(logic);
+                        })
+                            : GetBuilder<MqttService>(builder: (logic) {
+                          return _buildSwitch(logic);
+                        });
+                      }
                     })
+
                   ],
                 ),
                 const SizedBox(
@@ -239,5 +213,44 @@ class RelayOneTimeWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+
+
+  Widget _buildSwitch(dynamic logic) {
+    setRelaySwitchValue();
+    return Switch(
+      value: isPowerSwitchOn.value,
+      activeColor: CustomColors.backgroundColor,
+      activeTrackColor: CustomColors.foregroundColor,
+      inactiveThumbColor: Colors.grey,
+      onChanged: (value) async {
+        logic.update();
+        await _handleSwitchChange(value, logic);
+      },
+    );
+  }
+
+  Future<void> _handleSwitchChange(bool value, dynamic logic) async {
+    String projectName = GetStorage().read(AppUtils.projectNameConst);
+    String username = GetStorage().read(AppUtils.username);
+    String topic = '$projectName/$username/relay';
+
+    Map<String, dynamic> message = {
+      "type": "relay",
+      "board_id": 1,
+      "node_id": nodeId,
+      "node_status": value
+    };
+
+
+    if (offlineMode) {
+      logic.sendLocalMessage(message, topic);
+    } else {
+      logic.publishMessage(message, topic);
+    }
+
+    isSwitchLoading.value = true;
+    await Future.delayed(const Duration(seconds: 2));
+    isSwitchLoading.value = false;
   }
 }

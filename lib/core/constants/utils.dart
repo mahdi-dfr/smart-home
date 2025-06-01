@@ -13,6 +13,7 @@ class AppUtils {
   static const String offlineMode = 'offline_mode';
   static const String projectIdConst = 'projectIdConst';
   static const String projectNameConst = 'projectNameConst';
+  static const String relayCount = 'relayCount';
 
   static List<IconData> iconList = <IconData>[
     Icons.home,
@@ -25,11 +26,11 @@ class AppUtils {
     'کلید سه تایمر',
     'کلید تک تایمر',
     'سنسور دما',
-    'سنسور رطوبت',
-    'سنسور گاز',
-    'سنسور خاک',
-    'چشمی ها و سنسور های تشخیص حرکت',
-    'دیمر',
+    'سنسور سختی آب',
+    'سنسور PH',
+    // 'سنسور خاک',
+    // 'چشمی ها و سنسور های تشخیص حرکت',
+    // 'دیمر',
   ];
 
   static List<Widget> pages = [

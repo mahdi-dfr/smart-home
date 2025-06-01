@@ -44,6 +44,7 @@ class AppBindings extends Bindings{
   void dependencies() {
 
     Get.put<IsarController>(IsarController());
+    Get.put(BoardConnectionController());
 
     /// api providers:
     Get.put<AuthApiProvider>(AuthApiProvider());
@@ -109,15 +110,15 @@ class HomeBinding extends Bindings{
     Get.put(DeviceHelperController());
     Get.put(MqttService());
     Get.put(WebsocketService());
-    Get.put(BoardConnectionController());
     Get.put(MqttReceiver(Get.find<ProjectBoardUseCase>()));
+    Get.put(ProjectBoardController(Get.find<ProjectBoardUseCase>()));
   }
 }
 
 class SettingsBinding extends Bindings{
   @override
   void dependencies() {
-    Get.put(ProjectBoardController(Get.find<ProjectBoardUseCase>()));
+    // Get.put(ProjectBoardController(Get.find<ProjectBoardUseCase>()));
   }
 
 }

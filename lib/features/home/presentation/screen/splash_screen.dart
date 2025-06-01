@@ -45,8 +45,10 @@ class _SplashScreenState extends State<SplashScreen> {
         height: MediaQuery.sizeOf(context).height,
         child: Center(
           child: SizedBox(
-            width: MediaQuery.sizeOf(context).width,
-            child: Lottie.asset(Images.lottieHome2),
+            width: MediaQuery.sizeOf(context).width/2,
+            // width: MediaQuery.sizeOf(context).width,
+            child: Image.asset(Images.logo, color: Colors.white,),
+            // child: Lottie.asset(Images.lottieHome2),
           ),
         ),
       ),
