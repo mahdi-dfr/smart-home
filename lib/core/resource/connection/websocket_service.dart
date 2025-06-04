@@ -16,9 +16,18 @@ class WebsocketService extends GetxController {
   void onInit() {
     super.onInit();
 
+    // _channel = IOWebSocketChannel.connect(UrlConstant.websocketUrl);
+    // listenToMessage();
+  }
+
+
+  initWebSocket(){
+    print('[[[object]]]');
     _channel = IOWebSocketChannel.connect(UrlConstant.websocketUrl);
     listenToMessage();
   }
+
+
 
   sendLocalMessage(Map<String, dynamic> message, String topic) {
     Map<String, dynamic> wrappedMessage = {

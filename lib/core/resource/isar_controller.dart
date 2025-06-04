@@ -6,13 +6,16 @@ import 'package:turkeysh_smart_home/features/home/domain/entity/room_entity.dart
 import 'package:turkeysh_smart_home/features/project/domain/entity/prooject_result_entity.dart';
 
 class IsarController {
+  static final IsarController _instance = IsarController._internal();
   static Isar? _isar;
 
-  Isar get isar => _isar!;
-
-  IsarController(){
-    isarInitializer();
+  factory IsarController() {
+    return _instance;
   }
+
+  IsarController._internal();
+
+  Isar get isar => _isar!;
 
   Future<void> isarInitializer() async {
     if (_isar == null) {
@@ -26,3 +29,4 @@ class IsarController {
     }
   }
 }
+

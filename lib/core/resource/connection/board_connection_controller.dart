@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:turkeysh_smart_home/features/device/presentation/controller/sensor_data.dart';
 
 import '../../../features/device/presentation/controller/relay_data.dart';
 
 class BoardConnectionController extends GetxController{
 
   List<RelayData> relayDataList = [];
+  List<SensorData> sensorDataList = [];
 
 
   bool parseBinaryMessage(String data ,int index){
@@ -14,6 +16,8 @@ class BoardConnectionController extends GetxController{
   }
 
   setRelayList(String payload){
+    print('adadad');
+    print(payload);
     final Map<String, dynamic> jsonMessage = json.decode(payload);
     print('.....................');
     print(jsonMessage);
@@ -37,7 +41,7 @@ class BoardConnectionController extends GetxController{
 
     relayDataList.add(relayData);
 
-    update();
+    update(['relay']);
   }
 
   removeSameMessages(Map<String, dynamic> jsonMessage){
@@ -50,6 +54,22 @@ class BoardConnectionController extends GetxController{
     if(elementIndex != -1){
       relayDataList.removeAt(elementIndex);
     }
+  }
+
+  setSensorList(String payload){
+    print('pppppsssa');
+    final Map<String, dynamic> jsonMessage = json.decode(payload);
+    print('.....................');
+    print(jsonMessage);
+
+    SensorData sensorData = SensorData(jsonMessage['sensor_id'], jsonMessage['data_type'], jsonMessage['value']);
+    sensorDataList.add(sensorData);
+
+    print('0000ss');
+    print(sensorDataList);
+
+    update(['sensor']);
+    print('osasx  ff');
   }
 
 }

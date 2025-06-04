@@ -10,23 +10,39 @@ import 'package:turkeysh_smart_home/features/device/presentation/controller/devi
 import '../../../../../core/constants/dimens.dart';
 import '../../../../../core/constants/images.dart';
 import '../../../../../core/constants/styles.dart';
+import '../../../../../core/resource/connection/board_connection_controller.dart';
+import '../../../../../core/resource/connection/mqtt_service.dart';
 import '../../../../../core/widget/custom_button.dart';
 import '../../../../../core/widget/drop_box.dart';
 import 'all_seneor_settings.dart';
 
 class SensorWidget extends StatelessWidget {
-  SensorWidget(
-      {required this.title,
-      required this.type,
-      required this.boardId,
-      required this.onLongPress,
-      Key? key})
+  SensorWidget({required this.title,
+    required this.type,
+    required this.boardId,
+    required this.onLongPress,
+    Key? key})
       : super(key: key);
 
   String? title;
   int? boardId;
   String? type;
   Function() onLongPress;
+
+  final _baseConnectionController = Get.find<BoardConnectionController>();
+  String sensorValue = '';
+
+
+  setSensorValue() {
+    print('[-[-[-[-]');
+    for (var element in _baseConnectionController.sensorDataList) {
+      print('ososa');
+      if (element.sensorId == boardId && element.dataType.toString() == type) {
+        print('.,.,.,s.s.s');
+        sensorValue = element.value!;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,22 +57,26 @@ class SensorWidget extends StatelessWidget {
           children: [
             SvgPicture.asset(
               Images.right,
-              width: MediaQuery.sizeOf(context).width / 3,
+              width: MediaQuery
+                  .sizeOf(context)
+                  .width / 3,
               color: CustomColors.foregroundColor,
             ),
             Text(
               type == '1'
                   ? 'سنسور دما'
                   : type == '2'
-                      ? 'سنسور سختی آب'
-                      : type == '3'
-                          ? 'سنسور PH'
-                          : 'سنسور ',
+                  ? 'سنسور سختی آب'
+                  : type == '3'
+                  ? 'سنسور PH'
+                  : 'سنسور ',
               style: AppStyles.style1,
             ),
             SvgPicture.asset(
               Images.left,
-              width: MediaQuery.sizeOf(context).width / 3,
+              width: MediaQuery
+                  .sizeOf(context)
+                  .width / 3,
               color: CustomColors.foregroundColor,
             ),
           ],
@@ -67,7 +87,9 @@ class SensorWidget extends StatelessWidget {
         InkWell(
           onLongPress: onLongPress,
           child: Container(
-            width: MediaQuery.sizeOf(context).width,
+            width: MediaQuery
+                .sizeOf(context)
+                .width,
             decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: [
@@ -86,52 +108,59 @@ class SensorWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SfRadialGauge(
-                    title: GaugeTitle(
-                      text: title ?? '',
-                    ),
-                    axes: <RadialAxis>[
-                      RadialAxis(
-                          axisLabelStyle:
+                GetBuilder<BoardConnectionController>(
+                  id: 'sensor',
+                  builder: (logic) {
+                  print('jcjcjjacjajcjac');
+                  setSensorValue();
+                    return SfRadialGauge(
+                        title: GaugeTitle(
+                          text: title ?? '',
+                        ),
+                        axes: <RadialAxis>[
+                          RadialAxis(
+                              axisLabelStyle:
                               const GaugeTextStyle(fontFamily: 'IranSans'),
-                          tickOffset: 30,
-                          labelOffset: 30,
-                          showAxisLine: false,
-                          useRangeColorForAxis: true,
-                          minimum: 0,
-                          maximum: 1,
-                          ranges: <GaugeRange>[
-                            GaugeRange(
-                                startValue: 0,
-                                endValue: 10,
-                                color: Colors.green,
-                                startWidth: 0,
-                                endWidth: 10),
-                            GaugeRange(
-                                startValue: 0,
-                                endValue: 10,
-                                color: CustomColors.foregroundColor,
-                                startWidth: 10,
-                                endWidth: 20),
-                            GaugeRange(
-                                startValue: 10,
-                                endValue: 10,
-                                color: Colors.red,
-                                startWidth: 20,
-                                endWidth: 30)
-                          ],
-                          pointers: const <GaugePointer>[
-                            NeedlePointer(value: 12)
-                          ],
-                          annotations: const <GaugeAnnotation>[
-                            GaugeAnnotation(
-                                widget: Text(
-                                  '123',
-                                ),
-                                angle: 90,
-                                positionFactor: 0.5)
-                          ])
-                    ]),
+                              tickOffset: 30,
+                              labelOffset: 30,
+                              showAxisLine: false,
+                              useRangeColorForAxis: true,
+                              minimum: 0,
+                              maximum: 1,
+                              ranges: <GaugeRange>[
+                                GaugeRange(
+                                    startValue: 0,
+                                    endValue: 10,
+                                    color: Colors.green,
+                                    startWidth: 0,
+                                    endWidth: 10),
+                                GaugeRange(
+                                    startValue: 0,
+                                    endValue: 10,
+                                    color: CustomColors.foregroundColor,
+                                    startWidth: 10,
+                                    endWidth: 20),
+                                GaugeRange(
+                                    startValue: 10,
+                                    endValue: 10,
+                                    color: Colors.red,
+                                    startWidth: 20,
+                                    endWidth: 30)
+                              ],
+                              pointers: const <GaugePointer>[
+                                NeedlePointer(value: 12)
+                              ],
+                              annotations: <GaugeAnnotation>[
+                                GaugeAnnotation(
+                                    widget: Text(
+                                      sensorValue,
+                                    ),
+                                    angle: 90,
+                                    positionFactor: 0.5)
+                              ])
+                        ]);
+                  },
+                ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -161,16 +190,24 @@ class SensorWidget extends StatelessWidget {
                                 ),
                                 CustomDropDown(
                                   height:
-                                      MediaQuery.sizeOf(context).height / 12,
-                                  width: MediaQuery.sizeOf(context).width,
+                                  MediaQuery
+                                      .sizeOf(context)
+                                      .height / 12,
+                                  width: MediaQuery
+                                      .sizeOf(context)
+                                      .width,
                                   items: const ['Max', 'Min'],
                                   title: 'نوع تنظیم',
                                   onPressed: (value) {
                                     if (value == 'Max') {
-                                      Get.find<DeviceController>().isMax = true;
+                                      Get
+                                          .find<DeviceController>()
+                                          .isMax = true;
                                     } else {
-                                      Get.find<DeviceController>().isMax =
-                                          false;
+                                      Get
+                                          .find<DeviceController>()
+                                          .isMax =
+                                      false;
                                     }
                                   },
                                 ),
@@ -181,7 +218,8 @@ class SensorWidget extends StatelessWidget {
                                   width: double.infinity,
                                   height: 80,
                                   child: TextField(
-                                    controller: Get.find<DeviceController>()
+                                    controller: Get
+                                        .find<DeviceController>()
                                         .sensorConfigValue,
                                     maxLines: 1,
                                     keyboardType: TextInputType.number,
@@ -196,7 +234,7 @@ class SensorWidget extends StatelessWidget {
                                         borderSide: BorderSide(
                                             width: 1,
                                             color:
-                                                CustomColors.foregroundColor),
+                                            CustomColors.foregroundColor),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
@@ -204,21 +242,32 @@ class SensorWidget extends StatelessWidget {
                                 ),
                                 CustomDropDown(
                                   height:
-                                      MediaQuery.sizeOf(context).height / 12,
-                                  width: MediaQuery.sizeOf(context).width,
-                                  items: Get.find<DeviceController>()
+                                  MediaQuery
+                                      .sizeOf(context)
+                                      .height / 12,
+                                  width: MediaQuery
+                                      .sizeOf(context)
+                                      .width,
+                                  items: Get
+                                      .find<DeviceController>()
                                       .deviceRelayName,
                                   title: 'کلیدها',
                                   onPressed: (value) {
-                                    Get.find<DeviceController>().selectedRelayName = value;
-                                    Get.find<DeviceController>()
-                                            .selectedDeviceRelayBoard =
-                                        Get.find<DeviceController>()
-                                            .deviceRelayBoard[value];
-                                    Get.find<DeviceController>()
-                                            .selectedDeviceRelayNode =
-                                        Get.find<DeviceController>()
-                                            .deviceRelayNode[value];
+                                    Get
+                                        .find<DeviceController>()
+                                        .selectedRelayName = value;
+                                    Get
+                                        .find<DeviceController>()
+                                        .selectedDeviceRelayBoard =
+                                    Get
+                                        .find<DeviceController>()
+                                        .deviceRelayBoard[value];
+                                    Get
+                                        .find<DeviceController>()
+                                        .selectedDeviceRelayNode =
+                                    Get
+                                        .find<DeviceController>()
+                                        .deviceRelayNode[value];
                                   },
                                 ),
                                 const SizedBox(
@@ -226,14 +275,18 @@ class SensorWidget extends StatelessWidget {
                                 ),
                                 CustomDropDown(
                                   height:
-                                  MediaQuery.sizeOf(context).height / 12,
-                                  width: MediaQuery.sizeOf(context).width,
+                                  MediaQuery
+                                      .sizeOf(context)
+                                      .height / 12,
+                                  width: MediaQuery
+                                      .sizeOf(context)
+                                      .width,
                                   items: const ['Off', 'On'],
                                   title: 'وضعیت',
                                   onPressed: (value) {
-                                    Get.find<DeviceController>()
+                                    Get
+                                        .find<DeviceController>()
                                         .sensorConfigStatus = value == 'On';
-
                                   },
                                 ),
                                 const SizedBox(
@@ -241,13 +294,18 @@ class SensorWidget extends StatelessWidget {
                                 ),
                                 CustomButton(
                                   onClick: () {
-                                    Get.find<DeviceController>().sendSensorConfigMessage(int.parse(type!), boardId!, title ?? '');
+                                    Get.find<DeviceController>()
+                                        .sendSensorConfigMessage(
+                                        int.parse(type!), boardId!,
+                                        title ?? '');
                                   },
                                 ),
                                 CustomButton(
                                   onClick: () {
-                                    Get.find<DeviceController>().getSensorConfig();
-                                    Get.to(AllSensorSettings(boardId: boardId!, type: int.parse(type!),));
+                                    Get.find<DeviceController>()
+                                        .getSensorConfig();
+                                    Get.to(AllSensorSettings(boardId: boardId!,
+                                      type: int.parse(type!),));
                                   },
                                   buttonTitle: 'مشاهده تنظیمات گذشته',
                                 ),

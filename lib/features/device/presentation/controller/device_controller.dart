@@ -157,6 +157,8 @@ class DeviceController extends GetxController {
             deviceList.value = dataState.data ?? [];
             await _useCase.deleteDevicesFromLocal(localProjectId, roomId!);
             await _useCase.saveDevicesToLocal(dataState.data ?? []);
+            sensorBoardList.clear();
+            sensorDeviceTypeList.clear();
             for (int i = 0; i < dataState.data!.length; i++) {
               if (dataState.data![i].deviceType == '1' ||
                   dataState.data![i].deviceType == '2' ||

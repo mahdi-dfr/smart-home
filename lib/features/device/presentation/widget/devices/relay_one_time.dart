@@ -131,7 +131,8 @@ class RelayOneTimeWidget extends StatelessWidget {
                             ? GetBuilder<WebsocketService>(builder: (logic) {
                           return _buildSwitch(logic);
                         })
-                            : GetBuilder<MqttService>(builder: (logic) {
+                            : GetBuilder<MqttService>(
+                            builder: (logic) {
                           return _buildSwitch(logic);
                         });
                       }

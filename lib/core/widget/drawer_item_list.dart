@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:turkeysh_smart_home/core/constants/styles.dart';
 
 import '../constants/utils.dart';
+import '../resource/connection/websocket_service.dart';
 
 class DrawerItem extends StatelessWidget {
   const DrawerItem({super.key, required this.title, required this.onTap, required this.icon});
@@ -99,6 +101,9 @@ class _DrawerItemOptionState extends State<DrawerItemOption> {
                           setState(() {
                             isOfflineMode = value;
                             GetStorage().write(AppUtils.offlineMode, value);
+                            if(isOfflineMode){
+                              Get.find<WebsocketService>().initWebSocket();
+                            }
                           });
                         })
                   ],

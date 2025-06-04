@@ -82,7 +82,8 @@ class OneTimeWidget extends StatelessWidget {
                 flex: 2,
                 child: Obx(() {
                   return !isSwitchLoading.value
-                      ? GetBuilder<MqttService>(builder: (logic) {
+                      ? GetBuilder<MqttService>(
+                      builder: (logic) {
                     setRelayOneTimeValue();
                     return IconButton(
                       onPressed: () async {

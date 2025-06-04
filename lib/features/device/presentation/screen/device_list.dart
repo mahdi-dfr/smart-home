@@ -14,17 +14,44 @@ import '../../../../core/constants/images.dart';
 import '../../../../core/constants/routes.dart';
 import '../../../../core/constants/styles.dart';
 import '../../../../core/constants/utils.dart';
+import '../../../../core/resource/connection/board_connection_controller.dart';
 import '../../../../core/resource/connection/mqtt_service.dart';
 import '../../../../core/widget/custom_app_bar.dart';
 import '../../../device/presentation/screen/one_time_devices.dart';
 import '../widget/devices/relay_one_time.dart';
 import '../widget/devices/sensors_widget.dart';
 
-class DeviceListScreen extends StatelessWidget {
+class DeviceListScreen extends StatefulWidget {
   DeviceListScreen({required this.room, Key? key}) : super(key: key);
 
   final RoomEntity room;
+
+  @override
+  State<DeviceListScreen> createState() => _DeviceListScreenState();
+}
+
+class _DeviceListScreenState extends State<DeviceListScreen> {
   final _controller = Get.find<DeviceController>();
+
+  @override
+  void initState() {
+    sendMessageForUpdateSensor();
+    super.initState();
+  }
+
+  sendMessageForUpdateSensor() async {
+    String projectName = GetStorage().read(AppUtils.projectNameConst);
+    String username = GetStorage().read(AppUtils.username);
+    String topic = '$projectName/$username/sensor';
+    for(int i = 0; i < _controller.sensorDeviceTypeList.length; i ++){
+      print({"type": "sensor", "sensor_id": _controller.sensorBoardList[i], "data_type": _controller.sensorDeviceTypeList[i]});
+      await Future.delayed(const Duration(seconds: 3));
+      Get.find<MqttService>().publishMessage(
+          {"type": "sensor", "sensor_id": _controller.sensorBoardList[i], "data_type": _controller.sensorDeviceTypeList[i]}
+          , topic);
+    }
+  }
+
   final offlineMode = GetStorage().read(AppUtils.offlineMode) ?? false;
 
   @override
@@ -47,7 +74,7 @@ class DeviceListScreen extends StatelessWidget {
       appBar: CustomAppBar(
         height: width > 600 ? 150 : 150,
         titleWidget: Text(
-          room.name ?? '',
+          widget.room.name ?? '',
           style: AppStyles.appbarTitleStyle,
         ),
       ),
@@ -90,16 +117,7 @@ class DeviceListScreen extends StatelessWidget {
                                     )),
                                 TextButton(
                                     onPressed: () async {
-                                      String projectName = GetStorage().read(AppUtils.projectNameConst);
-                                      String username = GetStorage().read(AppUtils.username);
-                                      String topic = '$projectName/$username/sensor';
-                                      for(int i = 0; i < _controller.sensorDeviceTypeList.length; i ++){
-                                        print({"type": "sensor", "sensor_id": _controller.sensorBoardList[i], "data_type": _controller.sensorDeviceTypeList[i]});
-                                        await Future.delayed(const Duration(seconds: 1));
-                                        Get.find<MqttService>().publishMessage(
-                                          {"type": "sensor", "sensor_id": _controller.sensorBoardList[i], "data_type": _controller.sensorDeviceTypeList[i]}
-                                          , topic);
-                                      }
+                                      sendMessageForUpdateSensor();
                                     },
                                     child:  Row(
                                       children: [

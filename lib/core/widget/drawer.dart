@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:turkeysh_smart_home/core/constants/routes.dart';
 import 'package:turkeysh_smart_home/core/constants/utils.dart';
+import 'package:turkeysh_smart_home/core/resource/connection/websocket_service.dart';
 import 'package:turkeysh_smart_home/core/widget/oval_right_border_clipper.dart';
 import 'package:turkeysh_smart_home/core/widget/question_dialog.dart';
 
@@ -97,6 +98,7 @@ class MyDrawerWidget extends StatelessWidget {
                                 icon: const Icon(Icons.signal_wifi_connected_no_internet_4),
                                 title: 'حالت آفلاین',
                                 onTap: () {
+
                                   // Get.toNamed(
                                   // RouteHelper.getLanguageRoute('menu'));
                                 }),
