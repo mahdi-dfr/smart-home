@@ -144,9 +144,12 @@ class DeviceRepositoryImpl extends DeviceRepository {
   }
 
   @override
-  Future<DataState<List<SensorConfig>>> getLocalSensorConfigs() async {
+  Future<DataState<List<SensorConfig>>> getLocalSensorConfigs(String type) async {
     try {
-      List<SensorConfig> configs = await _isarController.isar.sensorConfigs.where().findAll();
+      List<SensorConfig> configs = await _isarController.isar.sensorConfigs.filter().configTypeEqualTo(type).findAll();
+      print('ooooo');
+      print(type);
+      print(configs);
       return DataSuccess(configs);
     } catch (err) {
       return const DataFailed('err');
@@ -158,6 +161,19 @@ class DeviceRepositoryImpl extends DeviceRepository {
     try {
       await _isarController.isar.writeTxn(() async {
         await _isarController.isar.sensorConfigs.put(configs);
+      });
+      return const DataSuccess('success');
+    } catch (err) {
+      return DataFailed(err.toString());
+    }
+  }
+
+  @override
+  Future<DataState<String>> deleteAllSensorConfigsFromLocal(String type) async {
+    try {
+      await _isarController.isar.writeTxn(() async {
+        await _isarController.isar.sensorConfigs
+            .filter().configTypeEqualTo(type).deleteAll();
       });
       return const DataSuccess('success');
     } catch (err) {

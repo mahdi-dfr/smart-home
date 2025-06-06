@@ -53,11 +53,15 @@ class DeviceUseCae {
     return _repository.saveSensorConfigsToLocal(configs);
   }
 
-  Future<DataState<List<SensorConfig>>> getLocalSensorConfigs(){
-    return _repository.getLocalSensorConfigs();
+  Future<DataState<List<SensorConfig>>> getLocalSensorConfigs(String type){
+    return _repository.getLocalSensorConfigs(type);
   }
 
   Future<DataState<String>> deleteSensorConfigsFromLocal(int id){
     return _repository.deleteSensorConfigsFromLocal(id);
+  }
+
+  Future<DataState<String>> deleteAllSensorConfigsFromLocal(String type){
+    return _repository.deleteAllSensorConfigsFromLocal(type);
   }
 }

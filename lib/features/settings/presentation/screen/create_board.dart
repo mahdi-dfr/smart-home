@@ -48,24 +48,22 @@ class CreateBoardScreen extends StatelessWidget {
                     height: width > 600 ? height/6 : height / 12,
                     fontSize: 14,
                     controller: _controller.boardName,),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Obx(() {
-                    return BoardItem(
-                      title: 'sms',
-                      isBaseBoard: true,
-                      isChecked: _controller.isSMSChecked.value,
-                      onCheckTap: (bool? value) {
-                        _controller.changeBoardCheckValue('1', value!);
-                        _controller.isSMSChecked.value = value;
-                        _controller.isSensorChecked.value = false;
-                        _controller.isDimmerChecked.value = false;
-                        _controller.isWifiChecked.value = false;
-                        _controller.isRelayChecked.value = false;
-                      },
-                    );
-                  }),
+
+                  // Obx(() {
+                  //   return BoardItem(
+                  //     title: 'sms',
+                  //     isBaseBoard: true,
+                  //     isChecked: _controller.isSMSChecked.value,
+                  //     onCheckTap: (bool? value) {
+                  //       _controller.changeBoardCheckValue('1', value!);
+                  //       _controller.isSMSChecked.value = value;
+                  //       _controller.isSensorChecked.value = false;
+                  //       _controller.isDimmerChecked.value = false;
+                  //       _controller.isWifiChecked.value = false;
+                  //       _controller.isRelayChecked.value = false;
+                  //     },
+                  //   );
+                  // }),
                   Obx(() {
                     return BoardItem(
                       title: 'wifi',

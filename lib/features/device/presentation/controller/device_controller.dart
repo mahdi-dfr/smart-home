@@ -18,14 +18,13 @@ class DeviceController extends GetxController {
   DeviceController(this._useCase);
 
   late TextEditingController deviceName;
-  late TextEditingController sensorRange;
   RxList<DeviceEntity> roomsList = RxList();
 
   var isLoading = false.obs;
   var isDeviceLoading = false.obs;
   var isDeleteDeviceLoading = false.obs;
 
-  /// این مقادیر کاملا مرتبط با بخش تننظیم ماکس یا مین سنسورها هستند
+  /// :این مقادیر کاملا مرتبط با بخش تننظیم ماکس یا مین سنسورها هستند
   List<String> sensorBoardList = []; /// سنسور ها بعد از قراخوانی همه ی تجهیزات داخل این لیست ریخته میشوند برای اینکه هنگام رفرش کردن وضعیت سنسور ها از این لیست استفاده کنیم
   List<String> sensorDeviceTypeList = []; /// سنسور ها بعد از قراخوانی همه ی تجهیزات داخل این لیست ریخته میشوند برای اینکه هنگام رفرش کردن وضعیت سنسور ها از این لیست استفاده کنیم
   List<DeviceEntity> relayDeviceList = [];
@@ -40,6 +39,7 @@ class DeviceController extends GetxController {
   late TextEditingController sensorConfigValue; /// مقدار ماکزیمم یا مینیمم در کانفیگ سنسور
   List<String> deviceRelayName = [];
   RxList<SensorConfig> configList = RxList();
+  var isSensorConfigValidate = true.obs;
   ///
 
 
@@ -57,7 +57,6 @@ class DeviceController extends GetxController {
   @override
   void onInit() {
     deviceName = TextEditingController();
-    sensorRange = TextEditingController();
     sensorConfigValue = TextEditingController();
     super.onInit();
   }
@@ -228,8 +227,48 @@ class DeviceController extends GetxController {
   }
 
 
-  sendSensorConfigMessage(int type, int boardId, String sensorName){
-    if(sensorConfigValue.text.isNotEmpty && selectedDeviceRelayBoard != -1 && selectedDeviceRelayNode != -1){
+  bool sensorConfigValidator(int type){
+    final sensorRangeValue = int.parse(sensorConfigValue.text);
+
+    print('s111111111');
+    print(sensorRangeValue);
+    print(type);
+    switch (type) {
+      case 1:
+        print('22222222');
+        if (sensorRangeValue < 0 || sensorRangeValue > 100) {
+          print('5555555');
+          isSensorConfigValidate.value = false;
+        }else{
+          isSensorConfigValidate.value = true;
+        }
+        break;
+      case 2:
+        if (sensorRangeValue < 0 || sensorRangeValue > 14) {
+          isSensorConfigValidate.value = false;
+        }else{
+          isSensorConfigValidate.value = true;
+        }
+        break;
+      case 3:
+        if (sensorRangeValue < 0 || sensorRangeValue > 5000) {
+          isSensorConfigValidate.value = false;
+        }else{
+          isSensorConfigValidate.value = true;
+        }
+        break;
+    }
+    print('666666');
+    print(isSensorConfigValidate.value);
+    return isSensorConfigValidate.value;
+  }
+
+  sendSensorConfigMessage(int type, int boardId, String sensorName) {
+
+    if (sensorConfigValue.text.isNotEmpty &&
+        selectedDeviceRelayBoard != -1 &&
+        selectedDeviceRelayNode != -1 && sensorConfigValidator(type)) {
+
       String projectName = GetStorage().read(AppUtils.projectNameConst);
       String username = GetStorage().read(AppUtils.username);
       String topic;
@@ -239,44 +278,47 @@ class DeviceController extends GetxController {
       if (isMax) {
         topic = '$projectName/$username/sensor_ctrl_max';
         message = {
-          'type' : 'sensor_ctrl_max',
-          'sensor_id' : boardId,
-          'data_type' : type,
-          'max' : int.parse(sensorConfigValue.text),
-          'board_id_r' : selectedDeviceRelayBoard,
-          'node_id' : selectedDeviceRelayNode,
-          'node_status' : sensorConfigStatus
+          'type': 'sensor_ctrl_max',
+          'sensor_id': boardId,
+          'data_type': type,
+          'max': int.parse(sensorConfigValue.text),
+          'board_id_r': selectedDeviceRelayBoard,
+          'node_id': selectedDeviceRelayNode,
+          'node_status': sensorConfigStatus
         };
-        sensorConfig = SensorConfig('Max', int.parse(sensorConfigValue.text), selectedRelayName, sensorConfigStatus, sensorName);
-      }else{
+        sensorConfig = SensorConfig(type.toString(), int.parse(sensorConfigValue.text),
+            selectedRelayName, sensorConfigStatus, sensorName);
+      } else {
         topic = '$projectName/$username/sensor_ctrl_min';
         message = {
-          'type' : 'sensor_ctrl_min',
-          'sensor_id' : boardId,
-          'data_type' : type,
-          'min' : int.parse(sensorConfigValue.text),
-          'board_id_r' : selectedDeviceRelayBoard,
-          'node_id' : selectedDeviceRelayNode,
-          'node_status' : sensorConfigStatus
+          'type': 'sensor_ctrl_min',
+          'sensor_id': boardId,
+          'data_type': type,
+          'min': int.parse(sensorConfigValue.text),
+          'board_id_r': selectedDeviceRelayBoard,
+          'node_id': selectedDeviceRelayNode,
+          'node_status': sensorConfigStatus
         };
-        sensorConfig = SensorConfig('Min', int.parse(sensorConfigValue.text), selectedRelayName, sensorConfigStatus, sensorName);
+        sensorConfig = SensorConfig('Min', int.parse(sensorConfigValue.text),
+            selectedRelayName, sensorConfigStatus, sensorName);
       }
-
 
       _useCase.saveSensorConfigsToLocal(sensorConfig);
       sensorConfigValue.clear();
       selectedDeviceRelayBoard = -1;
       selectedDeviceRelayNode = -1;
       Get.back();
+      sensorConfigValue.clear();
       print(message);
       Get.find<MqttService>().publishMessage(message, topic);
-    }else{
+    } else {
       const CustomSnackBar.error(message: 'لطفا اطلاعات را کامل کنید');
     }
   }
 
-  getSensorConfig() async {
-    DataState<List<SensorConfig>> dataState = await _useCase.getLocalSensorConfigs();
+
+  getSensorConfig(String type) async {
+    DataState<List<SensorConfig>> dataState = await _useCase.getLocalSensorConfigs(type);
     configList.clear();
     configList.value = dataState.data ?? [];
 
@@ -304,6 +346,23 @@ class DeviceController extends GetxController {
       };
     }
     configList.removeAt(index);
+    print(message);
+    Get.find<MqttService>().publishMessage(message, topic);
+  }
+
+
+  deleteAllConfigs(int type, int sensorId){
+    _useCase.deleteAllSensorConfigsFromLocal(type.toString());
+    String projectName = GetStorage().read(AppUtils.projectNameConst);
+    String username = GetStorage().read(AppUtils.username);
+    String topic = '$projectName/$username/sensor_ctrl_del_max';
+    Map<String, dynamic> message = {
+        'type' : 'sensor_ctrl_del',
+        'sensor_id' : sensorId,
+        'data_type' : type
+      };
+
+    configList.clear();
     print(message);
     Get.find<MqttService>().publishMessage(message, topic);
   }

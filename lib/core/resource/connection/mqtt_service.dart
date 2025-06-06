@@ -122,8 +122,10 @@ class MqttService extends GetxController {
 
       // تشخیص نوع برد از روی تاپیک
       if (topic.contains('relay')) {
+        print('rrrrrrrrrrrrrrrrr');
         connectionController.setRelayList(payload);
       } else if (topic.contains('sensor')) {
+        print('ssssssssssssss');
         connectionController.setSensorList(payload);
       } else {
         print('Unknown topic received: $topic');

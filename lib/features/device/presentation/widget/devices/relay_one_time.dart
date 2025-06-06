@@ -70,6 +70,7 @@ class RelayOneTimeWidget extends StatelessWidget {
     var width = MediaQuery.sizeOf(context).width;
     return Column(
       children: [
+        const SizedBox(height: 10,),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -91,12 +92,11 @@ class RelayOneTimeWidget extends StatelessWidget {
           ],
         ),
         const SizedBox(
-          height: 12,
+          height: 8,
         ),
         InkWell(
           onLongPress: onLongPress,
           child: Container(
-            margin: const EdgeInsets.only(bottom: 32),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             width: width > 600 ? width * 0.6 : width,
             decoration: BoxDecoration(
@@ -212,6 +212,7 @@ class RelayOneTimeWidget extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(height: 10,),
       ],
     );
   }
@@ -238,7 +239,7 @@ class RelayOneTimeWidget extends StatelessWidget {
 
     Map<String, dynamic> message = {
       "type": "relay",
-      "board_id": 1,
+      "board_id": boardUniqueId,
       "node_id": nodeId,
       "node_status": value
     };

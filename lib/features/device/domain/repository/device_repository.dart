@@ -25,7 +25,9 @@ abstract class DeviceRepository {
 
   Future<DataState<String>> saveSensorConfigsToLocal(SensorConfig config);
 
-  Future<DataState<List<SensorConfig>>> getLocalSensorConfigs();
+  Future<DataState<List<SensorConfig>>> getLocalSensorConfigs(String type);
 
   Future<DataState<String>> deleteSensorConfigsFromLocal(int id,);
+
+  Future<DataState<String>> deleteAllSensorConfigsFromLocal(String type);
 }

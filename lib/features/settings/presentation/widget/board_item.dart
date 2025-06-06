@@ -75,22 +75,22 @@ class BoardItem extends StatelessWidget {
                 ? const SizedBox()
                 : Column(
               children: [
-                const SizedBox(
-                  height: 12,
-                ),
-                Obx(() {
-                  return CustomDropDown(
-                    items: _controller.smsBoardList.value.keys.toList(),
-                    title: 'برد پیامکی کنترل کننده',
-                    onPressed: (value) {
-                      _controller.selectedSmsControlBoard = _controller
-                          .smsBoardList.value[value.toString()]
-                          .toString();
-                    },
-                    width: width,
-                    height: height / 12,
-                  );
-                }),
+                // const SizedBox(
+                //   height: 12,
+                // ),
+                // Obx(() {
+                //   return CustomDropDown(
+                //     items: _controller.smsBoardList.value.keys.toList(),
+                //     title: 'برد پیامکی کنترل کننده',
+                //     onPressed: (value) {
+                //       _controller.selectedSmsControlBoard = _controller
+                //           .smsBoardList.value[value.toString()]
+                //           .toString();
+                //     },
+                //     width: width,
+                //     height: height / 12,
+                //   );
+                // }),
                 const SizedBox(
                   height: 12,
                 ),
