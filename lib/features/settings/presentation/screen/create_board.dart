@@ -94,21 +94,21 @@ class CreateBoardScreen extends StatelessWidget {
                       },
                     );
                   }),
-                  Obx(() {
-                    return BoardItem(
-                      title: 'dimmer',
-                      isBaseBoard: false,
-                      isChecked: _controller.isDimmerChecked.value,
-                      onCheckTap: (bool? value) {
-                        _controller.changeBoardCheckValue('5', value!);
-                        _controller.isDimmerChecked.value = value;
-                        _controller.isSensorChecked.value = false;
-                        _controller.isSMSChecked.value = false;
-                        _controller.isWifiChecked.value = false;
-                        _controller.isRelayChecked.value = false;
-                      },
-                    );
-                  }),
+                  // Obx(() {
+                  //   return BoardItem(
+                  //     title: 'dimmer',
+                  //     isBaseBoard: false,
+                  //     isChecked: _controller.isDimmerChecked.value,
+                  //     onCheckTap: (bool? value) {
+                  //       _controller.changeBoardCheckValue('5', value!);
+                  //       _controller.isDimmerChecked.value = value;
+                  //       _controller.isSensorChecked.value = false;
+                  //       _controller.isSMSChecked.value = false;
+                  //       _controller.isWifiChecked.value = false;
+                  //       _controller.isRelayChecked.value = false;
+                  //     },
+                  //   );
+                  // }),
                   Obx(() {
                     return BoardItem(
                       title: 'relay',
@@ -125,7 +125,7 @@ class CreateBoardScreen extends StatelessWidget {
                     );
                   }),
                   const SizedBox(
-                    height: 30,
+                    height: 45,
                   )
                 ],
               ),

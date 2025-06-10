@@ -94,14 +94,14 @@ class MyDrawerWidget extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
 
-                            DrawerItemOption(
-                                icon: const Icon(Icons.signal_wifi_connected_no_internet_4),
-                                title: 'حالت آفلاین',
-                                onTap: () {
-
-                                  // Get.toNamed(
-                                  // RouteHelper.getLanguageRoute('menu'));
-                                }),
+                            // DrawerItemOption(
+                            //     icon: const Icon(Icons.signal_wifi_connected_no_internet_4),
+                            //     title: 'حالت آفلاین',
+                            //     onTap: () {
+                            //
+                            //       // Get.toNamed(
+                            //       // RouteHelper.getLanguageRoute('menu'));
+                            //     }),
                             DrawerItem(
                                 icon: const Icon(Icons.language),
                                 title: 'زبان',

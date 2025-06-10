@@ -32,13 +32,18 @@ const SensorConfigSchema = CollectionSchema(
       name: r'keyName',
       type: IsarType.string,
     ),
-    r'sensorName': PropertySchema(
+    r'maxOrMin': PropertySchema(
       id: 3,
+      name: r'maxOrMin',
+      type: IsarType.string,
+    ),
+    r'sensorName': PropertySchema(
+      id: 4,
       name: r'sensorName',
       type: IsarType.string,
     ),
     r'status': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'status',
       type: IsarType.bool,
     )
@@ -76,6 +81,12 @@ int _sensorConfigEstimateSize(
     }
   }
   {
+    final value = object.maxOrMin;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.sensorName;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -93,8 +104,9 @@ void _sensorConfigSerialize(
   writer.writeLong(offsets[0], object.configRange);
   writer.writeString(offsets[1], object.configType);
   writer.writeString(offsets[2], object.keyName);
-  writer.writeString(offsets[3], object.sensorName);
-  writer.writeBool(offsets[4], object.status);
+  writer.writeString(offsets[3], object.maxOrMin);
+  writer.writeString(offsets[4], object.sensorName);
+  writer.writeBool(offsets[5], object.status);
 }
 
 SensorConfig _sensorConfigDeserialize(
@@ -107,7 +119,8 @@ SensorConfig _sensorConfigDeserialize(
     reader.readStringOrNull(offsets[1]),
     reader.readLongOrNull(offsets[0]),
     reader.readStringOrNull(offsets[2]),
-    reader.readBoolOrNull(offsets[4]),
+    reader.readBoolOrNull(offsets[5]),
+    reader.readStringOrNull(offsets[4]),
     reader.readStringOrNull(offsets[3]),
   );
   object.isarId = id;
@@ -130,6 +143,8 @@ P _sensorConfigDeserializeProp<P>(
     case 3:
       return (reader.readStringOrNull(offset)) as P;
     case 4:
+      return (reader.readStringOrNull(offset)) as P;
+    case 5:
       return (reader.readBoolOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -670,6 +685,160 @@ extension SensorConfigQueryFilter
   }
 
   QueryBuilder<SensorConfig, SensorConfig, QAfterFilterCondition>
+      maxOrMinIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'maxOrMin',
+      ));
+    });
+  }
+
+  QueryBuilder<SensorConfig, SensorConfig, QAfterFilterCondition>
+      maxOrMinIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'maxOrMin',
+      ));
+    });
+  }
+
+  QueryBuilder<SensorConfig, SensorConfig, QAfterFilterCondition>
+      maxOrMinEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'maxOrMin',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SensorConfig, SensorConfig, QAfterFilterCondition>
+      maxOrMinGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'maxOrMin',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SensorConfig, SensorConfig, QAfterFilterCondition>
+      maxOrMinLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'maxOrMin',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SensorConfig, SensorConfig, QAfterFilterCondition>
+      maxOrMinBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'maxOrMin',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SensorConfig, SensorConfig, QAfterFilterCondition>
+      maxOrMinStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'maxOrMin',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SensorConfig, SensorConfig, QAfterFilterCondition>
+      maxOrMinEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'maxOrMin',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SensorConfig, SensorConfig, QAfterFilterCondition>
+      maxOrMinContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'maxOrMin',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SensorConfig, SensorConfig, QAfterFilterCondition>
+      maxOrMinMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'maxOrMin',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SensorConfig, SensorConfig, QAfterFilterCondition>
+      maxOrMinIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'maxOrMin',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<SensorConfig, SensorConfig, QAfterFilterCondition>
+      maxOrMinIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'maxOrMin',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<SensorConfig, SensorConfig, QAfterFilterCondition>
       sensorNameIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -898,6 +1067,18 @@ extension SensorConfigQuerySortBy
     });
   }
 
+  QueryBuilder<SensorConfig, SensorConfig, QAfterSortBy> sortByMaxOrMin() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'maxOrMin', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SensorConfig, SensorConfig, QAfterSortBy> sortByMaxOrMinDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'maxOrMin', Sort.desc);
+    });
+  }
+
   QueryBuilder<SensorConfig, SensorConfig, QAfterSortBy> sortBySensorName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'sensorName', Sort.asc);
@@ -976,6 +1157,18 @@ extension SensorConfigQuerySortThenBy
     });
   }
 
+  QueryBuilder<SensorConfig, SensorConfig, QAfterSortBy> thenByMaxOrMin() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'maxOrMin', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SensorConfig, SensorConfig, QAfterSortBy> thenByMaxOrMinDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'maxOrMin', Sort.desc);
+    });
+  }
+
   QueryBuilder<SensorConfig, SensorConfig, QAfterSortBy> thenBySensorName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'sensorName', Sort.asc);
@@ -1024,6 +1217,13 @@ extension SensorConfigQueryWhereDistinct
     });
   }
 
+  QueryBuilder<SensorConfig, SensorConfig, QDistinct> distinctByMaxOrMin(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'maxOrMin', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<SensorConfig, SensorConfig, QDistinct> distinctBySensorName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1061,6 +1261,12 @@ extension SensorConfigQueryProperty
   QueryBuilder<SensorConfig, String?, QQueryOperations> keyNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'keyName');
+    });
+  }
+
+  QueryBuilder<SensorConfig, String?, QQueryOperations> maxOrMinProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'maxOrMin');
     });
   }
 

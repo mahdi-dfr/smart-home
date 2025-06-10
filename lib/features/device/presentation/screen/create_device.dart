@@ -48,9 +48,9 @@ class CreateDeviceScreen extends StatelessWidget {
                         _controller.deviceType = '0';
                       } else if (value.toString() == 'سنسور دما') {
                         _controller.deviceType = '1';
-                      } else if (value.toString() == 'سنسور سختی آب') {
-                        _controller.deviceType = '2';
                       } else if (value.toString() == 'سنسور PH') {
+                        _controller.deviceType = '2';
+                      } else if (value.toString() == 'سنسور سختی آب') {
                         _controller.deviceType = '3';
                       } else if (value.toString() == 'سنسور خاک') {
                         _controller.deviceType = '4';

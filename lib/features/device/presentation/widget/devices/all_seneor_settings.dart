@@ -109,7 +109,7 @@ class AllSensorSettings extends StatelessWidget {
                               Row(
                                 children: [
                                   const Text(
-                                    'وضعیت سنسور:',
+                                    'وضعیت کلید:',
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold),
@@ -178,22 +178,29 @@ class AllSensorSettings extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                              const SizedBox(height: 4,),
+                              Row(
+                                children: [
+                                  const Text(
+                                    'نوع تنظیم:',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text(
+                                    _controller.configList[index].maxOrMin!,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
-                          IconButton(
-                              onPressed: () {
-                                _controller.deleteConfigs(
-                                    _controller.configList[index].isarId,
-                                    _controller.configList[index].configType ==
-                                        'Max',
-                                    boardId,
-                                    type,
-                                    index);
-                              },
-                              icon: Icon(
-                                Icons.delete_outlined,
-                                color: CustomColors.foregroundColor,
-                              ))
+
                         ],
                       ),
                     );

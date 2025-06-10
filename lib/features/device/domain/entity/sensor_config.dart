@@ -6,10 +6,11 @@ class SensorConfig {
   Id isarId = Isar.autoIncrement;
   String? sensorName;
   String? configType;
+  String? maxOrMin;
   int? configRange;
   String? keyName;
   bool? status;
 
   SensorConfig(this.configType, this.configRange, this.keyName,
-      this.status, this.sensorName);
+      this.status, this.sensorName, this.maxOrMin);
 }

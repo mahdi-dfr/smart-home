@@ -23,6 +23,7 @@ class DeviceController extends GetxController {
   var isLoading = false.obs;
   var isDeviceLoading = false.obs;
   var isDeleteDeviceLoading = false.obs;
+  var refreshSensorLoading = false.obs;
 
   /// :این مقادیر کاملا مرتبط با بخش تننظیم ماکس یا مین سنسورها هستند
   List<String> sensorBoardList = []; /// سنسور ها بعد از قراخوانی همه ی تجهیزات داخل این لیست ریخته میشوند برای اینکه هنگام رفرش کردن وضعیت سنسور ها از این لیست استفاده کنیم
@@ -230,14 +231,9 @@ class DeviceController extends GetxController {
   bool sensorConfigValidator(int type){
     final sensorRangeValue = int.parse(sensorConfigValue.text);
 
-    print('s111111111');
-    print(sensorRangeValue);
-    print(type);
     switch (type) {
       case 1:
-        print('22222222');
         if (sensorRangeValue < 0 || sensorRangeValue > 100) {
-          print('5555555');
           isSensorConfigValidate.value = false;
         }else{
           isSensorConfigValidate.value = true;
@@ -258,8 +254,6 @@ class DeviceController extends GetxController {
         }
         break;
     }
-    print('666666');
-    print(isSensorConfigValidate.value);
     return isSensorConfigValidate.value;
   }
 
@@ -287,7 +281,7 @@ class DeviceController extends GetxController {
           'node_status': sensorConfigStatus
         };
         sensorConfig = SensorConfig(type.toString(), int.parse(sensorConfigValue.text),
-            selectedRelayName, sensorConfigStatus, sensorName);
+            selectedRelayName, sensorConfigStatus, sensorName, 'Max');
       } else {
         topic = '$projectName/$username/sensor_ctrl_min';
         message = {
@@ -299,8 +293,8 @@ class DeviceController extends GetxController {
           'node_id': selectedDeviceRelayNode,
           'node_status': sensorConfigStatus
         };
-        sensorConfig = SensorConfig('Min', int.parse(sensorConfigValue.text),
-            selectedRelayName, sensorConfigStatus, sensorName);
+        sensorConfig = SensorConfig(type.toString(), int.parse(sensorConfigValue.text),
+            selectedRelayName, sensorConfigStatus, sensorName, 'Min');
       }
 
       _useCase.saveSensorConfigsToLocal(sensorConfig);
@@ -309,7 +303,6 @@ class DeviceController extends GetxController {
       selectedDeviceRelayNode = -1;
       Get.back();
       sensorConfigValue.clear();
-      print(message);
       Get.find<MqttService>().publishMessage(message, topic);
     } else {
       const CustomSnackBar.error(message: 'لطفا اطلاعات را کامل کنید');
@@ -346,7 +339,6 @@ class DeviceController extends GetxController {
       };
     }
     configList.removeAt(index);
-    print(message);
     Get.find<MqttService>().publishMessage(message, topic);
   }
 
@@ -363,7 +355,6 @@ class DeviceController extends GetxController {
       };
 
     configList.clear();
-    print(message);
     Get.find<MqttService>().publishMessage(message, topic);
   }
 

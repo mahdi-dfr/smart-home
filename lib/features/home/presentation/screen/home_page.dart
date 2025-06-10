@@ -48,7 +48,7 @@ class HomePage extends StatelessWidget {
           child: Align(
               alignment: Alignment.topRight,
               child: Text(
-                'اتاق ها',
+                'محیط ها',
                 style: AppStyles.style2,
               )),
         ),
@@ -128,7 +128,9 @@ class HomePage extends StatelessWidget {
                                       borderRadius: const BorderRadius.only(
                                           bottomRight: Radius.circular(AppDimensions.borderRadius),
                                           bottomLeft: Radius.circular(AppDimensions.borderRadius))),
-                                  child: SvgPicture.asset(Images.room)),
+                                  // child: SvgPicture.asset(Images.room)
+                                child: Image.asset(Images.room, fit: BoxFit.fill,),
+                              ),
                               Text(
                                 logic.roomsList[index].name ?? '',
                                 style: AppStyles.style3,
